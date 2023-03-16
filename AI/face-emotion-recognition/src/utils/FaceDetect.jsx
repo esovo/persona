@@ -195,7 +195,7 @@ const FaceDetect = () => {
   socket.onopen = () => socket.send(JSON.stringify(apiCall))
   socket.onmessage = function(event) {
     var pred_log = JSON.parse(event.data)
-    console.log(pred_log)
+    console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
