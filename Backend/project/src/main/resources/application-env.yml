@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+
+mysql:
+  port: localhost:3306
+  user: root
+  pwd: ssafy
+
+redis:
+  host: localhost
+  port: 6379
+  pwd:
+
+oauth2:
+  google:
+    id: 822412139325-r5oop7uh7onvukjj3lcbvvt9aku0fkah.apps.googleusercontent.com
+    pwd: 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
+
+
+
+
