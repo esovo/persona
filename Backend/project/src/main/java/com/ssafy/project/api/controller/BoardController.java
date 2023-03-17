@@ -41,7 +41,7 @@ public class BoardController {
     @PostMapping("/search")
     @ApiOperation(value = "게시글 검색")
     public ResponseEntity<ResponseDTO> boardSearch(@RequestBody BoardSearchReqDTO boardSearchReqDTO){
-        Page<Board> boardList = boardService.findByWord(boardSearchReqDTO);
+        List<BoardDTO> boardList = boardService.findByWord(boardSearchReqDTO);
 
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "검색을 완료했습니다.", boardList));
     }
@@ -70,6 +70,4 @@ public class BoardController {
             boardService.modifyBoard(boardModifyReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "게시글이 수정되었습니다."));
     }
-
-
 }

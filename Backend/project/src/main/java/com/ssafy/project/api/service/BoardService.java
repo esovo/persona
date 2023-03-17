@@ -14,7 +14,7 @@ public interface BoardService {
     //조회
     List<BoardDTO> findAllBoard(int page);
     //검색
-    Page<Board> findByWord(BoardSearchReqDTO boardSearchReqDTO);
+    List<BoardDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO);
     //등록
     void addBoard(BoardAddReqDTO boardAddReqDTO);
     //수정

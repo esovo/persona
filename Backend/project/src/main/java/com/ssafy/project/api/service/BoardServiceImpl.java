@@ -5,12 +5,12 @@ import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
 import com.ssafy.project.common.db.dto.response.BoardDTO;
 import com.ssafy.project.common.db.entity.common.Board;
-import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,13 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDTO> findAllBoard(int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Board> boardList = boardRepository.findAll(pageable);
-        System.out.println(boardList.getSize());
+
+        // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
 
         List<BoardDTO> boardDTOList = new ArrayList<>();
         boardList.forEach(board -> {
+//            System.out.println(board.getUser());
+            
             BoardDTO boardDTO = BoardDTO.builder()
                     .id(board.getId())
                     .title(board.getTitle())
@@ -52,16 +55,33 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<Board> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
-        Pageable pageable = PageRequest.of(boardSearchReqDTO.getPage(), 20);
-        Page<Board> boardList;
-        if(boardSearchReqDTO.getColumn().equals("title")) boardList
-                = boardRepository.findByTitleContaining(boardSearchReqDTO.getWord(), pageable);
+    public List<BoardDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
+        Pageable pageable = PageRequest.of(boardSearchReqDTO.getPage(), 10);
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        Page<Board> boardList = new PageImpl<>(new ArrayList<>());
+        // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
+
+        if(boardSearchReqDTO.getColumn().equals("title"))
+            boardList = boardRepository.findByTitleContaining(boardSearchReqDTO.getWord(), pageable);
         else boardList = boardRepository.findByContentContaining(boardSearchReqDTO.getWord(), pageable);
+
         boardList.forEach(board -> {
-            System.out.println(board);
+//            System.out.println(board.getUser());
+
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .viewCnt(board.getViewCnt())
+                    .likes(board.getBoardLikes().size())
+                    .registerDate(board.getRegisterDate())
+                    .videoUrl(board.getVideo().getUrl())
+//                    .userId(board.getUser().getId())
+//                    .nickName(board.getUser().getNickname())
+                    .build();
+            boardDTOList.add(boardDTO);
         });
-        return boardList;
+        return boardDTOList;
     }
 
     @Override
@@ -77,7 +97,6 @@ public class BoardServiceImpl implements BoardService {
                 .updateDate(LocalDateTime.now())
 //                .user()
                 .build();
-
         boardRepository.save(board);
     }
 
