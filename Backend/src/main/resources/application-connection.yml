@@ -1,0 +1,62 @@
+server:
+  servlet:
+    context-path:
+    port: ${server.port}
+
+
+logging:
+  config: classpath:log4j2.xml
+
+spring:
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: google
+            client-id: ${oauth2.google.id}
+            client-secret: ${oauth2.google.secret}
+            redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
+            authorization-grant-type: authorization_code
+            scope:
+              - email
+        provider:
+          google:
+            user-name-attribute: sub
+#            token-uri: "localhost:8080/oauth2/token/google"
+#         authorization-uri:
+#         user-info-uri:
+#         jwk-set-uri:
+
+#          kakao:
+#          naver:
+
+
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql.port}/test?allowPublicKeyRetrieval=true&useSSL=false&useUniCode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${mysql.user}
+    password: ${mysql.pwd}
+
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+#  redis:
+#    host: ${redis.host}
+#    port: ${redis.port}
+#    password: ${redis.pwd}
