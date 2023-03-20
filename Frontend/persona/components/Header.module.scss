@@ -1,0 +1,17 @@
+.nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: gray;
+  margin: 0;
+  padding: 0;
+  .logo {
+    background-color: yellow;
+    // width: ;
+  }
+  .menu {
+    background-color: blue;
+  }
+  .login {
+    background-color: violet;
+  }
+}
