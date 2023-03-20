@@ -4,14 +4,17 @@
   background-color: gray;
   margin: 0;
   padding: 0;
+  height: 5vh;
   .logo {
     background-color: yellow;
-    // width: ;
+    width: 20%;
   }
   .menu {
     background-color: blue;
+    width: 60%;
   }
   .login {
     background-color: violet;
+    width: 20%;
   }
 }
