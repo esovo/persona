@@ -1,7 +1,9 @@
 package com.ssafy.project.common.db.dto.response;
 
 import lombok.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Setter
@@ -9,15 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BoardDTO {
-
+public class BoardAllResDTO {
     private Long id;
     private String title;
-    private String content;
     private Long viewCnt;
     private int likes;
-    private LocalDateTime registerDate;
-    private String videoUrl;
+    private LocalDateTime createdDate;
     private String nickName;
-    private Long userId;
 }

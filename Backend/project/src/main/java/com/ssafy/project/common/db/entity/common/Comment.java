@@ -1,9 +1,7 @@
 package com.ssafy.project.common.db.entity.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ssafy.project.common.db.entity.base.BaseTime;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,9 +11,10 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Comment extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +28,10 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "useur_id")
     private User user;
-    private String comment;
 
+    private String content;
+
+    @Builder.Default
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<CommentLike> commentLikes = new ArrayList<>();
-
-    @Column(name = "register_date")
-    private LocalDateTime registerDate;
-    @Column(name = "update_date")
-    private LocalDateTime updateDate;
 }

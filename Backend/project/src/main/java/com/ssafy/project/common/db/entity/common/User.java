@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseTime{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,8 +22,8 @@ public class User {
     @Column(name = "nickname", nullable = false, length = 16)
     private String nickname;
 
-    @Embedded
-    private BaseTime baseTime;
+//    @Embedded
+//    private BaseTime baseTime;
 
     @Embedded
     private SocialAuth socialAuth;

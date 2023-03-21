@@ -6,9 +6,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ToString
-public class BoardModifyReqDTO {
+public class CommentAddReqDTO {
     private Long boardId;
-    private String title;
+    private Long userId;
     private String content;
 }

@@ -5,10 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +16,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     //검색
     Page<Board> findByTitleContaining(String title, Pageable pageable);
     Page<Board> findByContentContaining(String content, Pageable pageable);
-
-    //등록
-    Board save(Board board);
     List<Board> findAllBy();
     //상세조회
     Optional<Board> findById(Long id);

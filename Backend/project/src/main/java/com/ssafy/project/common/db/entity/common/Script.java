@@ -1,5 +1,6 @@
 package com.ssafy.project.common.db.entity.common;
 
+import com.ssafy.project.common.db.entity.base.BaseTime;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Script {
+public class Script extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +25,6 @@ public class Script {
     private String content;
     private String registrant;
     private Long viewNum;
-    private LocalDateTime registerDate;
-    private LocalDateTime updateDate;
     private String gerne;
     private String emotion;
 

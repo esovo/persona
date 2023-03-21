@@ -3,7 +3,9 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.BoardDTO;
+import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
+import com.ssafy.project.common.db.dto.response.BoardResDTO;
+import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.Video;
 import com.ssafy.project.common.db.repository.BoardRepository;
@@ -15,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,36 +29,67 @@ public class BoardServiceImpl implements BoardService {
     private final VideoRepository videoRepository;
 
     @Override
-    public List<BoardDTO> findAllBoard(int page) {
+    public List<BoardAllResDTO> findAllBoard(int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Board> boardList = boardRepository.findAll(pageable);
 
         // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
-
-        List<BoardDTO> boardDTOList = new ArrayList<>();
+        List<BoardAllResDTO> boardDTOList = new ArrayList<>();
         boardList.forEach(board -> {
 //            System.out.println(board.getUser());
             
-            BoardDTO boardDTO = BoardDTO.builder()
+            BoardAllResDTO boardAllResDTO = BoardAllResDTO.builder()
                     .id(board.getId())
                     .title(board.getTitle())
-                    .content(board.getContent())
                     .viewCnt(board.getViewCnt())
                     .likes(board.getBoardLikes().size())
-                    .registerDate(board.getRegisterDate())
-                    .videoUrl(board.getVideo().getUrl())
-//                    .userId(board.getUser().getId())
+                    .createdDate(board.getCreatedDate())
 //                    .nickName(board.getUser().getNickname())
                     .build();
-            boardDTOList.add(boardDTO);
+            boardDTOList.add(boardAllResDTO);
         });
          return boardDTOList;
     }
 
     @Override
-    public List<BoardDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
+    public BoardResDTO detailBoard(Long boardId) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardId);
+
+        if(!optionalBoard.isPresent()) throw new RuntimeException();
+
+        Board board = optionalBoard.get();
+        List<CommentDTO> commentDTOList = new ArrayList<>();
+
+        board.getComments().forEach( comment -> {
+            CommentDTO commentDTO = CommentDTO.builder()
+                    .id(comment.getId())
+//                    .userProfile(comment.getUserProfile)
+//                    .nickname(comment.getNickname)
+                    .content(comment.getContent())
+                    .commentLikes(comment.getCommentLikes().size())
+                    .createdDate(comment.getCreatedDate())
+                    .build();
+            commentDTOList.add(commentDTO);
+        });
+
+        BoardResDTO boardResDTO = BoardResDTO.builder()
+                .id(board.getId())
+                .likes(board.getBoardLikes().size())
+                .videoUrl(board.getVideo().getUrl())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .viewCnt(board.getViewCnt())
+                .createdDate(board.getCreatedDate())
+                .nickName(board.getUser().getNickname())
+                .commentDTOList(commentDTOList)
+                .build();
+        return boardResDTO;
+    }
+
+    @Override
+    public List<BoardAllResDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
         Pageable pageable = PageRequest.of(boardSearchReqDTO.getPage(), 10);
-        List<BoardDTO> boardDTOList = new ArrayList<>();
+        List<BoardAllResDTO> boardDTOList = new ArrayList<>();
         Page<Board> boardList = new PageImpl<>(new ArrayList<>());
         // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
 
@@ -68,15 +100,12 @@ public class BoardServiceImpl implements BoardService {
         boardList.forEach(board -> {
 //            System.out.println(board.getUser());
 
-            BoardDTO boardDTO = BoardDTO.builder()
+            BoardAllResDTO boardDTO = BoardAllResDTO.builder()
                     .id(board.getId())
                     .title(board.getTitle())
-                    .content(board.getContent())
                     .viewCnt(board.getViewCnt())
                     .likes(board.getBoardLikes().size())
-                    .registerDate(board.getRegisterDate())
-                    .videoUrl(board.getVideo().getUrl())
-//                    .userId(board.getUser().getId())
+                    .createdDate(board.getCreatedDate())
 //                    .nickName(board.getUser().getNickname())
                     .build();
             boardDTOList.add(boardDTO);
@@ -93,8 +122,6 @@ public class BoardServiceImpl implements BoardService {
                 .video(video)
                 .title(boardAddReqDTO.getTitle())
                 .content(boardAddReqDTO.getContent())
-                .registerDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
 //                .user()
                 .build();
         boardRepository.save(board);
@@ -102,17 +129,16 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardModifyReqDTO.getBoardId());
 
-        Optional<Board> originBoard = boardRepository.findById(boardModifyReqDTO.getBoardId());
-        boardRepository.deleteById(boardModifyReqDTO.getBoardId());
+        if(!optionalBoard.isPresent()) throw new RuntimeException();
 
-        Board board = Board.builder()
-                .updateDate(LocalDateTime.now())
-                .title(originBoard.get().getTitle())
-                .content(originBoard.get().getContent())
-                .build();
-        //여기 하다 말았음
-        return null;
+        Board board = optionalBoard.get();
+        board.setContent(boardModifyReqDTO.getContent());
+        board.setTitle(boardModifyReqDTO.getTitle());
+        boardRepository.save(board);
+
+        return board;
     }
 
     @Override

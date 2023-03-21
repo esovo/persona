@@ -3,18 +3,19 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.BoardDTO;
+import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
+import com.ssafy.project.common.db.dto.response.BoardResDTO;
 import com.ssafy.project.common.db.entity.common.Board;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface BoardService {
 
     //조회
-    List<BoardDTO> findAllBoard(int page);
+    List<BoardAllResDTO> findAllBoard(int page);
+    BoardResDTO detailBoard(Long boardId);
     //검색
-    List<BoardDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO);
+    List<BoardAllResDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO);
     //등록
     void addBoard(BoardAddReqDTO boardAddReqDTO);
     //수정
