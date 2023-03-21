@@ -27,14 +27,13 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-        // 해당 이름으로 설정된 쿠키를 역직렬화하여, 권한정보 리턴
+
+        // 해당 이름으로 설정된 쿠키를 역직렬화하여, request 리턴
         log.info("loadAuthorizationRequest 실행");
 
         OAuth2AuthorizationRequest oAuth2AuthorizationRequest =  cookieProvider.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> cookieProvider.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
-
-        log.info("OAuth2AuthorizationRequest Is Null? : {}", oAuth2AuthorizationRequest == null);
 
         return oAuth2AuthorizationRequest;
     }
@@ -42,15 +41,16 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
 
+        //
         log.info("saveAuthorizationRequest 실행");
         if (authorizationRequest == null) {
-            log.info("AuthorizationRequest Is Null");
+
             removeAuthorizationRequest(request, response);
             return;
         }
         log.info("AuthorizationRequest Is Not Null");
 
-        // authorizationRequest를 직렬화하여 쿠키에 저장
+        // request 직렬화하여 쿠키에 저장
         cookieProvider.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, cookieProvider.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
 
         // 로그인 이후 리디렉션 될 uri

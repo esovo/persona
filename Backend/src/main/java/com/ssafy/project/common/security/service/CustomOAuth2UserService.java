@@ -9,12 +9,15 @@ import com.ssafy.project.common.security.common.UserPrincipal;
 import com.ssafy.project.common.security.exception.AlreadyRegistedUserException;
 import com.ssafy.project.common.security.exception.NoEmailProvidedException;
 import com.ssafy.project.common.security.exception.NotAllowedSocialTypeException;
+import com.ssafy.project.common.util.provider.RedisProvider;
+import com.ssafy.project.common.util.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -29,13 +32,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
+    private final TokenProvider tokenProvider;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
         log.info("loadUser 호출");
+
+        OAuth2AccessToken oAuth2AccessToken = oAuth2UserRequest.getAccessToken();
+        String accessToken = oAuth2AccessToken.getTokenValue();
+        log.info("accesstoken : {}", accessToken);
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
-            return processOAuth2User(oAuth2UserRequest, oAuth2User);
+            return processOAuth2User(oAuth2UserRequest, oAuth2User, accessToken);
         } catch (AuthenticationException e) {
             throw e;
         } catch (Exception e) {
@@ -43,7 +52,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
+    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User, String accessToken) {
+
+        Map<String, Object> mapForLog = oAuth2User.getAttributes();
+        mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
 
         log.info("processOAuth2User 호출");
         OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(),
@@ -63,19 +75,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
 
+        String jwtToken = tokenProvider.createToken(user.getId(), accessToken);
+        log.info("JWT Token : {}", jwtToken);
+
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
         
         log.info("getOAuth2UserInfo 호출");
-        if (registrationId.equalsIgnoreCase(SocialEnum.GOOGLE.toString())) {
+        if (registrationId.equalsIgnoreCase(SocialEnum.google.toString())) {
             log.info("is google");
             return new GoogleOAuth2UserInfo(attributes);
-        } else if (registrationId.equalsIgnoreCase(SocialEnum.NAVER.toString())) {
+        } else if (registrationId.equalsIgnoreCase(SocialEnum.naver.toString())) {
             log.info("is naver");
             return new NaverOAuth2UserInfo(attributes);
-        } else if (registrationId.equalsIgnoreCase(SocialEnum.KAKAO.toString())) {
+        } else if (registrationId.equalsIgnoreCase(SocialEnum.kakao.toString())) {
             log.info("is kakao");
             return new KakaoOAuth2UserInfo(attributes);
         } else {
@@ -91,7 +106,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .nickname(oAuth2UserInfo.getName())
                 .socialAuth(SocialAuth.builder()
                         .providerId(oAuth2UserInfo.getId())
-                        .socialType(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase()))
+                        .socialType(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
                         .email(oAuth2UserInfo.getEmail())
                         .name(oAuth2UserInfo.getName())
                         .imageUrl(oAuth2UserInfo.getImageUrl())
