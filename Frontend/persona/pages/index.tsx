@@ -1,10 +1,13 @@
 import Header from '@/components/Header';
+import Main from '@/components/Main';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <>
       <Header></Header>
-      <div>이곳은 메인 페이지입니다</div>
+      <Main></Main>
+      <Footer></Footer>
     </>
   );
 }

@@ -1,21 +1,21 @@
 import Link from 'next/link';
-import style from './Header.module.scss';
+import style from '../styles/Header.module.scss';
 import { atom, useRecoilState } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+// import { recoilPersist } from 'recoil-persist';
 
 export default function Header() {
-  const { persistAtom } = recoilPersist();
+  // const { persistAtom } = recoilPersist();
 
   const loginState = atom({
     key: 'loginState',
     default: true,
-    effects_UNSTABLE: [persistAtom],
+    // effects_UNSTABLE: [persistAtom],
   });
 
   const userName = atom({
     key: 'userName',
     default: 'user',
-    effects_UNSTABLE: [persistAtom],
+    // effects_UNSTABLE: [persistAtom],
   });
 
   const [isLogin, setIsLogin] = useRecoilState(loginState);
