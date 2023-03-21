@@ -10,18 +10,18 @@ import java.util.Date;
 
 @Getter
 // @MappedSuperclass vs @Embeddable => https://blog.naver.com/PostView.nhn?blogId=qjawnswkd&logNo=222074957987
-@Embeddable
+@MappedSuperclass
 // @LastModifiedDate 위해 Auditing 기능 포함
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTime {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    @Column(name = "created_Date", updatable = false)
-    private Date createdDate;
+    @Column(name = "register_date", updatable = false)
+    private Date registerDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    @Column(name = "modified_Date")
-    private Date modifiedDate;
+    @Column(name = "update_date")
+    private Date updateDate;
 }

@@ -1,5 +1,5 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11-jdk-alpine
 WORKDIR /app
 COPY build/libs/*.jar app.jar
-EXPOSE 9999
+EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
