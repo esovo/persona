@@ -1,5 +1,5 @@
 import axios from 'axios';
-import style from './Modal.module.scss';
+import style from '../styles/Modal.module.scss';
 import { useRecoilState } from 'recoil';
 import { modal } from '../states/loginState';
 
