@@ -1,7 +1,7 @@
 import json
 import io
 import base64
-
+import asyncio
 from typing import Optional
 from fastapi import FastAPI, WebSocket
 import cv2
@@ -13,6 +13,7 @@ detector = FER()
 # uvicorn main:app --reload
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
+    await asyncio.sleep(0.1)
     await websocket.accept()
     #while True:
     try:
@@ -28,6 +29,7 @@ async def websocket_endpoint(websocket: WebSocket):
             "emotion": max(prediction[0]['emotions'], key=prediction[0]['emotions'].get)
         }
         await websocket.send_json(response)
+        
         websocket.close()
     except:
         websocket.close()

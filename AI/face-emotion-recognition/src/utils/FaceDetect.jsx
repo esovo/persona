@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect,useState } from "react";
 import { useCallback } from "react";
 import { useDashboardContext } from "../components/Dashboard";
 import { useSettingsContext } from "../components/Settings";
@@ -16,9 +16,12 @@ import {
   FACEMESH_FACE_OVAL,
   FACEMESH_LIPS,
 } from "@mediapipe/face_mesh/face_mesh";
+import { useReactMediaRecorder  } from "react-media-recorder";
 
 const FaceDetect = () => {
   const webcamRef = useRef(null);
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+  useReactMediaRecorder({ video: true });
   
   const {
     setCurrentExpression,
@@ -56,11 +59,18 @@ const FaceDetect = () => {
       // minTrackingConfidence: 0.5,
     });
     faceMesh.onResults(onResults);
-
+    
     faceDetection.setOptions({
       model: 'short',
       minDetectionConfidence: 0.5
     });
+
+    if(webcamOn){
+      startRecording()
+    }else{
+      stopRecording()
+
+    }
 
     faceDetection.onResults(faceDetectionOnResults);
 
@@ -78,6 +88,7 @@ const FaceDetect = () => {
         height: 720,
       });
       camera.start();
+      
 
 
       
@@ -192,8 +203,12 @@ const FaceDetect = () => {
       image: imageSrc
     },
   };
+
+
   socket.onopen = () => socket.send(JSON.stringify(apiCall))
+
   socket.onmessage = function(event) {
+
     var pred_log = JSON.parse(event.data)
     console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
@@ -208,7 +223,7 @@ const FaceDetect = () => {
       return name;
     });
 
-    
+
     setCurrentExpression((previousExpression) => {
       if (formattedExpression === undefined || formattedExpression === null) {
         return previousExpression;
@@ -221,6 +236,7 @@ const FaceDetect = () => {
       }
       return recordExpression(recordedExpressions, formatExpression(pred_log));
     });
+    
   }
 
   if(overlayOn){
@@ -274,15 +290,16 @@ const FaceDetect = () => {
     }
   }
 
-
   return (
     <div>
       <Webcam
         audio={false}
         mirrored={true}
         ref={webcamRef}
-        
       />
+    <p>{status}</p>
+      <button onClick={stopRecording}>stopRecording</button>
+      <video src={mediaBlobUrl} controls autoPlay loop />
     </div>
   );
 };
