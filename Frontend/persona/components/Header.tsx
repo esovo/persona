@@ -1,54 +1,69 @@
 import Link from 'next/link';
 import style from './Header.module.scss';
-import { atom, useRecoilState } from 'recoil';
-import { recoilPersist } from 'recoil-persist';
+import { useRecoilState } from 'recoil';
+import User from '../models/user';
+import { user, modal } from '../states/loginState';
+import { useState } from 'react';
+import Modal from './Modal';
 
 export default function Header() {
-  const { persistAtom } = recoilPersist();
+  const [loginUser, setLoginUser] = useRecoilState(user);
+  const [isLogin, setIsLogin] = useState(false);
 
-  const loginState = atom({
-    key: 'loginState',
-    default: true,
-    effects_UNSTABLE: [persistAtom],
-  });
-
-  const userName = atom({
-    key: 'userName',
-    default: 'user',
-    effects_UNSTABLE: [persistAtom],
-  });
-
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const user = useRecoilState(userName);
+  const [showModal, setShowModal] = useRecoilState(modal);
 
   const btnHandler = () => {
+    // setShowModal(true);
+    setShowModal(true);
+    setLoginUser(new User('로그인 유저', '내 닉네임', '인증정보'));
+    setIsLogin(!isLogin);
+  };
+  const logout = () => {
+    setLoginUser(null);
     setIsLogin(!isLogin);
   };
 
   return (
     <nav className={style.nav}>
-      <div className={style.logo}>
-        <Link href="/">PERSONA</Link>
-      </div>
-      {!isLogin ? (
-        <div className={style.menu}>
-          <Link href="/practice">연기연습</Link>
-          <Link href="/community">커뮤니티</Link>
-          <Link href="/storage">보관함</Link>
-          <Link href="/bookmark">북마크</Link>
+      <div className={style.home}>
+        <div className={style.logo}>
+          <img src="logoimg.png" alt="로고다요" width="" height="36" />
         </div>
-      ) : (
+        <div className={style.title}>
+          <Link href="/">PERSONA</Link>
+        </div>
+      </div>
+      {showModal && <Modal />}
+      {!isLogin ? (
         <div className={style.menu} />
-      )}
-      {isLogin ? (
-        <button className={style.login} onClick={btnHandler}>
-          시작하기
-        </button>
       ) : (
-        <button className={style.login} onClick={btnHandler}>
-          {user}
-        </button>
+        <div className={style.menu}>
+          <div className={style.menuItem}>
+            <Link href="/practice">연기연습</Link>
+          </div>
+          <div className={style.menuItem}>
+            <Link href="/community">커뮤니티</Link>
+          </div>
+          <div className={style.menuItem}>
+            <Link href="/storage">보관함</Link>
+          </div>
+          <div className={style.menuItem}>
+            <Link href="/bookmark">북마크</Link>
+          </div>
+        </div>
       )}
+
+      <div className={style.loginArea}>
+        {!isLogin ? (
+          <button className={style.btn} onClick={btnHandler}>
+            시작하기
+          </button>
+        ) : (
+          <div className={style.login} onClick={logout}>
+            {loginUser?.nickname}
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

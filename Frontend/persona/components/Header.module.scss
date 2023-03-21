@@ -1,20 +1,44 @@
 .nav {
   display: flex;
   justify-content: space-around;
-  background-color: gray;
+  background-color: F2F6F9;
   margin: 0;
   padding: 0;
   height: 5vh;
-  .logo {
-    background-color: yellow;
+  .home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 20%;
+    .logo {
+      // width
+    }
+    .title {
+    }
   }
   .menu {
-    background-color: blue;
+    display: flex;
+    align-items: center;
     width: 60%;
+    .menuItem {
+      padding: 4px 8px;
+    }
   }
-  .login {
-    background-color: violet;
+  .loginArea {
+    display: flex;
+    align-items: center;
     width: 20%;
+
+    .btn {
+      align-items: center;
+      padding: 4px 8px;
+      width: 10vw;
+      height: 3vh;
+    }
+    .login {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
