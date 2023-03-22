@@ -11,6 +11,8 @@ import { createContext, useContext, useState } from "react";
  * @property {React.Dispatch<React.SetStateAction<boolean>>} setEmojiOn - State modifier of emojiOn.
  * @property {boolean} settingsVisible - Tells whether the SettingsModal is visible or not.
  * @property {React.Dispatch<React.SetStateAction<boolean>>} setSettingsVisible - State modifier of settingsVisible.
+ * @property {boolean} webcamOff - Tells whether Webcam is on or not.
+ * @property {React.Dispatch<React.SetStateAction<boolean>>} setWebcamOff - State modifier of webcamOn.
  */
 
 /**
@@ -20,6 +22,7 @@ const SettingsContext = createContext({});
 
 const SettingsContextProvider = ({children}) => {
   const [webcamOn, setWebcamOn] = useState(false);
+  const [webcamOff, setWebcamOff] = useState(false);
   const [overlayOn, setOverlayOn] = useState(true);
   const [emojiOn, setEmojiOn] = useState(true);
   const [settingsVisible, setSettingsVisible] = useState(false);
@@ -27,8 +30,10 @@ const SettingsContextProvider = ({children}) => {
   const contextValue = {
     webcamOn, setWebcamOn,
     overlayOn, setOverlayOn,
+
     emojiOn, setEmojiOn,
-    settingsVisible, setSettingsVisible
+    settingsVisible, setSettingsVisible,
+    webcamOff,setWebcamOff
   };
 
   return(

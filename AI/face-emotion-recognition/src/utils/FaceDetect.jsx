@@ -1,7 +1,7 @@
 import React, { useRef, useEffect,useState } from "react";
 import { useCallback } from "react";
 import { useDashboardContext } from "../components/Dashboard";
-import { useSettingsContext } from "../components/Settings";
+import { Settings, useSettingsContext } from "../components/Settings";
 import Webcam from "react-webcam";
 import { drawConnectors,drawLandmarks, drawRectangle } from "@mediapipe/drawing_utils/drawing_utils";
 import { Camera } from "@mediapipe/camera_utils/camera_utils";
@@ -17,25 +17,52 @@ import {
   FACEMESH_LIPS,
 } from "@mediapipe/face_mesh/face_mesh";
 import { useReactMediaRecorder  } from "react-media-recorder";
+import { click } from "@testing-library/user-event/dist/click";
+import RecordedExpressionsModal from "../components/Recording";
+import WebcamTurnedOff from "../components/WebcamTurnedOff";
+
 
 const FaceDetect = () => {
+  
   const webcamRef = useRef(null);
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
-  
   const {
     setCurrentExpression,
     setEmoji,
     setRecordedExpressions,
     setMountedVideoComponent,
+    setRecordedvideo,
     canvasRef
   } = useDashboardContext();
+  
+
   const {
     webcamOn,
+    webcamOff,
     overlayOn,
+    setWebcamOff
   } = useSettingsContext();
   let faceDetectionArray = [];
+  const [endcam,setendcam] = useState(false);
   useEffect(() => {
+    if(!webcamOn){
+      setendcam(true)
+    }else{
+      setendcam(false)
+    }
+
+    if(webcamOff){
+      function setstopRecording(){
+        return stopRecording;
+      }
+      setstopRecording();
+    }
+    
+    setRecordedvideo(() => {
+      return mediaBlobUrl;
+    })
+
     const faceMesh = new FaceMesh({
       locateFile: (file) => {
         console.log(`${file}`);
@@ -67,6 +94,8 @@ const FaceDetect = () => {
 
     if(webcamOn){
       startRecording()
+      console.log(mediaBlobUrl)
+      setRecordedvideo(mediaBlobUrl)
     }else{
       stopRecording()
 
@@ -210,7 +239,8 @@ const FaceDetect = () => {
   socket.onmessage = function(event) {
 
     var pred_log = JSON.parse(event.data)
-    console.log(pred_log);
+    // console.log(pred_log);
+    console.log(mediaBlobUrl)
     const formattedExpression = formatExpression(pred_log);
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
@@ -238,6 +268,7 @@ const FaceDetect = () => {
     });
     
   }
+
 
   if(overlayOn){
     if (results.multiFaceLandmarks) {
@@ -289,17 +320,46 @@ const FaceDetect = () => {
       faceDetectionArray = results.detections;
     }
   }
+  const click=()=>{
+    setWebcamOff(true);
+    return stopRecording
+  }
+
+  const handleClick = (event) => {
+    const x = event.clientX;
+    console.log(x)
+    // const clickedData = data.find((d) => d.x === x);
+    // const videoTime = clickedData.x / data.length * videoLength;
+
+    // HTML5 비디오 요소를 찾습니다.
+    const video = document.querySelector("video");
+    // 비디오를 이동시킵니다.
+    video.currentTime = x;
+  };
+  
+    // ...
+  
 
   return (
+
     <div>
-      <Webcam
+      
+      {webcamOff?    
+      <div>
+        <video src={mediaBlobUrl} controls autoPlay loop />
+        <RecordedExpressionsModal />
+      </div>
+      :
+      <>
+        <Webcam
         audio={false}
         mirrored={true}
         ref={webcamRef}
-      />
-    <p>{status}</p>
-      <button onClick={stopRecording}>stopRecording</button>
-      <video src={mediaBlobUrl} controls autoPlay loop />
+        />
+        <button onClick={()=>{stopRecording();click()}}>stopRecording</button>
+        <Settings></Settings>
+      </>
+    }
     </div>
   );
 };

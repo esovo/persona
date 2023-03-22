@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ResponsiveAreaBump } from "@nivo/bump";
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
@@ -6,12 +6,13 @@ import { Button, Modal } from "../AnimatedComponents";
 import { CloseIcon } from "../Icons";
 import { useDashboardContext } from "../Dashboard";
 import "./RecordedExpressionsModal.css";
+import { useReactMediaRecorder  } from "react-media-recorder";
 
 const RecordedExpressionsModal = () => {
 
   const chartRef = useRef(null);
   const {recordedExpressions, setRecordedExpressions, setRecordedExpressionsVisible} = useDashboardContext();
-
+  const {recordedvideo } =useDashboardContext()
   /**
    * 1) Clears all the recordedExpressions.
    * 2) Closes the RecordedExpressionsModal.
@@ -20,6 +21,15 @@ const RecordedExpressionsModal = () => {
     setRecordedExpressions([]);
     setRecordedExpressionsVisible(false);
   };
+  useEffect(() => {
+    console.log(recordedvideo)
+  
+    return () => {
+      
+    }
+  }, [])
+  
+
 
   /**
    * 
@@ -50,12 +60,35 @@ const RecordedExpressionsModal = () => {
     });
   };
 
+  const handleClick = (event) => {
+
+    const x = event.clientX;
+    const video = document.querySelector("video");
+    // 363 1072
+    const hole=1072-363;
+    const k= x-363;
+    console.log(x) 
+    console.log(k)
+    const res= (k*video.duration)/hole
+    console.log(video.duration)
+    console.log(res)
+    // const clickedData = data.find((d) => d.x === x);
+    // const videoTime = clickedData.x / data.length * videoLength;
+
+    // HTML5 비디오 요소를 찾습니다.
+    // 비디오를 이동시킵니다.
+    if(k>=0 && k<700){
+      video.currentTime = res;
+    }
+  };
+
   return(
-    <Modal
-      backdropClickEvent={handleModalClose}
-      extraClasses={"w-fit h-fit"}
-    >
-      <div className="w-full flex flex-row items-center justify-between mb-0">
+    // <Modal
+    //   backdropClickEvent={handleModalClose}
+    //   extraClasses={"w-fit h-fit"}
+    // >
+    <div>
+      {/* <div className="w-full flex flex-row items-center justify-between mb-0">
         <span className="text-gray-600 text-xl ml-2">Recorded Expressions</span>
         <Button onClick={handleModalClose}>
           <span
@@ -64,8 +97,10 @@ const RecordedExpressionsModal = () => {
             <CloseIcon />
           </span>
         </Button>
-      </div>
-      <div className="chart" ref={chartRef}>
+      </div> */}
+      
+      
+      <div className="chart" ref={chartRef} onClick={(e)=>{handleClick(e)}}>
         <ResponsiveAreaBump
           data={recordedExpressions}
           keys={["percent"]}
@@ -84,6 +119,7 @@ const RecordedExpressionsModal = () => {
           // axisLeft={null}
           axisBottom={null}
           tooltip={(data) => getTooltip(data)}
+          
         />
       </div>
       <div className="w-full flex flex-row items-center justify-evenly mb-4">
@@ -94,7 +130,8 @@ const RecordedExpressionsModal = () => {
           <span className="p-2 bg-fg-1 rounded-lg text-gray-700 text-base">Download</span>
         </Button>
       </div>
-    </Modal>
+      </div>
+    // </Modal>
   );
 };
 

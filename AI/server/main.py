@@ -13,7 +13,7 @@ detector = FER()
 # uvicorn main:app --reload
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
-    await asyncio.sleep(0.1)
+    # await asyncio.sleep(0.1)
     await websocket.accept()
     #while True:
     try:

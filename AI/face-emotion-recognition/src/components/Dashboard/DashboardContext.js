@@ -16,6 +16,9 @@ import React, { createContext, useContext, useRef, useState } from "react";
  * @property {boolean} recordedExpressionsVisible - Tells whether the RecordedExpressionsModal is visible or not.
  * @property {React.Dispatch<React.SetStateAction<boolean>>} setRecordedExpressionsVisible - State modifier of recordedExpressionsVisible.
  * @property {React.MutableRefObject<any>} canvasRef - Mutable Ref for the VideoOverlay
+ * @property {string} recordedvideo - recordedvideo
+ * @property {React.Dispatch<React.SetStateAction<string>>} setRecordedvideo - State modifier of recordedvideo.
+
  */
 
 /** @type {DashboardContextType} */
@@ -24,7 +27,7 @@ const DashboardContext = createContext({});
 /**
  * @type {[string]} expressions - List of expressions, those can be detected.
  */
-const expressions = ["neutral", "happy", "sad", "angry", "fearful", "disgusted", "surprised"];
+const expressions = ["중립", "행복", "슬픔", "화남", "두려움", "메스꺼움", "놀람"];
 
 const DashboardContextProvider = ({children}) => {
   const [loadedModels, setLoadedModels] = useState(false);
@@ -34,7 +37,7 @@ const DashboardContextProvider = ({children}) => {
   const [recordedExpressions, setRecordedExpressions] = useState([]);
   const [recordedExpressionsVisible, setRecordedExpressionsVisible] = useState(false);
   const canvasRef = useRef();
-
+  const [recordedvideo,setRecordedvideo] = useState(null);
   const contextValue = {
     loadedModels, setLoadedModels,
     mountedVideoComponent, setMountedVideoComponent,
@@ -42,6 +45,7 @@ const DashboardContextProvider = ({children}) => {
     emoji, setEmoji,
     recordedExpressions, setRecordedExpressions,
     recordedExpressionsVisible, setRecordedExpressionsVisible,
+    recordedvideo,setRecordedvideo,
     canvasRef
   };
 
