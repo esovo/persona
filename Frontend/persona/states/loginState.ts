@@ -10,3 +10,8 @@ export const modal = atom<boolean>({
   key: 'modal',
   default: false,
 });
+
+export const dropdownMenuState = atom({
+  key: 'dropdownMenuState',
+  default: '',
+});

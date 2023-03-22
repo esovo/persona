@@ -18,7 +18,7 @@ export default function Footer() {
       </div>
       <div className={style.introduce}>
         <h1>연기에 관심이 있는데 시작이 어려웠나요?</h1>
-        <div>
+        <div className={style.subintro}>
           퇴근 후 취미생활, 오디션 독학 준비 등으로 연기 연습을 해보고 싶다면 페르소나를 통해 지금 바로 연기를
           시작해보세요!
           <br />
