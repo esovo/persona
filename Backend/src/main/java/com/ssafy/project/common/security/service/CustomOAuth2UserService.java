@@ -1,10 +1,10 @@
 package com.ssafy.project.common.security.service;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
-import com.ssafy.project.common.db.dto.base.SocialAuth;
-import com.ssafy.project.common.db.dto.base.SocialEnum;
+import com.ssafy.project.common.db.dto.social.SocialAuth;
+import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.dto.social.*;
-import com.ssafy.project.common.db.entity.User;
+import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.common.UserPrincipal;
 import com.ssafy.project.common.security.exception.AlreadyRegistedUserException;

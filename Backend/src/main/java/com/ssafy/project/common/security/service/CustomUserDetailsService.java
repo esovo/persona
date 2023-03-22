@@ -1,6 +1,6 @@
 package com.ssafy.project.common.security.service;
 
-import com.ssafy.project.common.db.entity.User;
+import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.common.UserPrincipal;
 import lombok.RequiredArgsConstructor;
