@@ -21,25 +21,25 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
 
-    @Override
-    public List<CommentDTO> findComment(Long boardId) {
-
-        List<Comment> commentList = commentRepository.findByBoardId(boardId);
-        List<CommentDTO> commentDTOList = new ArrayList<>();
-
-       commentList.forEach(comment -> {
-           CommentDTO commentDTO = CommentDTO.builder()
-                   .id(comment.getId())
-//                   .userProfile(comment.getUser().getUserProfile())
-                   .nickname(comment.getUser().getNickname())
-                   .content(comment.getContent())
-                   .commentLikes(comment.getCommentLikes().size())
-                   .createdDate(comment.getCreatedDate())
-                   .build();
-           commentDTOList.add(commentDTO);
-       });
-        return commentDTOList;
-    }
+//    @Override
+//    public List<CommentDTO> findComment(Long boardId) {
+//
+//        List<Comment> commentList = commentRepository.findByBoardId(boardId);
+//        List<CommentDTO> commentDTOList = new ArrayList<>();
+//
+//       commentList.forEach(comment -> {
+//           CommentDTO commentDTO = CommentDTO.builder()
+//                   .id(comment.getId())
+////                   .userProfile(comment.getUser().getUserProfile())
+//                   .nickname(comment.getUser().getNickname())
+//                   .content(comment.getContent())
+//                   .commentLikes(comment.getCommentLikes().size())
+//                   .createdDate(comment.getCreatedDate())
+//                   .build();
+//           commentDTOList.add(commentDTO);
+//       });
+//        return commentDTOList;
+//    }
 
     @Override
     public Comment addComment(CommentAddReqDTO commentAddReqDTO) {
@@ -49,7 +49,8 @@ public class CommentServiceImpl implements CommentService{
 //                .user(user)
                 .content(commentAddReqDTO.getContent())
                 .build();
-        commentRepository.save(comment);
+        board.getComments().add(comment);
+        boardRepository.save(board);
         return comment;
     }
 

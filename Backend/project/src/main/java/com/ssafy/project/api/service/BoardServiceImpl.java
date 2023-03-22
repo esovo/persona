@@ -58,6 +58,9 @@ public class BoardServiceImpl implements BoardService {
         if(!optionalBoard.isPresent()) throw new RuntimeException();
 
         Board board = optionalBoard.get();
+        board.setViewCnt(board.getViewCnt()+1L);
+        boardRepository.save(board);
+
         List<CommentDTO> commentDTOList = new ArrayList<>();
 
         board.getComments().forEach( comment -> {

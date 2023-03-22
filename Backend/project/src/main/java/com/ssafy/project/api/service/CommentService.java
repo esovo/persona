@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommentService {
 
     //조회
-    public List<CommentDTO> findComment(Long boardId);
+//    public List<CommentDTO> findComment(Long boardId);
     //등록
     public Comment addComment(CommentAddReqDTO commentAddReqDTO);
     //수정

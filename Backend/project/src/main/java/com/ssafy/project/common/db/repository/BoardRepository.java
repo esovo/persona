@@ -21,4 +21,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findById(Long id);
     //삭제
     void deleteById(Long id);
+
+
 }
