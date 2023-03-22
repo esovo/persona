@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### properties enviroment values ##
-application-app.yml
+#application-app.yml
