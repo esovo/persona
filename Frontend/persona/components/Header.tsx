@@ -5,29 +5,45 @@ import User from '../models/user';
 import { user, modal } from '../states/loginState';
 import { useState } from 'react';
 import Modal from './Modal';
+import DropdownMenu from './DropdownMenu';
+import { useRouter } from 'next/router';
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
-  const [isLogin, setIsLogin] = useState(false);
-
   const [showModal, setShowModal] = useRecoilState(modal);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isDropdown, setIsDropdown] = useState(false);
 
-  const btnHandler = () => {
-    // setShowModal(true);
+  const router = useRouter();
+
+  const startHandler = () => {
     setShowModal(true);
-    setLoginUser(new User('로그인 유저', '내 닉네임', '인증정보'));
+    setLoginUser(new User('로그인 유저', '내 닉네임이다요', '인증정보'));
     setIsLogin(!isLogin);
   };
-  const logout = () => {
+
+  const logoutHandler = () => {
     setLoginUser(null);
     setIsLogin(!isLogin);
+  };
+
+  const itemClickHandler = (item: string) => {
+    if (item === 'My Page') {
+      router.push('/mypage');
+    } else if (item === 'Log Out') {
+      logoutHandler();
+    }
+  };
+
+  const dropdownHandler = () => {
+    setIsDropdown(!isDropdown);
   };
 
   return (
     <nav className={style.nav}>
       <div className={style.home}>
         <div className={style.logo}>
-          <img src="logoimg.png" alt="로고다요" width="" height="36" />
+          <img src="Header_logo.png" alt="로고다요" width="60px" height="40px" />
         </div>
         <div className={style.title}>
           <Link href="/">PERSONA</Link>
@@ -55,12 +71,18 @@ export default function Header() {
 
       <div className={style.loginArea}>
         {!isLogin ? (
-          <button className={style.btn} onClick={btnHandler}>
+          <button className={style.btn} onClick={startHandler}>
             시작하기
           </button>
         ) : (
-          <div className={style.login} onClick={logout}>
-            {loginUser?.nickname}
+          <div className={style.login} onClick={dropdownHandler}>
+            <div className={style.profile} />
+            <div className={style.nick}>{loginUser?.nickname}</div>
+            {/* <div className={style.left}>
+            </div> */}
+            <div className={style.right}>
+              <DropdownMenu items={['My Page', 'Log Out']} onItemClick={itemClickHandler} />
+            </div>
           </div>
         )}
       </div>

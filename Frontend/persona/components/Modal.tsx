@@ -29,17 +29,29 @@ export default function Modal() {
       {showModal && (
         <div className={style.back} onClick={shutModal}>
           <div className={style.container}>
-            <div className={style.banner}>Start with your Social...</div>
+            <div className={style.banner}>로그인 고르셈</div>
             <div className={style.loginSelect}>
-              <div className={style.google} onClick={googleLogin}>
-                구글이요
-              </div>
-              <div className={style.naver} onClick={naverLogin}>
-                네이버요
-              </div>
-              <div className={style.kakao} onClick={kakaoLogin}>
-                카카오요
-              </div>
+              <img
+                src="Modal_google.png"
+                alt="구글로그인버튼"
+                className={style.google}
+                onClick={googleLogin}
+                width="300"
+              />
+              <img
+                src="Modal_naver.png"
+                alt="네이버로그인버튼"
+                className={style.naver}
+                onClick={naverLogin}
+                width="300"
+              />
+              <img
+                src="Modal_kakao.png"
+                alt="카카오로그인버튼"
+                className={style.kakao}
+                onClick={kakaoLogin}
+                width="300"
+              />
             </div>
           </div>
         </div>
