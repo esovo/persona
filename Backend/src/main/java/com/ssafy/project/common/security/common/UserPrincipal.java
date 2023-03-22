@@ -1,7 +1,7 @@
 package com.ssafy.project.common.security.common;
 
-import com.ssafy.project.common.db.dto.base.RoleEnum;
-import com.ssafy.project.common.db.entity.User;
+import com.ssafy.project.common.db.entity.base.RoleEnum;
+import com.ssafy.project.common.db.entity.common.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
-package com.ssafy.project.common.db.entity;
+package com.ssafy.project.common.db.entity.common;
 
-import com.ssafy.project.common.db.dto.base.SocialAuth;
+import com.ssafy.project.common.db.dto.social.SocialAuth;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -52,7 +52,7 @@ public class User {
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "providerId", column = @Column(table = "social_auth", name = "provider_id")),
-            @AttributeOverride(name = "provider", column = @Column(table = "social_auth", name = "provider")),
+            @AttributeOverride(name = "socialType", column = @Column(table = "social_auth", name = "social_type")),
             @AttributeOverride(name = "email", column = @Column(table = "social_auth", name = "email", length = 100, nullable = false)),
             @AttributeOverride(name = "name", column = @Column(table = "social_auth", name = "name", length = 100, nullable = false)),
             @AttributeOverride(name = "imageUrl", column = @Column(table = "social_auth", name = "image_url", columnDefinition = "TEXT")),

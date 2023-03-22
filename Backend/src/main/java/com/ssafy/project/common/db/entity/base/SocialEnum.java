@@ -1,4 +1,4 @@
-package com.ssafy.project.common.db.dto.base;
+package com.ssafy.project.common.db.entity.base;
 
 public enum SocialEnum {
     google,
