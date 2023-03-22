@@ -21,7 +21,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
 
     private long id;
     private String email;
-    private String password;
     private Collection<? extends GrantedAuthority> authorities;
     @Setter
     private Map<String, Object> attributes;
@@ -29,10 +28,10 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities =
                 Collections.singletonList(new SimpleGrantedAuthority("" + RoleEnum.CLIENT));
+
         return new UserPrincipal(
                 user.getId(),
                 user.getEmail(),
-                user.getPassword(),
                 authorities,
                 null
         );
@@ -73,5 +72,8 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     public String getUsername() {
         return email;
     }
+
+    @Override
+    public String getPassword() { return null;}
 
 }

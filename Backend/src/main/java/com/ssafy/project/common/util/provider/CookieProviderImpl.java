@@ -29,6 +29,7 @@ public class CookieProviderImpl implements CookieProvider{
         return Optional.empty();
     }
 
+    @Override
     public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
 
         Cookie cookie = new Cookie(name, value);
@@ -43,6 +44,7 @@ public class CookieProviderImpl implements CookieProvider{
         response.addCookie(cookie);
     }
 
+    @Override
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
 
         Cookie[] cookies = request.getCookies();
@@ -60,10 +62,12 @@ public class CookieProviderImpl implements CookieProvider{
         }
     }
 
+    @Override
     public String serialize(Object object) {
         return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(object));
     }
 
+    @Override
     public <T> T deserialize(Cookie cookie, Class<T> cls) {
         return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.getValue())));
     }

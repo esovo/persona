@@ -1,6 +1,6 @@
 package com.ssafy.project.common.db.entity;
 
-import com.ssafy.project.common.db.dto.social.SocialAuth;
+import com.ssafy.project.common.db.dto.base.SocialAuth;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,14 +30,14 @@ public class User {
     @Column(name = "email", length = 200, nullable = false)
     private String email;
 
-    @Column(name = "password")
-    private String password;
+//    @Column(name = "password")
+//    private String password;
+//
+//    @Column(name = "tel", length = 20)
+//    private String tel;
 
     @Column(name = "nickname", length = 50, nullable = false)
     private String nickname;
-
-    @Column(name = "tel", length = 20)
-    private String tel;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,8 +56,6 @@ public class User {
             @AttributeOverride(name = "email", column = @Column(table = "social_auth", name = "email", length = 100, nullable = false)),
             @AttributeOverride(name = "name", column = @Column(table = "social_auth", name = "name", length = 100, nullable = false)),
             @AttributeOverride(name = "imageUrl", column = @Column(table = "social_auth", name = "image_url", columnDefinition = "TEXT")),
-            @AttributeOverride(name = "attributes", column = @Column(table = "social_auth", name = "attributes", columnDefinition = "TEXT")),
-            @AttributeOverride(name = "ip", column = @Column(table = "social_auth", name = "ip", length = 30, nullable = false)),
     })
     private SocialAuth socialAuth;
 

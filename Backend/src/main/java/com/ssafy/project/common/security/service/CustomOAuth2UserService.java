@@ -1,15 +1,15 @@
 package com.ssafy.project.common.security.service;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
-import com.ssafy.project.common.db.dto.social.*;
+import com.ssafy.project.common.db.dto.base.SocialAuth;
 import com.ssafy.project.common.db.dto.base.SocialEnum;
+import com.ssafy.project.common.db.dto.social.*;
 import com.ssafy.project.common.db.entity.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.common.UserPrincipal;
 import com.ssafy.project.common.security.exception.AlreadyRegistedUserException;
 import com.ssafy.project.common.security.exception.NoEmailProvidedException;
 import com.ssafy.project.common.security.exception.NotAllowedSocialTypeException;
-import com.ssafy.project.common.util.provider.RedisProvider;
 import com.ssafy.project.common.util.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -110,8 +110,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .email(oAuth2UserInfo.getEmail())
                         .name(oAuth2UserInfo.getName())
                         .imageUrl(oAuth2UserInfo.getImageUrl())
-                        .attributes(oAuth2UserInfo.getAttributes().toString())
-                        .ip("127.0.0.1")
                         .build())
                 .build());
     }
