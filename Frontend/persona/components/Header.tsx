@@ -1,12 +1,13 @@
-import Link from 'next/link';
-import style from '../styles/Header.module.scss';
 import { useRecoilState } from 'recoil';
-import User from '../models/user';
 import { user, modal } from '../states/loginState';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import style from '../styles/Header.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
+import User from '../models/user';
 import Modal from './Modal';
 import DropdownMenu from './DropdownMenu';
-import { useRouter } from 'next/router';
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
@@ -43,7 +44,7 @@ export default function Header() {
     <nav className={style.nav}>
       <div className={style.home}>
         <div className={style.logo}>
-          <img src="Header_logo.png" alt="로고다요" width="60px" height="40px" />
+          <Image src="/Header_logo.png" alt="로고다요" width="60" height="40" />
         </div>
         <div className={style.title}>
           <Link href="/">PERSONA</Link>

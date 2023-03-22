@@ -1,19 +1,15 @@
 .nav {
   display: flex;
   justify-content: space-around;
-  background-color: F2F6F9;
-  margin: 0;
-  padding: 0;
-  height: 6vh;
+  height: 10vh;
   .home {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 20%;
-    .logo {
-    }
     .title {
       font-size: 24px;
+      font-family: 'Pretendard-Bold';
       font-weight: bolder;
     }
   }
