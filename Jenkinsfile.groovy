@@ -9,6 +9,12 @@ pipeline {
       }
     }
 
+    stage('init'){
+      steps{
+        sh "whoami"
+      }
+    }
+
     stage('Build docker image') {
       steps {
         script {
