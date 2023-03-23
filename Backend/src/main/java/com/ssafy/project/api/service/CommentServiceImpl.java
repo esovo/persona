@@ -4,14 +4,17 @@ import com.ssafy.project.common.db.dto.request.CommentAddReqDTO;
 import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.Comment;
+import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.CommentRepository;
+import com.ssafy.project.common.db.repository.UserRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,34 +23,31 @@ public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
-//    @Override
-//    public List<CommentDTO> findComment(Long boardId) {
-//
-//        List<Comment> commentList = commentRepository.findByBoardId(boardId);
-//        List<CommentDTO> commentDTOList = new ArrayList<>();
-//
-//       commentList.forEach(comment -> {
-//           CommentDTO commentDTO = CommentDTO.builder()
-//                   .id(comment.getId())
-////                   .userProfile(comment.getUser().getUserProfile())
-//                   .nickname(comment.getUser().getNickname())
-//                   .content(comment.getContent())
-//                   .commentLikes(comment.getCommentLikes().size())
-//                   .createdDate(comment.getCreatedDate())
-//                   .build();
-//           commentDTOList.add(commentDTO);
-//       });
-//        return commentDTOList;
-//    }
+    @Override
+    public Page<CommentDTO> findComment(Long boardId, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Comment> commentList = commentRepository.findByBoardId(boardId, pageable);
+        Page<CommentDTO> commentDTOList = commentList.map(comment ->
+             CommentDTO.builder()
+                   .id(comment.getId())
+//                   .userProfile(comment.getUser().getUserProfile())
+                   .nickname(comment.getUser().getNickname())
+                   .content(comment.getContent())
+                   .commentLikes(comment.getCommentLikes().size())
+                   .createdDate(comment.getCreatedDate())
+                   .build());
+        return commentDTOList;
+    }
 
     @Override
     public Comment addComment(CommentAddReqDTO commentAddReqDTO) {
         Board board = boardRepository.getById(commentAddReqDTO.getBoardId());
-
+        User user = userRepository.getById(1L);
         Comment comment = Comment.builder()
                 .board(board)
-//                .user(user)
+                .user(user)
                 .content(commentAddReqDTO.getContent())
                 .build();
 

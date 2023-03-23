@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
-//    @GetMapping
-//    @ApiOperation(value="전체 댓글 조회")
-//    public ResponseEntity<ResponseDTO> commentList(@RequestParam Long boardId) {
-//        List<CommentDTO> comments = commentService.findComment(boardId);
-//        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_READ, comments));
-//    }
+    @GetMapping
+    @ApiOperation(value="전체 댓글 조회")
+    public ResponseEntity<ResponseDTO> commentList(@RequestParam Long boardId, @RequestParam int page) {
+        Page<CommentDTO> comments = commentService.findComment(boardId, page);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_READ, comments));
+    }
 
     //등록
     @PostMapping

@@ -14,6 +14,9 @@ public interface Msg {
     String SUCCESS_COMMENT_UPDATE="댓글 수정에 성공했습니다.";
     String SUCCESS_COMMENT_DELETE="댓글 삭제에 성공했습니다.";
 
+    //좋아요
+    String SUCCESS_LIKE_CREATE="좋아요 등록에 성공했습니다.";
+    String SUCCESS_LIKE_DELETE="좋아요 삭제에 성공했습니다.";
 
     //대본
     String SUCCESS_SCRIPT_READ="대본 조회에 성공했습니다.";
