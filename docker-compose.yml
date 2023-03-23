@@ -12,8 +12,8 @@ services:
     environment:
       MYSQL_DATABASE: PERSONA
       MYSQL_USER: STEPUP
-      MYSQL_PASSWORD: !stepup@persona#301
-      MYSQL_ROOT_PASSWORD: !stepup@persona#301
+      MYSQL_PASSWORD: "!stepup@persona#301"
+      MYSQL_ROOT_PASSWORD: "!stepup@persona#301"
     ports:
       - "3306:3306"
     volumes:
