@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
   db:
-    image: mysql:8.0.31
+    image: mysql:8.0.3
     restart: always
     environment:
       MYSQL_DATABASE: PERSONA
@@ -19,6 +19,6 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql/data
+      - ./db-data:/var/lib/mysql
 volumes:
   db-data:
