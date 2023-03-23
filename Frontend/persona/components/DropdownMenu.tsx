@@ -1,7 +1,6 @@
 import { useRecoilState } from 'recoil';
 import { dropdownMenuState } from '../states/loginState';
 import style from '../styles/DropdownMenu.module.scss';
-// import { useEffect } from 'react';
 
 const DropdownMenu: React.FC<{ items: string[]; onItemClick: (item: string) => void }> = (props) => {
   const [dropdownMenu, setDropdownMenu] = useRecoilState(dropdownMenuState);
@@ -10,8 +9,6 @@ const DropdownMenu: React.FC<{ items: string[]; onItemClick: (item: string) => v
     setDropdownMenu('');
     props.onItemClick(item);
   };
-
-  //   useEffect(() => {}, [dropdownMenu]);
 
   return (
     <div>

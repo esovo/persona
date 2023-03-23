@@ -1,12 +1,13 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Practice from '@/components/Practice';
 
 export default function list() {
   return (
     <>
-      <Header></Header>
-      <div>이곳은 대본 리스트 페이지입니다</div>
-      <Footer></Footer>
+      <Header />
+      <Practice />
+      <Footer />
     </>
   );
 }
