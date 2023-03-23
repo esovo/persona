@@ -29,7 +29,7 @@ pipeline {
     stage('Deploy with docker-compose') {
       steps {
         script {
-          sh "docker-compose -f docker-compose.yml up -d"
+          sh 'docker-compose up -d'
         }
       }
     }
