@@ -25,7 +25,7 @@ pipeline {
     stage('Build docker image') {
       steps {
         script {
-          docker.build("docker build -t springboot:latest ./Backend")
+          docker.build("docker build -t springboot:latest /Backend")
         }
       }
     }
