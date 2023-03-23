@@ -9,16 +9,11 @@ pipeline {
       }
     }
 
-    stage('whoami'){
+    stage('Gradle Build'){
       steps{
-        sh 'echo "BUILD_USER: $(whoami)"'
-      }
-    }
-
-    stage('pwd'){
-      steps{
-        sh 'pwd'
-        sh 'ls -al'
+        sh 'cd Backend'
+        sh 'chmod +x gradlew'
+        sh './gradlew build'
       }
     }
 
