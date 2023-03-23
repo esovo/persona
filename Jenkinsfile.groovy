@@ -11,7 +11,7 @@ pipeline {
 
     stage('Gradle Build'){
       steps{
-        sh 'cd ${env.WORKSPACE}/Backend'
+        sh 'cd Backend'
         sh 'ls -al'
         sh 'chmod +x gradlew'
         sh './gradlew build'
