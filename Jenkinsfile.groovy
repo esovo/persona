@@ -12,6 +12,7 @@ pipeline {
     stage('Gradle Build'){
       steps{
         sh 'cd Backend'
+        sh 'ls -al'
         sh 'chmod +x gradlew'
         sh './gradlew build'
       }
