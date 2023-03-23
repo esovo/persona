@@ -346,7 +346,7 @@ const FaceDetect = () => {
       
       {webcamOff?    
       <div>
-        <video src={mediaBlobUrl} controls autoPlay loop />
+        <video src={mediaBlobUrl} controls />
         <RecordedExpressionsModal />
       </div>
       :

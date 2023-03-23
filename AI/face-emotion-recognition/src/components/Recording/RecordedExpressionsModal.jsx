@@ -1,33 +1,30 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { ResponsiveAreaBump } from "@nivo/bump";
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
-import { Button, Modal } from "../AnimatedComponents";
-import { CloseIcon } from "../Icons";
+import { Button} from "../AnimatedComponents";
+// import { CloseIcon } from "../Icons";
 import { useDashboardContext } from "../Dashboard";
 import "./RecordedExpressionsModal.css";
-import { useReactMediaRecorder  } from "react-media-recorder";
 
 const RecordedExpressionsModal = () => {
 
   const chartRef = useRef(null);
   const {recordedExpressions, setRecordedExpressions, setRecordedExpressionsVisible} = useDashboardContext();
-  const {recordedvideo } =useDashboardContext()
+  // const {recordedvideo } =useDashboardContext()
   /**
    * 1) Clears all the recordedExpressions.
    * 2) Closes the RecordedExpressionsModal.
    */
-  const handleModalClose = () => {
-    setRecordedExpressions([]);
-    setRecordedExpressionsVisible(false);
-  };
-  useEffect(() => {
-    console.log(recordedvideo)
-  
-    return () => {
+  // const handleModalClose = () => {
+  //   setRecordedExpressions([]);
+  //   setRecordedExpressionsVisible(false);
+  // };
+  // useEffect(() => {  
+  //   return () => {
       
-    }
-  }, [])
+  //   }
+  // }, [])
   
 
 
@@ -53,7 +50,7 @@ const RecordedExpressionsModal = () => {
       const pdf = new jsPDF({
         orientation: "landscape",
         unit: "px",
-        format: [500, 400]
+        format: [600, 200]
       });
       pdf.addImage(imgData, "PNG", 0, 0);
       pdf.save("record.pdf");
@@ -111,13 +108,20 @@ const RecordedExpressionsModal = () => {
           padding={0.4}
           spacing={10}
           // valueScale={{ type: "linear" }}
-          // colors="#FE8F8F"
+          colors={{ scheme: 'set1' }}          
           // animate={true}
           // enableLabel={false}
           axisTop={null}
           // axisRight={null}
           // axisLeft={null}
-          axisBottom={null}
+            axisBottom={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: '',
+              legendPosition: 'middle',
+              legendOffset: 32
+          }}
           tooltip={(data) => getTooltip(data)}
           
         />
