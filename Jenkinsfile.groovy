@@ -9,9 +9,9 @@ pipeline {
       }
     }
 
-    stage('init'){
+    stage('whoami'){
       steps{
-        sh "whoami"
+        sh 'echo "BUILD_USER: ${BUILD_USER}"'
       }
     }
 
