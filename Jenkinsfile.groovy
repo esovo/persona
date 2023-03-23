@@ -30,7 +30,6 @@ pipeline {
       steps {
         script {
           sh 'ls -al'
-          sh 'chmod +x docker-compose'
           sh 'docker-compose up -d'
         }
       }
