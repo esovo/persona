@@ -11,7 +11,7 @@ pipeline {
 
     stage('whoami'){
       steps{
-        sh 'echo "BUILD_USER: ${BUILD_USER}"'
+        sh 'echo "BUILD_USER: $(whoami)"'
       }
     }
 
