@@ -31,7 +31,7 @@ pipeline {
         script {
           sh 'ls -al'
           sh 'chmod +x docker-compose.yml'
-          sh 'docker-compose.yml up -d'
+          sh 'docker-compose up -d'
         }
       }
     }
