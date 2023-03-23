@@ -25,7 +25,9 @@ pipeline {
     stage('Build docker image') {
       steps {
         script {
-          docker.build("docker build -t springboot:latest /Backend")
+              def backendDir = "${env.WORKSPACE}/Backend"
+              def dockerfile = "${backendDir}/Dockerfile"
+              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
         }
       }
     }
