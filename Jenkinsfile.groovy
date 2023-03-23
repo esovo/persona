@@ -30,7 +30,7 @@ pipeline {
       steps {
         script {
           sh 'ls -al'
-          sh 'docker-compose up -d'
+          sh 'docker-compose.yml up -d'
         }
       }
     }
