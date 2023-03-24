@@ -16,9 +16,10 @@ services:
       MYSQL_USER: STEPUP
       MYSQL_PASSWORD: "!stepup@persona#301"
       MYSQL_ROOT_PASSWORD: "!stepup@persona#301"
+      MYSQL_VERSION: "8.0.31"
     ports:
       - "3306:3306"
-    #volumes:
-    #  - ./db-data:/var/lib/mysql
-#volumes:
-  #db-data:
+    volumes:
+      - my-db-data:/var/lib/mysql
+volumes:
+  my-db-data:
