@@ -8,6 +8,8 @@ services:
       - "8080:8080"
     depends_on:
       - db
+    command: >
+      sh -c 'until nc -z db 3306; do echo "Waiting for MySQL"; sleep 1; done; java -jar my-app.jar'
   db:
     image: mysql:8.0.31
     restart: always
