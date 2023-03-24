@@ -21,7 +21,7 @@ pipeline {
         script {
               def backendDir = "${env.WORKSPACE}/Backend"
               def dockerfile = "${backendDir}/Dockerfile"
-              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-o network=persona-network -f ${dockerfile} ${backendDir}")
+              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
         }
       }
     }
@@ -29,8 +29,7 @@ pipeline {
     stage('Run Docker container') {
       steps {
         script {
-          docker.image("my-springboot-image:${env.BUILD_NUMBER}")
-          .run("--network persona-network -p 8080:8080")
+          docker.run("--name my-springboot-image:${env.BUILD_NUMBER} -p 8080:8080 -d --network persona-network")
         }
       }
     }
