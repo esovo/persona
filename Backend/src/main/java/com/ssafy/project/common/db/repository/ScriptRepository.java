@@ -1,5 +1,6 @@
 package com.ssafy.project.common.db.repository;
 
+import com.ssafy.project.common.db.repository.querydsl.ScriptRepositoryCustom;
 import org.apache.logging.log4j.core.script.Script;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,6 @@ import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
-public interface ScriptRepository extends JpaRepository<Script, Long> {
+public interface ScriptRepository extends JpaRepository<Script, Long>, ScriptRepositoryCustom {
 
 }
