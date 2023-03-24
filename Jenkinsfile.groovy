@@ -27,6 +27,19 @@ pipeline {
       }
     }
 
+    stage('Remove Docker container') {
+      steps {
+        script {
+          try {
+            docker.image("my-springboot-image:${env.BUILD_NUMBER}").container('springboot').stop()
+            docker.image("my-springboot-image:${env.BUILD_NUMBER}").container('springboot').remove(force: true)
+          } catch (err) {
+            echo "Failed to remove the container"
+          }
+        }
+      }
+    } 
+    
     stage('Run Docker container') {
       steps {
         script {
