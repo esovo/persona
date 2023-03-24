@@ -10,7 +10,6 @@ services:
       - db
   db:
     image: mysql:8.0.31
-    command: --default-authentication-plugin=mysql_native_password --initialize-insecure # 수정된 부분
     restart: always
     environment:
       MYSQL_DATABASE: PERSONA
@@ -19,6 +18,6 @@ services:
       MYSQL_ROOT_PASSWORD: "!stepup@persona#301"
     ports:
       - "3306:3306"
-    #volumes:
-    #  - ./db-data:/var/lib/mysql
+    volumes:
+      - ./db-data:/var/lib/mysql
 
