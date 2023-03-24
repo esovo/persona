@@ -13,7 +13,7 @@ server:
 mysql:
 #  port: localhost:3306
   port: j8b301.p.ssafy.io:3306
-  user: STEPUP
+#  user: STEPUP
 #  user: root
   pwd: "!stepup@persona#301"
 #  pwd: "ssafy"
