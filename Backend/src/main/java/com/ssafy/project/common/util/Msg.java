@@ -20,6 +20,7 @@ public interface Msg {
 
     //대본
     String SUCCESS_SCRIPT_READ="대본 조회에 성공했습니다.";
+    String SUCCESS_SCRIPT_ADD="대본 등록에 성공했습니다.";
 
 
 }

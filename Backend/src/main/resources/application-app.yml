@@ -13,7 +13,9 @@ server:
 mysql:
   port: localhost:3306
   user: STEPUP
+#  user: root
   pwd: "!stepup@persona#301"
+#  pwd: "ssafy"
 
 redis:
   host: localhost
