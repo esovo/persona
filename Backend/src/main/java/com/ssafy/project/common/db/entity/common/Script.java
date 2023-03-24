@@ -25,7 +25,7 @@ public class Script extends BaseTime {
     private String content;
     private String registrant;
     private Long viewNum;
-    private String gerne;
+    private String genre;
     private String emotion;
 
 
