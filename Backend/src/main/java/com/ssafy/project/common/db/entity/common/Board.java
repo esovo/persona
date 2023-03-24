@@ -23,7 +23,7 @@ public class Board extends BaseTime {
     private Long id;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardLike> boardLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,11 +31,11 @@ public class Board extends BaseTime {
     private Video video;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     private String title;
@@ -44,5 +44,6 @@ public class Board extends BaseTime {
 
     @ColumnDefault("0")
     private Long viewCnt;
-
+    @ColumnDefault("0")
+    private Long likeCnt;
 }
