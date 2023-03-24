@@ -18,8 +18,8 @@ const VideoComponent = () => {
   return(
     <>
       {/* <VideoStream></VideoStream> */}
-      {webcamOn ? <FaceDetect /> : <WebcamTurnedOff />}
-      {webcamOn && overlayOn && !webcamOff &&  <FaceOverlay/>}
+      {webcamOn ?  <FaceDetect /> : <WebcamTurnedOff />}
+      {/* {webcamOn && overlayOn && !webcamOff &&  <FaceOverlay/>} */}
       {webcamOn && emojiOn && !webcamOff && <span className="absolute top-8 right-8"><EmojiWidget /></span>}
     </>
   );

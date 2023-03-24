@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
+// import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import App from './App';
@@ -8,8 +9,9 @@ import { SettingsContextProvider } from './components/Settings';
 // import reportWebVitals from './reportWebVitals';
 
 const Dashboard = React.lazy(() => import("./components/Dashboard/Dashboard"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-ReactDOM.render(
+root.render(
   <BrowserRouter>
     <DashboardContextProvider>
       <SettingsContextProvider>
@@ -24,7 +26,7 @@ ReactDOM.render(
       </SettingsContextProvider>
     </DashboardContextProvider>
   </BrowserRouter>,
-  document.getElementById('root')
+  // document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

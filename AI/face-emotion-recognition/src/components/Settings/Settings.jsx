@@ -26,7 +26,8 @@ const Settings = () => {
             initialState={webcamOn}
             onFunc={() => {setWebcamOn(true)}}
             offFunc={() => {
-              setWebcamOff(true);
+              setWebcamOn(false)
+              // setWebcamOff(true);
               // setRecordedExpressionsVisible(true);
               // setMountedVideoComponent(false);
             }}

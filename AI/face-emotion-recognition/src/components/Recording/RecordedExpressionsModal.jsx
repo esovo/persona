@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {useEffect, useRef } from "react";
 import { ResponsiveAreaBump } from "@nivo/bump";
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
@@ -21,9 +21,7 @@ const RecordedExpressionsModal = () => {
   //   setRecordedExpressionsVisible(false);
   // };
   // useEffect(() => {  
-  //   return () => {
-      
-  //   }
+
   // }, [])
   
 
@@ -57,13 +55,13 @@ const RecordedExpressionsModal = () => {
     });
   };
 
-  const handleClick = (event) => {
 
+
+  const handleClick = (event) => {
     const x = event.clientX;
     const video = document.querySelector("video");
-    // 363 1072
-    const hole=1072-363;
-    const k= x-363;
+    const hole=1280-170;
+    const k= x-170;
     console.log(x) 
     console.log(k)
     const res= (k*video.duration)/hole
@@ -74,10 +72,12 @@ const RecordedExpressionsModal = () => {
 
     // HTML5 비디오 요소를 찾습니다.
     // 비디오를 이동시킵니다.
-    if(k>=0 && k<700){
+    if(k>=0 && k<1280){
       video.currentTime = res;
     }
   };
+
+
 
   return(
     // <Modal
@@ -97,7 +97,9 @@ const RecordedExpressionsModal = () => {
       </div> */}
       
       
-      <div className="chart" ref={chartRef} onClick={(e)=>{handleClick(e)}}>
+      <div className="chart" ref={chartRef} 
+      onClick={(e)=>{handleClick(e)}}
+      >
         <ResponsiveAreaBump
           data={recordedExpressions}
           keys={["percent"]}
@@ -112,16 +114,9 @@ const RecordedExpressionsModal = () => {
           // animate={true}
           // enableLabel={false}
           axisTop={null}
+          axisBottom={null}
           // axisRight={null}
           // axisLeft={null}
-            axisBottom={{
-              tickSize: 5,
-              tickPadding: 5,
-              tickRotation: 0,
-              legend: '',
-              legendPosition: 'middle',
-              legendOffset: 32
-          }}
           tooltip={(data) => getTooltip(data)}
           
         />

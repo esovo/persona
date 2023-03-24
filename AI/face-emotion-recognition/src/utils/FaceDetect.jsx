@@ -17,9 +17,9 @@ import {
   FACEMESH_LIPS,
 } from "@mediapipe/face_mesh/face_mesh";
 import { useReactMediaRecorder  } from "react-media-recorder";
-import { click } from "@testing-library/user-event/dist/click";
 import RecordedExpressionsModal from "../components/Recording";
 import WebcamTurnedOff from "../components/WebcamTurnedOff";
+import "./FaceDetect.css";
 
 
 const FaceDetect = () => {
@@ -204,7 +204,9 @@ const FaceDetect = () => {
   
 
   const onResults = async (results) => {
+  if(overlayOn){
 
+  }
   const videoWidth = webcamRef.current.video.videoWidth;
   const videoHeight = webcamRef.current.video.videoHeight;
   canvasRef.current.width = videoWidth;
@@ -270,7 +272,6 @@ const FaceDetect = () => {
   }
 
 
-  if(overlayOn){
     if (results.multiFaceLandmarks) {
       for (const landmarks of results.multiFaceLandmarks) {
         drawConnectors(canvasCtx, landmarks, FACEMESH_TESSELATION, {
@@ -303,7 +304,7 @@ const FaceDetect = () => {
         });
       }
 
-    }
+    
     for (const faceDetection of faceDetectionArray) {
       drawRectangle(canvasCtx, faceDetection.boundingBox, {color: 'blue', lineWidth: 4, fillColor: '#00000000'});
     };
@@ -325,19 +326,6 @@ const FaceDetect = () => {
     return stopRecording
   }
 
-  const handleClick = (event) => {
-    const x = event.clientX;
-    console.log(x)
-    // const clickedData = data.find((d) => d.x === x);
-    // const videoTime = clickedData.x / data.length * videoLength;
-
-    // HTML5 비디오 요소를 찾습니다.
-    const video = document.querySelector("video");
-    // 비디오를 이동시킵니다.
-    video.currentTime = x;
-  };
-  
-    // ...
   
 
   return (
@@ -346,7 +334,8 @@ const FaceDetect = () => {
       
       {webcamOff?    
       <div>
-        <video src={mediaBlobUrl} controls />
+        <video className="recordvideo" src={mediaBlobUrl} controls 
+        />
         <RecordedExpressionsModal />
       </div>
       :
@@ -356,6 +345,21 @@ const FaceDetect = () => {
         mirrored={true}
         ref={webcamRef}
         />
+        {overlayOn?
+            <canvas 
+              className="absolute left-0 top-0 shadow-2xl m-4"
+              ref={canvasRef}>  
+            </canvas>
+
+             :
+            <canvas 
+              className="absolute left-0 top-0 shadow-2xl m-4 "  
+              style={{
+                display:"none"
+              }}
+              ref={canvasRef}>
+            </canvas>
+        }
         <button onClick={()=>{stopRecording();click()}}>stopRecording</button>
         <Settings></Settings>
       </>
