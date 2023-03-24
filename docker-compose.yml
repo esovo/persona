@@ -7,6 +7,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - spring-network
     ports:
       - "8080:8080"
   db:
@@ -18,13 +20,15 @@ services:
       MYSQL_PASSWORD: "!stepup@persona#301"
       MYSQL_ROOT_PASSWORD: "!stepup@persona#301"
       MYSQL_VERSION: "8.0.31"
+    networks:
+      - spring-network
     ports:
       - "3306:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 100
     volumes:
       - my-db-data:/var/lib/mysql
 volumes:
