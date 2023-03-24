@@ -25,14 +25,5 @@ pipeline {
         }
       }
     }
-
-    stage('Deploy with docker-compose') {
-      steps {
-        script {
-          sh 'ls -al'
-          sh 'docker-compose up -d'
-        }
-      }
-    }
   }
 }
