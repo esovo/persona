@@ -1,0 +1,32 @@
+.intro {
+  height: 200px;
+  text-align: center;
+  
+  .title {
+    font-size: 30px;
+  }
+  .content {
+    font-size: 20px;
+  }
+}
+
+.container {
+  .left {
+    .searchForm {
+    }
+    .searchInput {
+      .searchText {
+      }
+      .search {
+      }
+    }
+    .writePost {
+    }
+    .post {
+      .itmes {
+      }
+    }
+  }
+  .right {
+  }
+}

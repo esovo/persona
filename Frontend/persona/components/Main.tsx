@@ -23,7 +23,7 @@ export default function Footer() {
           지금 그 자체로도 매력적인 당신 <br />
           자연스러운 표정과 선명한 발음으로 한층 더 멋지게!
         </div>
-        <Image src="/Main_home.jpg" alt="home" width="1200" height="500" data-aos="fade-up" data-aos-once="false" />
+        <Image src="/Main_home.jpg" alt="home" width="1200" height="500" />
       </div>
       <div className={style.introduce}>
         <h1>연기에 관심이 있는데 시작이 어려웠나요?</h1>
