@@ -1,0 +1,37 @@
+app:
+  oauth2:
+    authorized-redirect-uris:
+      - http://localhost:8080/oauth2/callback
+
+  auth:
+    tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+    tokenExpirationMsec: 864000000
+
+server:
+  port: 8080
+
+mysql:
+#  port: localhost:3306
+  port: j8b301.p.ssafy.io:3306
+#  user: STEPUP
+#  user: root
+  pwd: "!stepup@persona#301"
+#  pwd: "ssafy"
+
+redis:
+  host: localhost
+  port: 6379
+  pwd:
+
+oauth2:
+  google:
+    id: 210492167110-lfiuso34ko9chdv1qvkh39hefeh8gugv.apps.googleusercontent.com
+    secret: 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
+  naver:
+    id: oIcX6isYx1rMy8rixb74
+    secret: zFpNuVO8og
+  kakao:
+    id: cf2b28e65350426d2a63e8c5ff602bf1
+    secret: TYOC8nfxKUwIQC9aW8nTv61V8Cs5Ushx
+cors:
+  allowedOrigins: http://localhost:3000
