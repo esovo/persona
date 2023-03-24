@@ -21,7 +21,7 @@ pipeline {
         script {
               def backendDir = "${env.WORKSPACE}/Backend"
               def dockerfile = "${backendDir}/Dockerfile"
-              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "--opt network=persona-network -f ${dockerfile} ${backendDir}")
+              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-o network=persona-network -f ${dockerfile} ${backendDir}")
         }
       }
     }
