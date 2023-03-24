@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScriptController {
 
     //대본 조회
+
     //대본 등록
     //대본 수정
     //대본 삭제
