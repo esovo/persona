@@ -4,6 +4,8 @@ services:
     build:
       context: ./Backend
       dockerfile: Dockerfile
+      args:
+        APP_CONFIG: ./src/main/resources/application-connection.yml
     ports:
       - "8080:8080"
     depends_on:
