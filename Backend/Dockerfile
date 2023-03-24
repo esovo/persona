@@ -1,6 +1,7 @@
 FROM adoptopenjdk:11-jre-hotspot
 WORKDIR /app
+ARG APP_CONFIG
+COPY ${APP_CONFIG} application-connection.yml
 COPY build/libs/*.jar app.jar
-COPY application-connection.yml application.yml
 EXPOSE 8080
-ENTRYPOINT ["java","-Dspring.config.location=/app/application.yml","-jar","/app/app.jar"]
+CMD ["java", "-jar", "app.jar"]
