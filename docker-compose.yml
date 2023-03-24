@@ -7,8 +7,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
-    command: sh -c 'while ! mysqladmin ping -hdb --silent; do echo "Waiting for MySQL..."; sleep 1; done; java -jar my-app.jar'
+      db:
+        condition: service_healthy
   db:
     image: mysql:8.0.31
     restart: always
@@ -20,6 +20,11 @@ services:
       MYSQL_VERSION: "8.0.31"
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     volumes:
       - my-db-data:/var/lib/mysql
 volumes:
