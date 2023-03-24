@@ -33,3 +33,5 @@ services:
       - my-db-data:/var/lib/mysql
 volumes:
   my-db-data:
+networks:
+  spring-network:
