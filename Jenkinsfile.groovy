@@ -29,7 +29,7 @@ pipeline {
     stage('Run Docker container') {
       steps {
         script {
-          docker.run("--name my-springboot-image:${env.BUILD_NUMBER} -p 8080:8080 -d --network persona-network")
+          docker.image("my-springboot-image:${env.BUILD_NUMBER}").run("--network persona-network -p 8080:8080")
         }
       }
     }
