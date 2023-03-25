@@ -18,10 +18,7 @@ pipeline {
       steps {
         script {
           cd ${env.WORKSPACE}/Frontend/persona
-          mkdir -p .npm
-          chown -R 113:119 .npm
-          npm install
-          npm run build
+          chmod +x npm install && npm run build
 
         }
       }
