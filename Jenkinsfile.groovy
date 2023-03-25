@@ -8,7 +8,7 @@ pipeline {
 
   stages {
 
-    stage('init'){
+    stage('init') {
       steps{
         sh "echo init"
       }
@@ -26,8 +26,8 @@ pipeline {
       }
     }
 
-    stage('Gradle Build'){
-      steps{
+    stage('Gradle Build') {
+      steps {
         sh "echo build"
         sh "cd ${env.WORKSPACE}/Backend && chmod +x ./gradlew && ./gradlew build"
       }
@@ -36,9 +36,9 @@ pipeline {
     stage('Next.JS Image Build') {
       steps {
         script {
-          def frondendDir = "${env.WORKSPACE}/Frontend/persona"
+          def frontendDir = "${env.WORKSPACE}/Frontend/persona"
           def dockerfile = "${frontendDir}/Dockerfile"
-          docker.build("persona-front-image:${env.BUILD_NUMBER})",   "-f ${dockerfile} ${frontendDir}")
+          docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
         }
       }
     }
@@ -46,9 +46,9 @@ pipeline {
     stage('Springboot Image Build') {
       steps {
         script {
-              def backendDir = "${env.WORKSPACE}/Backend"
-              def dockerfile = "${backendDir}/Dockerfile"
-              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
+          def backendDir = "${env.WORKSPACE}/Backend"
+          def dockerfile = "${backendDir}/Dockerfile"
+          docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
 
         }
       }
@@ -68,7 +68,7 @@ pipeline {
         }
       }
     }
-    
+
     stage('Run Docker container') {
       steps {
         script {
