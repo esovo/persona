@@ -16,13 +16,13 @@ pipeline {
 
     stage('Npm Build') {
       steps {
-        sh """
-          cd \"${env.WORKSPACE}/Frontend/persona\"
-          mkdir -p .npm
-          chown -R 113:119 .npm
+        sh '''
+          cd "${env.WORKSPACE}/Frontend/persona"
+          sudo mkdir -p .npm
+          sudo chown -R 113:119 .npm
           npm install
           npm run build
-        """
+        '''
       }
     }
 
