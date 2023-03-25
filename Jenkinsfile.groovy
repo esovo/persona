@@ -16,6 +16,7 @@ pipeline {
 
     stage('Npm Build') {
       steps{
+        sh "cd ${env.WORKSPACE}/Frontend/persona"
         sh 'npm install'
         sh 'npm run build'
       }
