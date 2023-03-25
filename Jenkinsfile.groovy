@@ -17,7 +17,7 @@ pipeline {
     stage('Npm Build') {
       steps {
         sh '''
-          cd ${env.WORKSPACE}/Frontend/persona
+          cd "${env.WORKSPACE}/Frontend/persona"
           mkdir -p .npm
           chown -R 113:119 .npm
           npm install
@@ -38,7 +38,7 @@ pipeline {
         script {
           def frondendDir = "${env.WORKSPACE}/Frontend/persona"
           def dockerfile = "${frontendDir}/Dockerfile"
-          docker.build("persona-front-image:${env.BUILD_NUMBER})",   "-f ${dockerfile} ${frontendDir}")
+          docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
         }
       }
     }
