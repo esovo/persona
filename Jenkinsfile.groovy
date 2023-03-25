@@ -1,6 +1,17 @@
 pipeline {
   agent any
 
+  pipelineTriggers {
+      // Trigger pipeline on push and merge events for the master branch
+      branch('dev') {
+          triggers {
+              // Trigger pipeline on push and merge events
+              bitbucketPush()
+              bitbucketMerge()
+          }
+      }
+  }
+
   stages {
 
     stage('init'){
