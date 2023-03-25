@@ -1,8 +1,9 @@
-FROM node:18
-WORKDIR /PERSONA
+FROM node:18.14.2-alpine
+# FROM node:18
+WORKDIR /app_f
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+RUN npx next build
 EXPOSE 3000 
-CMD ["npm", "run", "dev"]
+CMD [ "npm", "start" ]
