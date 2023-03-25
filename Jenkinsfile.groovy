@@ -15,8 +15,14 @@ pipeline {
     }
 
     stage('Npm Build') {
-      steps{
-        sh "cd ${env.WORKSPACE}/Frontend/persona && chown +x && npm install && npm run build"
+      steps {
+        sh '''
+          cd ${env.WORKSPACE}/Frontend/persona
+          mkdir -p .npm
+          chown -R 113:119 .npm
+          npm install
+          npm run build
+        '''
       }
     }
 
