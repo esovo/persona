@@ -8,7 +8,7 @@ pipeline {
 
   stages {
 
-    stage('init') {
+    stage('init'){
       steps{
         sh "echo init"
       }
@@ -26,8 +26,8 @@ pipeline {
       }
     }
 
-    stage('Gradle Build') {
-      steps {
+    stage('Gradle Build'){
+      steps{
         sh "echo build"
         sh "cd ${env.WORKSPACE}/Backend && chmod +x ./gradlew && ./gradlew build"
       }
@@ -46,9 +46,9 @@ pipeline {
     stage('Springboot Image Build') {
       steps {
         script {
-          def backendDir = "${env.WORKSPACE}/Backend"
-          def dockerfile = "${backendDir}/Dockerfile"
-          docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
+              def backendDir = "${env.WORKSPACE}/Backend"
+              def dockerfile = "${backendDir}/Dockerfile"
+              docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
 
         }
       }
@@ -68,7 +68,7 @@ pipeline {
         }
       }
     }
-
+    
     stage('Run Docker container') {
       steps {
         script {
