@@ -6,7 +6,7 @@ pipeline {
     }
   }
 
-  pipelineTriggers {
+  triggers {
       // Trigger pipeline on push and merge events for the master branch
       branch('dev') {
           triggers {
