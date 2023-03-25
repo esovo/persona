@@ -18,7 +18,8 @@ pipeline {
       steps {
         script {
           cd ${env.WORKSPACE}/Frontend/persona
-          chmod +x npm install && npm run build
+          npm install 
+          npm run build
 
         }
       }
