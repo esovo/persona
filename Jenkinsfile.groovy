@@ -16,7 +16,7 @@ pipeline {
 
     stage('Npm Build') {
       steps{
-        sh "cd ${env.WORKSPACE}/Frontend/persona && npm install && npm run build"
+        sh "cd ${env.WORKSPACE}/Frontend/persona && sudo chown -R 113:119 "/.npm && npm install && npm run build"
       }
     }
 
