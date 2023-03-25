@@ -11,10 +11,7 @@ pipeline {
 
     stage('Npm Build') {
       steps {
-        script {
-          echo "hi"
-
-        }
+        sh "cd ${env.WORKSPACE}/Frontend/persona && npm install && npm run build"
       }
     }
 
