@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'node:18.14.2-alpine'
+      args '-p 3000:3000'
+    }
+  }
 
   pipelineTriggers {
       // Trigger pipeline on push and merge events for the master branch
@@ -20,6 +25,11 @@ pipeline {
       }
     }
 
+    stage('Npm Build') {
+      sh 'npm install'
+      sh 'npm run build'
+    }
+
     stage('Gradle Build'){
       steps{
         sh "echo build"
@@ -27,7 +37,17 @@ pipeline {
       }
     }
 
-    stage('Build docker image') {
+    stage('Next.JS Image Build') {
+      steps {
+        script {
+          def frondendDir = "${env.WORKSPACE}/Frontend/persona"
+          def dockerfile = "${frontendDir}/Dockerfile"
+          docker.build("persona-front-image:${env.BUILD_NUMBER})",   "-f ${dockerfile} ${frontendDir}")
+        }
+      }
+    }
+
+    stage('Springboot Image Build') {
       steps {
         script {
               def backendDir = "${env.WORKSPACE}/Backend"
@@ -42,19 +62,22 @@ pipeline {
       steps {
         script {
           try {
-            docker.image("my-springboot-image:${env.BUILD_NUMBER}").container('springboot').stop()
-            docker.image("my-springboot-image:${env.BUILD_NUMBER}").container('springboot').remove(force: true)
+            docker.container('springboot').stop()
+            docker.container('springboot').remove(force: true)
+            docker.container('frontend').stop()
+            docker.container('frontend').remove(force: true)
           } catch (err) {
             echo "Failed to remove the container"
           }
         }
       }
-    } 
+    }
     
     stage('Run Docker container') {
       steps {
         script {
           docker.image("my-springboot-image:${env.BUILD_NUMBER}").run("--network persona-network --name springboot -p 8080:8080")
+          docker.image("persona-front-image:${env.BUILD_NUMBER}").run("--name frontend -p 3000:3000")
         }
       }
     }
