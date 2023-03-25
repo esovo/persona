@@ -8,13 +8,7 @@ pipeline {
         sh "echo init"
       }
     }
-
-    stage('Npm Build') {
-      steps {
-        sh "cd ${env.WORKSPACE}/Frontend/persona && npm install && npm run build"
-      }
-    }
-
+    
     stage('Gradle Build'){
       steps{
         sh "echo build"
