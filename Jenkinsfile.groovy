@@ -12,7 +12,7 @@ pipeline {
     stage('Npm Build') {
       steps {
         script {
-          cd /var/lib/jenkins/WORKSPACE/PERSONA/Frontend/persona
+          cd ${env.WORKSPACE}/Frontend/persona
           npm install 
           npm run build
 
