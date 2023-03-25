@@ -15,8 +15,10 @@ pipeline {
     }
 
     stage('Npm Build') {
-      sh 'npm install'
-      sh 'npm run build'
+      steps{
+        sh 'npm install'
+        sh 'npm run build'
+      }
     }
 
     stage('Gradle Build'){
