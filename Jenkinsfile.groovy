@@ -17,7 +17,7 @@ pipeline {
     stage('Npm Build') {
       steps {
         sh '''
-          cd "${env.WORKSPACE}/Frontend/persona"
+          cd $env.WORKSPACE/Frontend/persona
           sudo mkdir -p .npm
           sudo chown -R 113:119 .npm
           npm install
