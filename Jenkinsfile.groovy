@@ -17,9 +17,9 @@ pipeline {
     stage('Npm Build') {
       steps {
         sh '''
-          cd $env.WORKSPACE/Frontend/persona
-          sudo mkdir -p .npm
-          sudo chown -R 113:119 .npm
+          cd "${env.WORKSPACE}/Frontend/persona"
+          mkdir -p .npm
+          chown -R 113:119 .npm
           npm install
           npm run build
         '''
@@ -36,7 +36,7 @@ pipeline {
     stage('Next.JS Image Build') {
       steps {
         script {
-          def frontendDir = "${env.WORKSPACE}/Frontend/persona"
+          def frondendDir = "${env.WORKSPACE}/Frontend/persona"
           def dockerfile = "${frontendDir}/Dockerfile"
           docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
         }
