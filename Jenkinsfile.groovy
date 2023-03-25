@@ -36,9 +36,9 @@ pipeline {
     stage('Next.JS Image Build') {
       steps {
         script {
-          def frontendDir = "${env.WORKSPACE}/Frontend/persona"
+          def frondendDir = "${env.WORKSPACE}/Frontend/persona"
           def dockerfile = "${frontendDir}/Dockerfile"
-          docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
+          docker.build("persona-front-image:${env.BUILD_NUMBER})",   "-f ${dockerfile} ${frontendDir}")
         }
       }
     }
