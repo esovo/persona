@@ -45,9 +45,15 @@ pipeline {
                 docker.container('springboot').stop()
                 docker.container('springboot').remove(force: true)
             }
+            else{
+              echo 'not exists springboot'
+            }
             if (docker.container('frontend').exists()) {
                 docker.container('frontend').stop()
                 docker.container('frontend').remove(force: true)
+            }
+            else{
+              echo 'not exists frontend'
             }
           } catch (err) {
             echo "Failed to remove the container"
