@@ -20,7 +20,7 @@ import { useReactMediaRecorder  } from "react-media-recorder";
 import RecordedExpressionsModal from "../components/Recording";
 import WebcamTurnedOff from "../components/WebcamTurnedOff";
 import "./FaceDetect.css";
-
+import Button from '@mui/material/Button';
 
 const FaceDetect = () => {
   
@@ -360,6 +360,7 @@ const FaceDetect = () => {
               ref={canvasRef}>
             </canvas>
         }
+        <Button variant="contained">Contained</Button>
         <button onClick={()=>{stopRecording();click()}}>stopRecording</button>
         <Settings></Settings>
       </>
