@@ -16,15 +16,24 @@ public class Emotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "emotion_id")
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
     private Participant participant;
-     private int time;
-    private float pleasure;
-    private float embarrassed;
-    private float anger;
-    private float anxiety;
-    private float hurt;
-    private float sad;
-    private float neutrality;
+
+     private double time;
+
+    private double pleasure;
+
+    private double embarrassed;
+
+    private double anger;
+
+    private double anxiety;
+
+    private double hurt;
+
+    private double sad;
+
+    private double neutrality;
 }

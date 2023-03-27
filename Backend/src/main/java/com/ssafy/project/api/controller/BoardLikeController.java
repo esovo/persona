@@ -27,7 +27,7 @@ public class BoardLikeController {
     public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long board_id){
         //유저정보 가져와서 안에 파라미터로 넘겨줘야 함.
         boardLikeService.addBoardLike(1L, board_id);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_LIKE_CREATE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
     //좋아요 취소
@@ -36,7 +36,7 @@ public class BoardLikeController {
     public ResponseEntity<ResponseDTO> boardLikeRemove(@RequestParam Long board_id){
         //유저정보 가져와서 안에 파라미터로 넘겨줘야 함.
         boardLikeService.removeBoardLike(1L, board_id);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_LIKE_DELETE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
 }

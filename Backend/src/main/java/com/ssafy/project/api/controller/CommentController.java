@@ -29,7 +29,7 @@ public class CommentController {
     @ApiOperation(value="전체 댓글 조회")
     public ResponseEntity<ResponseDTO> commentList(@RequestParam Long boardId, @RequestParam int page) {
         Page<CommentDTO> comments = commentService.findComment(boardId, page);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_READ, comments));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, comments));
     }
 
     //등록
@@ -37,7 +37,7 @@ public class CommentController {
     @ApiOperation(value="댓글 등록")
     public ResponseEntity<ResponseDTO> commentAdd(@RequestBody CommentAddReqDTO commentAddReqDTO){
         commentService.addComment(commentAddReqDTO);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_CREATE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
     //수정
@@ -45,7 +45,7 @@ public class CommentController {
     @ApiOperation(value="댓글 수정")
     public ResponseEntity<ResponseDTO> commentModify(@RequestParam Long commentId, @RequestParam String content){
         commentService.modifyComment(commentId, content);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_UPDATE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_UPDATE));
     }
 
     //삭제
@@ -53,7 +53,7 @@ public class CommentController {
     @ApiOperation(value="댓글 삭제")
     public ResponseEntity<ResponseDTO> commentRemove(@RequestParam Long commentId){
         commentService.removeComment(commentId);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_COMMENT_DELETE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
 
