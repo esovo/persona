@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class BoardResDTO {
-
     private Long id;
     private int likes;
     private String videoUrl;

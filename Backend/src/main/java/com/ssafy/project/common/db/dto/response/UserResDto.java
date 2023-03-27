@@ -7,20 +7,16 @@ import java.time.LocalDateTime;
 @Builder
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class CommentDTO {
-    private Long id;
+public class UserResDto {
 
-    private String userProfile;
-
+    @NonNull
+    private String email;
+    @NonNull
     private String nickname;
-
-    private String content;
-
-    private int commentLikes;
-
+    @NonNull
+    private String imageUrl;
+    @NonNull
+    private String socialType;
+    @NonNull
     private LocalDateTime createdDate;
-
 }

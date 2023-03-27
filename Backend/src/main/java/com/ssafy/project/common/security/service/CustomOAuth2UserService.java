@@ -1,23 +1,17 @@
 package com.ssafy.project.common.security.service;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
-import com.ssafy.project.common.db.dto.social.SocialAuth;
-import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.dto.social.*;
+import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.common.UserPrincipal;
-import com.ssafy.project.common.security.exception.AlreadyRegistedUserException;
-import com.ssafy.project.common.security.exception.NoEmailProvidedException;
-import com.ssafy.project.common.security.exception.NotAllowedSocialTypeException;
-import com.ssafy.project.common.util.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -32,19 +26,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
-    private final TokenProvider tokenProvider;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
         log.info("loadUser 호출");
 
-        OAuth2AccessToken oAuth2AccessToken = oAuth2UserRequest.getAccessToken();
-        String accessToken = oAuth2AccessToken.getTokenValue();
-        log.info("accesstoken : {}", accessToken);
+//        OAuth2AccessToken oAuth2AccessToken = oAuth2UserRequest.getAccessToken();
+//        String accessToken = oAuth2AccessToken.getTokenValue();
+//        log.info("accesstoken : {}", accessToken);
+
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
-            return processOAuth2User(oAuth2UserRequest, oAuth2User, accessToken);
+            return processOAuth2User(oAuth2UserRequest, oAuth2User);
         } catch (AuthenticationException e) {
             throw e;
         } catch (Exception e) {
@@ -52,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User, String accessToken) {
+    private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 
         Map<String, Object> mapForLog = oAuth2User.getAttributes();
         mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
@@ -63,20 +56,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         );
 
         if (StringUtils.isBlank(oAuth2UserInfo.getEmail()))
-            throw new NoEmailProvidedException("이메일을 제공받지 못했습니다.");
+            throw new OAuth2AuthenticationException("이메일을 제공받지 못했습니다.");
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
         User user;
         if (userOptional.isPresent()) {
             if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())))
-                throw new AlreadyRegistedUserException("이미 다른 소셜로 가입되어 있습니다.");
+                throw new OAuth2AuthenticationException("이미 다른 소셜로 가입되어 있습니다.");
             user = updateUser(userOptional.get(), oAuth2UserInfo);
         } else {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
-
-        String jwtToken = tokenProvider.createToken(user.getId(), accessToken);
-        log.info("JWT Token : {}", jwtToken);
 
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
@@ -94,7 +84,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("is kakao");
             return new KakaoOAuth2UserInfo(attributes);
         } else {
-            throw new NotAllowedSocialTypeException("지원하지 않는 소셜 타입 : " + registrationId);
+            throw new OAuth2AuthenticationException("지원하지 않는 소셜 타입 : " + registrationId);
         }
     }
 

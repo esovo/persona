@@ -1,7 +1,6 @@
 package com.ssafy.project.common.util.provider;
 
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public interface RedisProvider {
@@ -14,6 +13,10 @@ public interface RedisProvider {
     Object getBlackList(String key);
     boolean deleteBlackList(String key);
     boolean hasKeyBlackList(String key);
-    void cashAuthoriesInDB(Long id, List<String> authories);
+
+//    void addToSet(String key, Object value);
+//    void removeFromSet(String key, Object value);
+//    Set<Object> getSet(String key);
+//    boolean hasKeyFromSet(String key, String value);
 }
 
