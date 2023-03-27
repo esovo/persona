@@ -6,7 +6,7 @@ import style from '../styles/Header.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
 import User from '../models/user';
-import Modal from './Modal';
+import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
 
 export default function Header() {

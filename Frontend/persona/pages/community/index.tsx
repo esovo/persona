@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, FormEvent } from 'react';
+import { useRecoilState } from 'recoil';
+import { postmodal } from '../../states/communityState';
 import Header from '@/components/Header';
+import Modal from '@/components/PostModal';
 import Footer from '@/components/Footer';
 import style from '../../styles/Community.module.scss';
 
 export default function List() {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [showModal, setShowModal] = useRecoilState(postmodal);
 
   type Post = {
     id: number;
@@ -23,6 +27,10 @@ export default function List() {
     console.log(`Searching for: ${searchQuery}`);
   };
 
+  const startHandler = () => {
+    setShowModal(true);
+  };
+
   const posts: Post[] = [
     { id: 1, nickname: 'ovo', time: '2023-03-24', title: '테스트', body: '테스트 글입니다.', like: 1, comment: 0 },
   ];
@@ -30,9 +38,10 @@ export default function List() {
   return (
     <>
       <Header />
+      {showModal && <Modal />}
       <div className={style.intro}>
         <div className={style.title}>커뮤니티</div>
-        <div className={style.content}>커뮤니티 소개</div>
+        <div className={style.content}>궁금한 점부터 피드백까지 다양한 이야기를 나눌 수 있습니다.</div>
       </div>
       <div className={style.container}>
         <div className={style.left}>
@@ -54,7 +63,7 @@ export default function List() {
             </div>
           </form>
           <div className={style.writePost}>
-            <button>새로운 글을 남겨보세요.</button>
+            <button onClick={startHandler}>새로운 글을 남겨보세요.</button>
           </div>
           <div className={style.post}>
             {posts.map((post) => (
