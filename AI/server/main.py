@@ -8,9 +8,104 @@ import cv2
 import numpy as np
 from fer import FER
 
+from fastapi import FastAPI, File, UploadFile
+
+import openai
+import whisper
+# import mysql.connector
+# import boto3
+from kiwipiepy import Kiwi
+from starlette.middleware.cors import CORSMiddleware
+
+
+model = whisper.load_model("medium")
+openai.api_key = "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"
+origins = ["*"]
+
+origins = ["http://localhost:3000"]
+kiwi = Kiwi()
+
 app = FastAPI()
 detector = FER()
 # uvicorn main:app --reload
+
+@app.post("/audio/")
+async def get_audio_file(file: UploadFile = File(...)):
+
+    file_location = f"uploads/{file.filename}"
+    with open(file_location, "wb") as file_object:
+        file_object.write(file.file.read())
+
+    audio_file = open(f"{file_location}", "rb")
+
+    # if content_type.startswith("audio/"):
+    #     audio = AudioSegment.from_file(file_content)
+    # audio = AudioSegment.from_file(file.file, format=file.content_type.split("/")[-1])
+    # audio.export("output.mp3", format="mp3")
+
+    # with open(file_location, "wb") as file_object:
+    #     file_object.write(file.file.read())
+
+    #
+    # print("하이")
+    # audio = AudioSegment.from_file(file_location, format=file.content_type.split("/")[-1])
+    # print("위에서 에러인가?")
+    # audio_filename = os.path.splitext(file.filename)[0] + ".wav"
+    # audio_file_path = f"audio/{audio_filename}"
+    # audio.export(audio_file_path, format="mp3")
+    # print("audio란")
+
+
+    resultSegment = model.transcribe(file_location)
+    print(type(file_location))
+    print(resultSegment)
+    print("===================영어번역===============")
+    resulten = model.transcribe(f"{file_location}", task='translate')
+    print(resulten)
+    print(resulten['text'])
+    # print("=================일본어 번역===============")
+    # resultja = model.transcribe(f"{file_location}", language='ja')
+    # print(resultja)
+    # print(resultja['text'])
+    # print("=================스페인어 번역===============")
+    # resultes = model.transcribe(f"{file_location}", language='es')
+    # print(resultes['text'])
+    print("===================그냥 나올 때================")
+    result = model.transcribe(f"{file_location}")
+    print(result)
+    print("=====================세그먼트 별로 나누기===================")
+    text = result['text']
+    for r in result['segments']:
+        print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
+    print("====================전부 붙여서 나오기=====================")
+    print(result['text'])
+
+    print("=====================문장 별로 나누기======================")
+    sentence = kiwi.split_into_sents(text)
+    print(sentence)
+    for st in sentence:
+        print(st.text)
+
+
+    # for st in sentence:
+    #     print(sentence[st])
+    # transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    # text = transcript['text']
+    # print(text)
+    return {"text": text}
+
+@app.post("/script/save")
+async def save_script(script: str):
+    sentence = kiwi.split_into_sents(script)
+    StList = []
+    for st in sentence:
+        StList.append(sentence[st])
+
+
+    return {"scripts": StList}
+
+
+
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
     # await asyncio.sleep(0.1)
@@ -29,7 +124,7 @@ async def websocket_endpoint(websocket: WebSocket):
             "emotion": max(prediction[0]['emotions'], key=prediction[0]['emotions'].get)
         }
         await websocket.send_json(response)
-        
+
         websocket.close()
     except:
         websocket.close()
