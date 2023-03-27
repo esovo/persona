@@ -26,11 +26,11 @@ const EmojiWidget = () => {
       return <Sad />
     case "angry":
       return <Angry />
-    case "fearful":
+    case "fear":
       return <Fearful />
-    case "disgusted":
+    case "disgust":
       return <Disgusted />
-    case "surprised":
+    case "surprise":
       return <Surprised />
     default:
       return <></>

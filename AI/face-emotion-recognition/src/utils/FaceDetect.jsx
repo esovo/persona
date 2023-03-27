@@ -341,27 +341,31 @@ const FaceDetect = () => {
       :
       <>
         <Webcam
-        audio={false}
-        mirrored={true}
-        ref={webcamRef}
+          className="onvideo"
+          audio={false}
+          mirrored={true}
+          ref={webcamRef}
         />
         {overlayOn?
             <canvas 
-              className="absolute left-0 top-0 shadow-2xl m-4"
+              className="overvideo"
               ref={canvasRef}>  
             </canvas>
 
              :
             <canvas 
-              className="absolute left-0 top-0 shadow-2xl m-4 "  
+              className="overvideo"  
               style={{
                 display:"none"
               }}
               ref={canvasRef}>
             </canvas>
         }
-        <Button variant="contained">Contained</Button>
-        <button onClick={()=>{stopRecording();click()}}>stopRecording</button>
+        <Button 
+        variant="contained" 
+        onClick={()=>{stopRecording();click()}}
+        color="error"
+        >녹화종료</Button>
         <Settings></Settings>
       </>
     }

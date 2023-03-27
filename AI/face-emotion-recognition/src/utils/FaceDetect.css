@@ -3,3 +3,19 @@
   width: 600px;
   margin: auto;
 }
+
+.onvideo{
+  position: relative;
+  margin: auto;
+  left: 16px;
+  top: 16px;
+  width: 640;
+  height: 480;
+}
+
+.overvideo{
+  position: absolute; 
+  left: 0;
+  top:0; 
+  margin: 1rem;
+}

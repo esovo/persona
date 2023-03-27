@@ -70,8 +70,8 @@ const RecordedExpressionsModal = () => {
     // const clickedData = data.find((d) => d.x === x);
     // const videoTime = clickedData.x / data.length * videoLength;
 
-    // HTML5 비디오 요소를 찾습니다.
-    // 비디오를 이동시킵니다.
+    // HTML5 비디오 요소를 찾는다.
+    // 비디오를 이동.
     if(k>=0 && k<1280){
       video.currentTime = res;
     }
@@ -122,7 +122,7 @@ const RecordedExpressionsModal = () => {
         />
       </div>
       <div className="w-full flex flex-row items-center justify-evenly mb-4">
-        <pre className="text-lg p-2 bg-fg-1 rounded-lg"><code>X-axis: Time Elapsed, Y-axis: Emotions</code></pre>
+        {/* <pre className="text-lg p-2 bg-fg-1 rounded-lg"><code>X-axis: Time Elapsed, Y-axis: Emotions</code></pre> */}
         <Button
           onClick={downloadChart}
         >
