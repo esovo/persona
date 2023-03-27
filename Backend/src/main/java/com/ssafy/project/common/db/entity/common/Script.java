@@ -7,6 +7,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -21,16 +23,22 @@ public class Script extends BaseTime {
     @Column(name = "script_id")
     private Long id;
 
-    private String title;
-    private String author;
-    @Column(columnDefinition = "TEXT")
-    private String content;
-    private String registrant;
-    private Long viewNum;
     @Enumerated(EnumType.STRING)
     private EmotionEnum emotion;
+
     @Enumerated(EnumType.STRING)
     private GenreEnum genre;
 
+    private String title;
 
+    private String author;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    private String registrant;
+
+    private Long viewCnt;
+
+    private Long bookmarkCnt;
 }

@@ -29,7 +29,8 @@ public class ScriptController {
     @ApiOperation(value = "전체 게시물 조회")
     public ResponseEntity<ResponseDTO> scriptList(@RequestBody ScriptSearchReqDTO scriptSearchReqDTO){
         Page<ScriptDTO> scripts = scriptService.findAllScript(scriptSearchReqDTO);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_SCRIPT_READ, scripts));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scripts));
     }
-    //내가 참여한 대본
+
+    //내가 참여한 대본 보기(영상, 참여 정보 다 가져와야 함)
 }
