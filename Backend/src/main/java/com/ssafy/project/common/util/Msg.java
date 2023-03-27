@@ -5,6 +5,8 @@ public interface Msg {
     //유저
     final String SUCCESS_USER_LOGOUT="로그아웃에 성공했습니다.";
     final String SUCCESS_USER_SEARCH="유저 조회에 성공했습니다.";
+    final String SUCCESS_USER_DELETE="유저 삭제에 성공했습니다.";
+    final String SUCCESS_USER_MODIFY="유저 수정에 성공했습니다.";
 
     //게시글
     final String SUCCESS_BOARD_READ="게시글 조회에 성공했습니다.";
