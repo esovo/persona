@@ -41,13 +41,12 @@ pipeline {
       steps {
         script {
           try {
-            docker.container('springboot').stop()
-            docker.container('springboot').rm()
-            docker.container('frontend').stop()
-            docker.container('frontend').stop()
+            sh 'docker ps -f name=springboot -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker ps -f name=frontend -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -f name=springboot -q | xargs -r docker container rm'
+            sh 'docker container ls -a -f name=frontend -q | xargs -r docker container rm'
           } catch (err) {
             echo "Failed to stop the container"
-            }
         }
       }
     }
