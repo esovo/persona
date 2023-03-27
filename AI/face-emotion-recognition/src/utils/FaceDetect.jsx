@@ -21,7 +21,7 @@ import RecordedExpressionsModal from "../components/Recording";
 import WebcamTurnedOff from "../components/WebcamTurnedOff";
 import "./FaceDetect.css";
 import Button from '@mui/material/Button';
-
+import axios from "axios"
 const FaceDetect = () => {
   
   const webcamRef = useRef(null);
@@ -33,9 +33,9 @@ const FaceDetect = () => {
     setRecordedExpressions,
     setMountedVideoComponent,
     setRecordedvideo,
+    recordedvideo,
     canvasRef
   } = useDashboardContext();
-  
 
   const {
     webcamOn,
@@ -45,11 +45,20 @@ const FaceDetect = () => {
   } = useSettingsContext();
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
+  const [bloburl,setbloburl]=useState(mediaBlobUrl);
   useEffect(() => {
     if(!webcamOn){
       setendcam(true)
     }else{
       setendcam(false)
+    }
+
+    if(status==="recording"){
+
+    }else if(status==="stopped"){
+      console.log(11)
+      setbloburl(mediaBlobUrl);
+      callaudio();
     }
 
     if(webcamOff){
@@ -122,7 +131,7 @@ const FaceDetect = () => {
 
       
     }
-  }, []);
+  }, [mediaBlobUrl]);
 
 
 
@@ -242,7 +251,6 @@ const FaceDetect = () => {
 
     var pred_log = JSON.parse(event.data)
     // console.log(pred_log);
-    console.log(mediaBlobUrl)
     const formattedExpression = formatExpression(pred_log);
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
@@ -321,9 +329,57 @@ const FaceDetect = () => {
       faceDetectionArray = results.detections;
     }
   }
-  const click=()=>{
+  const click= async ()=>{
+    stopRecording()
+    callaudio()
     setWebcamOff(true);
-    return stopRecording
+
+    return stopRecording()
+  }
+  function callaudio(){
+    if(status==="stopped"){
+      fetch(mediaBlobUrl)
+      .then(response => response.blob())
+      .then(blobData => {
+        const webmBlob = new Blob([blobData], { type: "video/mp4" });
+        // const webmUrl = URL.createObjectURL(webmBlob);
+    
+        // const video = document.createElement("video");
+        // video.src = webmUrl;
+        // video.controls = true;
+        // document.body.appendChild(video);
+        const sound = new File([webmBlob], "sound1.mp4", {
+          lastModified: new Date().getTime(),
+          type: "video/mp4",
+        });
+        
+        console.log(sound);
+        const formData = new FormData();
+        formData.append("file", sound);
+        
+        console.log(formData);
+        
+        try {
+          console.log("axios 시작");
+          axios
+            .post("http://localhost:8000/audio/", formData, {
+              headers: {
+                "Content-Type": "audio/mp3",
+              },
+            })
+            .then((response) => {
+              console.log(response);
+              console.log(response.data.filename);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      });
+      console.log(status)
+      console.log(mediaBlobUrl)
+      
+
+    }
   }
 
   
@@ -332,9 +388,10 @@ const FaceDetect = () => {
 
     <div>
       
-      {webcamOff?    
+      {webcamOff?
       <div>
-        <video className="recordvideo" src={mediaBlobUrl} controls 
+        <video className="recordvideo" 
+        src={mediaBlobUrl} controls
         />
         <RecordedExpressionsModal />
       </div>
@@ -363,7 +420,7 @@ const FaceDetect = () => {
         }
         <Button 
         variant="contained" 
-        onClick={()=>{stopRecording();click()}}
+        onClick={()=>{click()}}
         color="error"
         >녹화종료</Button>
         <Settings></Settings>

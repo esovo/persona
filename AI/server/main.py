@@ -16,6 +16,7 @@ import whisper
 # import boto3
 from kiwipiepy import Kiwi
 from starlette.middleware.cors import CORSMiddleware
+from pydub import AudioSegment;
 
 
 model = whisper.load_model("medium")
@@ -28,15 +29,41 @@ kiwi = Kiwi()
 app = FastAPI()
 detector = FER()
 # uvicorn main:app --reload
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/audio/")
 async def get_audio_file(file: UploadFile = File(...)):
-
+    print("실행")
     file_location = f"uploads/{file.filename}"
     with open(file_location, "wb") as file_object:
         file_object.write(file.file.read())
-
+    print("아래가 안대자나")
+    audio_file1 = AudioSegment.from_file(file_location)
+    print("여기까진 됐나?")
+    # audio_file1.export(f"{file_location}.mp3", format="mp3")
     audio_file = open(f"{file_location}", "rb")
+    print("api로 시작")
+    # transcript = openai.Audio.transcribe("whisper-1", audio_file, file_format="mp3")
+    # print(transcript)
+    # print(transcript.text)
+
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    text = transcript['text']
+    print(text)
+    # transcript_ja = openai.Audio.translate("whisper-1", audio_content, target_language="ja", file_format="mp3")
+
+    # text = transcript['text']
+    print("model로 돌리기")
+    modelT = model.transcribe(file_location)
+    print(modelT)
+    for r in modelT['segments']:
+        print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
 
     # if content_type.startswith("audio/"):
     #     audio = AudioSegment.from_file(file_content)
@@ -56,13 +83,13 @@ async def get_audio_file(file: UploadFile = File(...)):
     # print("audio란")
 
 
-    resultSegment = model.transcribe(file_location)
-    print(type(file_location))
-    print(resultSegment)
-    print("===================영어번역===============")
-    resulten = model.transcribe(f"{file_location}", task='translate')
-    print(resulten)
-    print(resulten['text'])
+    # resultSegment = model.transcribe(file_location)
+    # print(type(file_location))
+    # print(resultSegment)
+    # print("===================영어번역===============")
+    # resulten = model.transcribe(f"{file_location}", task='translate')
+    # print(resulten)
+    # print(resulten['text'])
     # print("=================일본어 번역===============")
     # resultja = model.transcribe(f"{file_location}", language='ja')
     # print(resultja)
@@ -70,29 +97,29 @@ async def get_audio_file(file: UploadFile = File(...)):
     # print("=================스페인어 번역===============")
     # resultes = model.transcribe(f"{file_location}", language='es')
     # print(resultes['text'])
-    print("===================그냥 나올 때================")
-    result = model.transcribe(f"{file_location}")
-    print(result)
-    print("=====================세그먼트 별로 나누기===================")
-    text = result['text']
-    for r in result['segments']:
-        print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
-    print("====================전부 붙여서 나오기=====================")
-    print(result['text'])
+    # print("===================그냥 나올 때================")
+    # result = model.transcribe(f"{file_location}")
+    # print(result)
+    # print("=====================세그먼트 별로 나누기===================")
+    # text = result['text']
+    # for r in result['segments']:
+    #     print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
+    # print("====================전부 붙여서 나오기=====================")
+    # print(result['text'])
 
-    print("=====================문장 별로 나누기======================")
-    sentence = kiwi.split_into_sents(text)
-    print(sentence)
-    for st in sentence:
-        print(st.text)
+    # print("=====================문장 별로 나누기======================")
+    # sentence = kiwi.split_into_sents(text)
+    # print(sentence)
+    # for st in sentence:
+    #     print(st.text)
 
 
     # for st in sentence:
     #     print(sentence[st])
-    # transcript = openai.Audio.transcribe("whisper-1", audio_file)
-    # text = transcript['text']
+
     # print(text)
-    return {"text": text}
+    return {"text"}
+
 
 @app.post("/script/save")
 async def save_script(script: str):
