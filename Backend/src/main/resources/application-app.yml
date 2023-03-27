@@ -11,12 +11,12 @@ server:
   port: 8080
 
 mysql:
-#  port: localhost:3306
-  port: j8b301.p.ssafy.io:3306
+  port: localhost:3306
+  user: root
+  pwd: "ssafy"
+#  port: j8b301.p.ssafy.io:3306
 #  user: STEPUP
-#  user: root
-  pwd: "!stepup@persona#301"
-#  pwd: "ssafy"
+#  pwd: "!stepup@persona#301"
 
 redis:
   host: localhost

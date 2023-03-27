@@ -1,6 +1,8 @@
 package com.ssafy.project.common.db.entity.common;
 
 import com.ssafy.project.common.db.entity.base.BaseTime;
+import com.ssafy.project.common.db.entity.base.EmotionEnum;
+import com.ssafy.project.common.db.entity.base.GenreEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,8 +27,10 @@ public class Script extends BaseTime {
     private String content;
     private String registrant;
     private Long viewNum;
-    private String genre;
-    private String emotion;
+    @Enumerated(EnumType.STRING)
+    private EmotionEnum emotion;
+    @Enumerated(EnumType.STRING)
+    private GenreEnum genre;
 
 
 }

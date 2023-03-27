@@ -4,7 +4,6 @@ import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
 import com.ssafy.project.common.db.dto.response.BoardResDTO;
-import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
