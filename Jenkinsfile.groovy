@@ -41,10 +41,10 @@ pipeline {
       steps {
         script {
           try {
-            docker.container('springboot').stop()
-            docker.container('springboot').remove(force: true)
-            docker.container('frontend').stop()
-            docker.container('frontend').remove(force: true)
+            docker.container(name: 'springboot').stop()
+            docker.container(name: 'springboot').remove(force: true)
+            docker.container(name: 'frontend').stop()
+            docker.container(name: 'frontend').remove(force: true)
           } catch (err) {
             echo "Failed to remove the container"
           }
