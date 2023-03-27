@@ -18,6 +18,7 @@ public class AppProperties {
     @Setter
     public static class Auth {
         private String tokenSecret;
+
         private long tokenExpirationMsec;
     }
 

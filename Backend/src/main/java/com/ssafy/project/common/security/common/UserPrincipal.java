@@ -64,16 +64,12 @@ public class UserPrincipal implements OAuth2User, UserDetails {
     }
 
     @Override
-    public String getName() {
-        return String.valueOf(id);
-    }
+    public String getName() { return String.valueOf(id); }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
+    public String getUsername() { return String.valueOf(id); }
 
     @Override
-    public String getPassword() { return null;}
+    public String getPassword() { return null; }
 
 }
