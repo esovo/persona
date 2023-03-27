@@ -31,10 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         log.info("loadUser 호출");
 
-//        OAuth2AccessToken oAuth2AccessToken = oAuth2UserRequest.getAccessToken();
-//        String accessToken = oAuth2AccessToken.getTokenValue();
-//        log.info("accesstoken : {}", accessToken);
-
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -107,7 +103,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
         
         log.info("updateUser 실행");
-        user.getSocialAuth().update(oAuth2UserInfo.getName(), oAuth2UserInfo.getImageUrl(), oAuth2UserInfo.getAttributes());
+        user.getSocialAuth().update(oAuth2UserInfo.getName(), oAuth2UserInfo.getImageUrl());
         return user;
     }
 

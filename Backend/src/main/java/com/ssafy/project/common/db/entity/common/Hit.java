@@ -24,5 +24,5 @@ public class Hit {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; //양방향 맵핑해라~~
+    private User user;
 }

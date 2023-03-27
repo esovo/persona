@@ -29,7 +29,7 @@ public class SocialAuth {
 //        this.imageUrl = imageUrl;
 //        this.attributes = attributes.toString();
 //    }
-    public void update(String name, String imageUrl, Map<String, Object> attributes) {
+    public void update(String name, String imageUrl) {
         this.name = name;
         this.imageUrl = imageUrl;
     }
