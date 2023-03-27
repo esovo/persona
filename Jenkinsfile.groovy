@@ -41,22 +41,10 @@ pipeline {
       steps {
         script {
           try {
-            if (docker.container('springboot').exists()) {
-                docker.container('springboot').stop()
-                docker.container('springboot').remove(force: true)
-            }
-            else{
-              echo 'not exists springboot'
-            }
-            if (docker.container('frontend').exists()) {
-                docker.container('frontend').stop()
-                docker.container('frontend').remove(force: true)
-            }
-            else{
-              echo 'not exists frontend'
-            }
+            docker.container('springboot').stop()
+            docker.container('frontend').stop()
           } catch (err) {
-            echo "Failed to remove the container"
+            echo "Failed to stop the container"
             }
         }
       }
