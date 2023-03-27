@@ -342,7 +342,7 @@ const FaceDetect = () => {
       <>
         <Webcam
           className="onvideo"
-          audio={false}
+          audio={true}
           mirrored={true}
           ref={webcamRef}
         />
