@@ -7,6 +7,7 @@ server:
 logging:
   config: classpath:log4j2.xml
 
+
 spring:
 
   security:
@@ -60,12 +61,10 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${mysql.port}/PERSONA?allowPublicKeyRetrieval=true&useSSL=false&useUniCode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://db:3306/PERSONA?useSSL=false&serverTimezone=UTC
-#    username: STEPUP
-#    password: "!stepup@persona#301"
-    username: ${mysql.user}
-    password: ${mysql.pwd}
+    url: jdbc:mysql://mysql-db:3306/PERSONA?allowPublicKeyRetrieval=true&useSSL=false&useUniCode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    # url: jdbc:mysql://mysql-db:3306/PERSONA?useSSL=false&serverTimezone=UTC
+    username: root
+    password: "!stepup@persona#301"
 
 
   mvc:
@@ -76,14 +75,14 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
 
-#  redis:
-#    host: ${redis.host}
-#    port: ${redis.port}
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
 #    password: ${redis.pwd}

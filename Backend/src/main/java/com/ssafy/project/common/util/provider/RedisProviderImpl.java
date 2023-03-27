@@ -5,7 +5,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -60,20 +59,26 @@ public class RedisProviderImpl implements RedisProvider{
         return redisBlackListTemplate.hasKey(key);
     }
 
-    @Override
-    public void cashAuthoriesInDB(Long id, List<String> authories) {
+//    @Override
+//    public void addToSet(String key, Object value) {
+//        redisTemplate.opsForSet().add(key, value);
+//    }
+//    @Override
+//    public void removeFromSet(String key, Object value) {
+//        redisTemplate.opsForSet().remove(key, value);
+//    }
+//
+//    @Override
+//    public Set<Object> getSet(String key) {
+//        return redisTemplate.opsForSet().members(key);
+//    }
+//
+//    @Override
+//    public boolean hasKeyFromSet(String key, String value) {
+//
+//        Optional<Set<Object>> optional = Optional.ofNullable(redisTemplate.opsForSet().members(key));
+//
+//        return optional.map(objects -> objects.contains(value)).orElse(false);
+//    }
 
-        // 네이버, 카카오, 구글의 registrationId 아이디를 받아 분기해야 하지만, 모두 default aceessToken 유효기간 1시간이므로 final
-        final int time = 1;
-        final TimeUnit timeUnit = TimeUnit.HOURS;
-        String stringId = id.toString();
-
-        redisBlackListTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(String.class));
-
-        for (String auth : authories) {
-            redisTemplate.opsForSet().add(stringId, auth);
-        }
-        
-        redisTemplate.expire(stringId, time, timeUnit);
-    }
 }

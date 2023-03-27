@@ -8,7 +8,7 @@ pipeline {
         sh "echo init"
       }
     }
-
+    
     stage('Gradle Build'){
       steps{
         sh "echo build"
@@ -16,21 +16,45 @@ pipeline {
       }
     }
 
-    stage('Build docker image') {
+    stage('Next.JS Image Build') {
+      steps {
+        script {
+          def frontendDir = "${env.WORKSPACE}/Frontend/persona"
+          def dockerfile = "${frontendDir}/Dockerfile"
+          docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
+        }
+      }
+    }
+
+    stage('Springboot Image Build') {
       steps {
         script {
               def backendDir = "${env.WORKSPACE}/Backend"
               def dockerfile = "${backendDir}/Dockerfile"
               docker.build("my-springboot-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${backendDir}")
+
         }
       }
     }
 
-    stage('Deploy with docker-compose') {
+    stage('Remove Docker container') {
       steps {
         script {
-          sh 'ls -al'
-          sh 'docker-compose up -d'
+          try {
+            docker.container('springboot').stop()
+            docker.container('frontend').stop()
+          } catch (err) {
+            echo "Failed to stop the container"
+            }
+        }
+      }
+    }
+    
+    stage('Run Docker container') {
+      steps {
+        script {
+          docker.image("my-springboot-image:${env.BUILD_NUMBER}").run("--network persona-network --name springboot -p 8080:8080")
+          docker.image("persona-front-image:${env.BUILD_NUMBER}").run("--name frontend -p 3000:3000")
         }
       }
     }
