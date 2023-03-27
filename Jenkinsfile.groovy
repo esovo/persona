@@ -42,6 +42,8 @@ pipeline {
         script {
           try {
             docker.container('springboot').stop()
+            docker.container('springboot').rm()
+            docker.container('frontend').stop()
             docker.container('frontend').stop()
           } catch (err) {
             echo "Failed to stop the container"
