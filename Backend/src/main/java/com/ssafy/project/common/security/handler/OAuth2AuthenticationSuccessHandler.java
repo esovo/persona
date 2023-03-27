@@ -2,8 +2,10 @@ package com.ssafy.project.common.security.handler;
 
 import com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.security.exception.BadRequestException;
+import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
 import com.ssafy.project.common.security.properties.AppProperties;
 import com.ssafy.project.common.util.provider.CookieProvider;
+import com.ssafy.project.common.util.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Enumeration;
 import java.util.Optional;
 
 import static com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
@@ -33,6 +34,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+    private final TokenProvider tokenProvider;
     /*
      * 인증과 관련된 Attribute와 Cookie들을 모두 제거
      */
@@ -55,9 +57,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // response가 이미 커밋되면, 추가적인 응답 불가능
         if (response.isCommitted()) {
-            logger.debug("해당 Url은 이미 커밋되었습니다. " + targetUrl);
+            log.info("해당 Url은 이미 커밋되었습니다. " + targetUrl);
             return;
         }
+
+        String accessToken = tokenProvider.createToken(authentication);
+        log.info(accessToken);
+
+        response.setHeader("Authorization", "Bearer " + accessToken);
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
@@ -76,7 +83,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Optional<String> redirectUri = cookieProvider.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get()))
-            throw new BadRequestException("등록되지 않은 Uri입니다.");
+            throw new CustomOAuth2AuthenticationException("등록되지 않은 Uri입니다.");
 
         // 리디렉션 uri가 있으면 그 값으로, 없으면 defaultUri ("/")
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());

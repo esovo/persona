@@ -7,6 +7,7 @@ server:
 logging:
   config: classpath:log4j2.xml
 
+
 spring:
 
   security:
@@ -74,14 +75,14 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
 
 
-#  redis:
-#    host: ${redis.host}
-#    port: ${redis.port}
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
 #    password: ${redis.pwd}
