@@ -8,7 +8,9 @@ WORKDIR /app_ai
 COPY requirements.txt requirements.txt
 
 # Install dependencies
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt 
+
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
 # Copy entire app to container
 COPY . .
