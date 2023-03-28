@@ -18,7 +18,7 @@ public class ScriptDTO {
     private String author;
     private String content;
     private String registrant;
-    private Long viewNum;
+    private Long viewCnt;
     private EmotionEnum emotion;
     private GenreEnum genre;
     private LocalDateTime createdDate;
