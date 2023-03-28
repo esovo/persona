@@ -1,6 +1,12 @@
 .nav {
   display: flex;
   justify-content: space-around;
+  background-color: #f2f6f9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20000;
   height: 10vh;
   .home {
     display: flex;
