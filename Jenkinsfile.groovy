@@ -47,6 +47,7 @@ pipeline {
             sh 'docker container ls -a -f name=frontend -q | xargs -r docker container rm'
           } catch (err) {
             echo "Failed to stop the container"
+          }
         }
       }
     }
