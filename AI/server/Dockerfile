@@ -10,7 +10,12 @@ COPY requirements.txt requirements.txt
 # Install dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt 
 
-RUN apt-get update && apt-get install -y libgl1-mesa-glx && apt install ffmpeg
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy entire app to container
 COPY . .
