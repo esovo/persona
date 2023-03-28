@@ -15,13 +15,16 @@ import java.time.LocalDateTime;
 public class ScriptDTO {
 
     private Long id;
+    private String title;
     private String author;
+    private String actor;
     private String content;
-    private String registrant;
     private Long viewCnt;
     private EmotionEnum emotion;
     private GenreEnum genre;
     private LocalDateTime createdDate;
+    private int bookmarkCnt;
+    private int participantCnt;
 
 
 }

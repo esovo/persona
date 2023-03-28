@@ -23,19 +23,17 @@ public class BookmarkServiceImpl implements BookmarkService {
         User user = userRepository.findById(userId).get();
         Script script = scriptRepository.findById(scriptId).get();
 
-        //뭔가 유저에 생명주기....해서 user list에서 더해주는걸로 하는 걸....
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
                 .script(script)
                 .build();
 
-        script.setBookmarkCnt(script.getBookmarkCnt()+1L);
-        scriptRepository.save(script);
-        //유저에 넣고 save 하기
+        user.getBookmarks().add(bookmark);
+        userRepository.save(user);
     }
 
     @Override
     public void removeBookmark(Long userId, Long scriptId) {
-
+        bookmarkRepository.deleteByUserIdAndScriptId(userId, scriptId);
     }
 }
