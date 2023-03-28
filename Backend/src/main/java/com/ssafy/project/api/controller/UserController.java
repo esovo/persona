@@ -1,6 +1,7 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.UserService;
+import com.ssafy.project.common.db.dto.request.UserModifyReqDto;
 import com.ssafy.project.common.util.Msg;
 import com.ssafy.project.common.util.ResponseDTO;
 import com.ssafy.project.common.util.provider.AuthProvider;
@@ -11,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +28,8 @@ public class UserController {
 
     private final AuthProvider authProvider;
 
-    // 회원가입, 로그인 Api 불필요
+    // 회원가입, 로그인 Api Oauth2에서 진행
+
     @GetMapping("/logout")
     @ApiOperation(value="로그아웃")
     public ResponseEntity<ResponseDTO> userLogout(HttpServletRequest request){
@@ -45,11 +46,27 @@ public class UserController {
     }
 
     // 다른 사람의 정보를 조회 할 때
-//    @GetMapping
-//    @ApiOperation(value="다른 유저 조회")
-//    public ResponseEntity<ResponseDTO> userLogout(HttpServletRequest request){
-//        userService.logoutUser(request);
-//        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_LOGOUT));
-//    }
+    @GetMapping("/{email}")
+    @ApiOperation(value="유저 조회")
+    public ResponseEntity<ResponseDTO> userDetailByEmail(@PathVariable String email){
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_SEARCH, userService.detailUserByEmail(email)));
+    }
 
+    @DeleteMapping
+    @ApiOperation(value="유저 탈퇴")
+    public ResponseEntity<ResponseDTO> userDelete(){
+
+        long id = authProvider.getUserIdFromPrincipal();
+        userService.deleteUser(id);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_DELETE));
+    }
+
+    @PutMapping
+    @ApiOperation(value="유저 수정")
+    public ResponseEntity<ResponseDTO> userModify(@RequestBody UserModifyReqDto userModifyReqDto){
+
+        long id = authProvider.getUserIdFromPrincipal();
+        userService.modifyUser(id, userModifyReqDto);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_MODIFY));
+    }
 }

@@ -1,13 +1,11 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.exception.BadRequestException;
 import com.ssafy.project.common.security.exception.CustomAuthException;
 import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
 import com.ssafy.project.common.util.ResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
