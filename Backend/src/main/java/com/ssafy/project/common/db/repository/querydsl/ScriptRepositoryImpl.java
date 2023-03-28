@@ -101,18 +101,23 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
         else return null;
     }
 
-    private BooleanBuilder emotionFilter(List<String> keywords) {
+    private BooleanBuilder emotionFilter(List<String> emotions) {
+
+        if(emotions.size() == 0) return null;
+
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        for(String keyword : keywords){
-            booleanBuilder.or(script.emotion.eq(EmotionEnum.valueOf(keyword)));
+        for(String emotion : emotions){
+            booleanBuilder.or(script.emotion.eq(EmotionEnum.valueOf(emotion)));
         }
         return booleanBuilder;
     }
 
-    private BooleanBuilder genreFilter(List<String> keywords) {
+    private BooleanBuilder genreFilter(List<String> genres) {
+        if(genres.size() == 0) return null;
+
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        for(String keyword : keywords){
-            booleanBuilder.or(script.genre.eq(GenreEnum.valueOf(keyword)));
+        for(String genre : genres){
+            booleanBuilder.or(script.genre.eq(GenreEnum.valueOf(genre)));
         }
         return booleanBuilder;
     }
