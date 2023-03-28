@@ -11,14 +11,12 @@ from fer import FER
 from fastapi import FastAPI, File, UploadFile
 
 import openai
-import whisper
 # import mysql.connector
 # import boto3
 from kiwipiepy import Kiwi
 from starlette.middleware.cors import CORSMiddleware
 from pydub import AudioSegment;
 
-model = whisper.load_model("medium")
 openai.api_key = "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"
 # origins = ["*"]
 
