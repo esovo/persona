@@ -12,6 +12,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
+RUN pip install python-multipart
+
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y ffmpeg && \
