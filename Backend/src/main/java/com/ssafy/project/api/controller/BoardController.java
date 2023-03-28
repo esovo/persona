@@ -83,6 +83,6 @@ public class BoardController {
     @ApiOperation(value = "게시글 수정")
     public ResponseEntity<ResponseDTO> boardModify(@RequestBody BoardModifyReqDTO boardModifyReqDTO){
             boardService.modifyBoard(boardModifyReqDTO);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_UPDATE));
     }
 }
