@@ -1,11 +1,15 @@
-import React, { useRef, useEffect,useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useCallback } from "react";
 import { useDashboardContext } from "../components/Dashboard";
 import { Settings, useSettingsContext } from "../components/Settings";
 import Webcam from "react-webcam";
-import { drawConnectors,drawLandmarks, drawRectangle } from "@mediapipe/drawing_utils/drawing_utils";
+import {
+  drawConnectors,
+  drawLandmarks,
+  drawRectangle,
+} from "@mediapipe/drawing_utils/drawing_utils";
 import { Camera } from "@mediapipe/camera_utils/camera_utils";
-import { FaceDetection } from '@mediapipe/face_detection';
+import { FaceDetection } from "@mediapipe/face_detection";
 import {
   FaceMesh,
   FACEMESH_TESSELATION,
@@ -16,52 +20,54 @@ import {
   FACEMESH_FACE_OVAL,
   FACEMESH_LIPS,
 } from "@mediapipe/face_mesh/face_mesh";
-import { useReactMediaRecorder  } from "react-media-recorder";
+import { useReactMediaRecorder } from "react-media-recorder";
 import RecordedExpressionsModal from "../components/Recording";
 import WebcamTurnedOff from "../components/WebcamTurnedOff";
 import "./FaceDetect.css";
-import Button from '@mui/material/Button';
-
+import Button from "@mui/material/Button";
+import axios from "axios";
 const FaceDetect = () => {
-  
   const webcamRef = useRef(null);
   const { status, startRecording, stopRecording, mediaBlobUrl } =
-  useReactMediaRecorder({ video: true });
+    useReactMediaRecorder({ video: true });
   const {
     setCurrentExpression,
     setEmoji,
     setRecordedExpressions,
     setMountedVideoComponent,
     setRecordedvideo,
-    canvasRef
+    recordedvideo,
+    canvasRef,
   } = useDashboardContext();
-  
 
-  const {
-    webcamOn,
-    webcamOff,
-    overlayOn,
-    setWebcamOff
-  } = useSettingsContext();
+  const { webcamOn, webcamOff, overlayOn, setWebcamOff } = useSettingsContext();
   let faceDetectionArray = [];
-  const [endcam,setendcam] = useState(false);
+  const [endcam, setendcam] = useState(false);
+  const [bloburl, setbloburl] = useState(mediaBlobUrl);
   useEffect(() => {
-    if(!webcamOn){
-      setendcam(true)
-    }else{
-      setendcam(false)
+    if (!webcamOn) {
+      setendcam(true);
+    } else {
+      setendcam(false);
     }
 
-    if(webcamOff){
-      function setstopRecording(){
+    if (status === "recording") {
+    } else if (status === "stopped") {
+      console.log(11);
+      setbloburl(mediaBlobUrl);
+      callaudio();
+    }
+
+    if (webcamOff) {
+      function setstopRecording() {
         return stopRecording;
       }
       setstopRecording();
     }
-    
+
     setRecordedvideo(() => {
       return mediaBlobUrl;
-    })
+    });
 
     const faceMesh = new FaceMesh({
       locateFile: (file) => {
@@ -70,10 +76,11 @@ const FaceDetect = () => {
       },
     });
 
-    const faceDetection = new FaceDetection(
-      {locateFile: (file) => {
+    const faceDetection = new FaceDetection({
+      locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@0.4/${file}`;
-    }});
+      },
+    });
 
     faceMesh.setOptions({
       refineLandmarks: true,
@@ -86,19 +93,18 @@ const FaceDetect = () => {
       // minTrackingConfidence: 0.5,
     });
     faceMesh.onResults(onResults);
-    
+
     faceDetection.setOptions({
-      model: 'short',
-      minDetectionConfidence: 0.5
+      model: "short",
+      minDetectionConfidence: 0.5,
     });
 
-    if(webcamOn){
-      startRecording()
-      console.log(mediaBlobUrl)
-      setRecordedvideo(mediaBlobUrl)
-    }else{
-      stopRecording()
-
+    if (webcamOn) {
+      startRecording();
+      console.log(mediaBlobUrl);
+      setRecordedvideo(mediaBlobUrl);
+    } else {
+      stopRecording();
     }
 
     faceDetection.onResults(faceDetectionOnResults);
@@ -111,166 +117,160 @@ const FaceDetect = () => {
         onFrame: async () => {
           await faceDetection.send({ image: webcamRef.current.video });
           await faceMesh.send({ image: webcamRef.current.video });
-          
         },
         width: 1280,
         height: 720,
       });
       camera.start();
-      
-
-
-      
     }
-  }, []);
+  }, [mediaBlobUrl]);
 
-
-
-
-    /**
-   * 
+  /**
+   *
    * @param {Object} info - Object with details of Age, Expressions, ...
    * @returns {Object} - Returns expression of the first face recorded.
    */
-    const formatExpression = (info) => {
-      if (
-        info === undefined ||
-        info === null ||
-        info.predictions === undefined ||
-        info.predictions=== null 
-      ) {
-        return null;
-      }
-      const expression = [];
-      for (const [key, value] of Object.entries(info.predictions)) {
-        expression.push({
-          expression: key,
-          percent: value*100
-        });
-      }
-      return expression;
-    };
-  
-    /**
-     * 
-     * @param {Array} formattedExpression - Formatted expression
-     * @returns {String} - Returns the emoji name.
-     */
-    const getEmojiName = (formattedExpression) => {
-      if (formattedExpression === null || formattedExpression === undefined || formattedExpression.length < 1) {
-        return null;
-      }
-      let emojiName = null, maxPercent = Number.NEGATIVE_INFINITY;
-      formattedExpression.forEach((expr) => {
-        if (expr.percent > maxPercent) {
-          emojiName = expr.expression;
-          maxPercent = expr.percent;
-        }
+  const formatExpression = (info) => {
+    if (
+      info === undefined ||
+      info === null ||
+      info.predictions === undefined ||
+      info.predictions === null
+    ) {
+      return null;
+    }
+    const expression = [];
+    for (const [key, value] of Object.entries(info.predictions)) {
+      expression.push({
+        expression: key,
+        percent: value * 100,
       });
-      return emojiName;
-    };
-  
-    /**
-     * 
-     * @param {Array} recordedExpressions - Expressions recorded upto this point of time.
-     * @param {Object} currentExpression - Current expression from the video stream
-     * @returns {Array} - Returns an array of recorded expressions
-     */
-    const recordExpression = (recordedExpressions, currentExpression) => {
-      if (currentExpression === undefined || currentExpression === null) {
-        return recordedExpressions;
+    }
+    return expression;
+  };
+
+  /**
+   *
+   * @param {Array} formattedExpression - Formatted expression
+   * @returns {String} - Returns the emoji name.
+   */
+  const getEmojiName = (formattedExpression) => {
+    if (
+      formattedExpression === null ||
+      formattedExpression === undefined ||
+      formattedExpression.length < 1
+    ) {
+      return null;
+    }
+    let emojiName = null,
+      maxPercent = Number.NEGATIVE_INFINITY;
+    formattedExpression.forEach((expr) => {
+      if (expr.percent > maxPercent) {
+        emojiName = expr.expression;
+        maxPercent = expr.percent;
       }
-      // console.log(currentExpression)
-      if (recordedExpressions.length < 1) {
-        currentExpression.forEach((current) => {
-          recordedExpressions.push({
-            id: current.expression,
-            data: [{
+    });
+    return emojiName;
+  };
+
+  /**
+   *
+   * @param {Array} recordedExpressions - Expressions recorded upto this point of time.
+   * @param {Object} currentExpression - Current expression from the video stream
+   * @returns {Array} - Returns an array of recorded expressions
+   */
+  const recordExpression = (recordedExpressions, currentExpression) => {
+    if (currentExpression === undefined || currentExpression === null) {
+      return recordedExpressions;
+    }
+    // console.log(currentExpression)
+    if (recordedExpressions.length < 1) {
+      currentExpression.forEach((current) => {
+        recordedExpressions.push({
+          id: current.expression,
+          data: [
+            {
               x: 0,
-              y: current.percent
-            }]
-          });
-        });
-        return recordedExpressions;
-      }
-      currentExpression.forEach((current, index) => {
-        recordedExpressions[index].data.push({
-          x: recordedExpressions[index].data.length+1,
-          y: current.percent
+              y: current.percent,
+            },
+          ],
         });
       });
       return recordedExpressions;
-    };
-  
-
-  const onResults = async (results) => {
-  if(overlayOn){
-
-  }
-  const videoWidth = webcamRef.current.video.videoWidth;
-  const videoHeight = webcamRef.current.video.videoHeight;
-  canvasRef.current.width = videoWidth;
-  canvasRef.current.height = videoHeight;
-  const canvasElement = canvasRef.current;
-  const canvasCtx = canvasElement.getContext("2d");
-  canvasCtx.save();
-  canvasCtx.clearRect(0, 0, videoWidth, videoHeight);
-  canvasCtx.translate(videoWidth, 0);
-  canvasCtx.scale(-1, 1);
-  canvasCtx.drawImage(
-    results.image,
-    0,
-    0,
-    canvasElement.width,
-    canvasElement.height
-  );
-
-  // Websocket
-  var socket = new WebSocket('ws://localhost:8000')
-  var imageSrc = webcamRef.current.getScreenshot()
-  var apiCall = {
-    event: "localhost:subscribe",
-    data: { 
-      image: imageSrc
-    },
+    }
+    currentExpression.forEach((current, index) => {
+      recordedExpressions[index].data.push({
+        x: recordedExpressions[index].data.length + 1,
+        y: current.percent,
+      });
+    });
+    return recordedExpressions;
   };
 
+  const onResults = async (results) => {
+    if (overlayOn) {
+    }
+    const videoWidth = webcamRef.current.video.videoWidth;
+    const videoHeight = webcamRef.current.video.videoHeight;
+    canvasRef.current.width = videoWidth;
+    canvasRef.current.height = videoHeight;
+    const canvasElement = canvasRef.current;
+    const canvasCtx = canvasElement.getContext("2d");
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, videoWidth, videoHeight);
+    canvasCtx.translate(videoWidth, 0);
+    canvasCtx.scale(-1, 1);
+    canvasCtx.drawImage(
+      results.image,
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height
+    );
 
-  socket.onopen = () => socket.send(JSON.stringify(apiCall))
+    // Websocket
+    var socket = new WebSocket("ws://localhost:8000");
+    var imageSrc = webcamRef.current.getScreenshot();
+    var apiCall = {
+      event: "localhost:subscribe",
+      data: {
+        image: imageSrc,
+      },
+    };
 
-  socket.onmessage = function(event) {
+    socket.onopen = () => socket.send(JSON.stringify(apiCall));
 
-    var pred_log = JSON.parse(event.data)
-    // console.log(pred_log);
-    console.log(mediaBlobUrl)
-    const formattedExpression = formatExpression(pred_log);
-    setEmoji((previousEmoji) => {
-      if (formattedExpression === undefined || formattedExpression === null) {
-        return previousEmoji;
-      }
-      const name = getEmojiName(formattedExpression);
-      if (name === null) {
-        return previousEmoji;
-      }
-      return name;
-    });
+    socket.onmessage = function (event) {
+      var pred_log = JSON.parse(event.data);
+      // console.log(pred_log);
+      const formattedExpression = formatExpression(pred_log);
+      setEmoji((previousEmoji) => {
+        if (formattedExpression === undefined || formattedExpression === null) {
+          return previousEmoji;
+        }
+        const name = getEmojiName(formattedExpression);
+        if (name === null) {
+          return previousEmoji;
+        }
+        return name;
+      });
 
-
-    setCurrentExpression((previousExpression) => {
-      if (formattedExpression === undefined || formattedExpression === null) {
-        return previousExpression;
-      }
-      return formattedExpression;
-    });
-    setRecordedExpressions((recordedExpressions) => {
-      if (formattedExpression === undefined || formattedExpression === null) {
-        return recordedExpressions;
-      }
-      return recordExpression(recordedExpressions, formatExpression(pred_log));
-    });
-    
-  }
-
+      setCurrentExpression((previousExpression) => {
+        if (formattedExpression === undefined || formattedExpression === null) {
+          return previousExpression;
+        }
+        return formattedExpression;
+      });
+      setRecordedExpressions((recordedExpressions) => {
+        if (formattedExpression === undefined || formattedExpression === null) {
+          return recordedExpressions;
+        }
+        return recordExpression(
+          recordedExpressions,
+          formatExpression(pred_log)
+        );
+      });
+    };
 
     if (results.multiFaceLandmarks) {
       for (const landmarks of results.multiFaceLandmarks) {
@@ -304,71 +304,112 @@ const FaceDetect = () => {
         });
       }
 
-    
-    for (const faceDetection of faceDetectionArray) {
-      drawRectangle(canvasCtx, faceDetection.boundingBox, {color: 'blue', lineWidth: 4, fillColor: '#00000000'});
-    };
-  }
-        
+      for (const faceDetection of faceDetectionArray) {
+        drawRectangle(canvasCtx, faceDetection.boundingBox, {
+          color: "blue",
+          lineWidth: 4,
+          fillColor: "#00000000",
+        });
+      }
+    }
+
     canvasCtx.restore();
-
   };
-
-
 
   const faceDetectionOnResults = (results) => {
     if (results.detections) {
       faceDetectionArray = results.detections;
     }
-  }
-  const click=()=>{
+  };
+  const click = async () => {
+    stopRecording();
+    callaudio();
     setWebcamOff(true);
-    return stopRecording
-  }
 
-  
+    return stopRecording();
+  };
+  function callaudio() {
+    if (status === "stopped") {
+      fetch(mediaBlobUrl)
+        .then((response) => response.blob())
+        .then((blobData) => {
+          const webmBlob = new Blob([blobData], { type: "video/mp4" });
+          // const webmUrl = URL.createObjectURL(webmBlob);
+
+          // const video = document.createElement("video");
+          // video.src = webmUrl;
+          // video.controls = true;
+          // document.body.appendChild(video);
+          const sound = new File([webmBlob], "sound1.mp4", {
+            lastModified: new Date().getTime(),
+            type: "video/mp4",
+          });
+
+          console.log(sound);
+          const formData = new FormData();
+          formData.append("file", sound);
+
+          console.log(formData);
+
+          try {
+            console.log("axios 시작");
+            axios
+              .post("http://localhost:8000/audio/", formData, {
+                headers: {
+                  "Content-Type": "audio/mp3",
+                },
+              })
+              .then((response) => {
+                console.log(response);
+                console.log(response.data.filename);
+              });
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      console.log(status);
+      console.log(mediaBlobUrl);
+    }
+  }
 
   return (
-
     <div>
-      
-      {webcamOff?    
-      <div>
-        <video className="recordvideo" src={mediaBlobUrl} controls 
-        />
-        <RecordedExpressionsModal />
-      </div>
-      :
-      <>
-        <Webcam
-          className="onvideo"
-          audio={false}
-          mirrored={true}
-          ref={webcamRef}
-        />
-        {overlayOn?
-            <canvas 
+      {webcamOff ? (
+        <div>
+          <video className="recordvideo" src={mediaBlobUrl} controls />
+          <RecordedExpressionsModal />
+        </div>
+      ) : (
+        <>
+          <Webcam
+            className="onvideo"
+            audio={true}
+            mirrored={true}
+            ref={webcamRef}
+          />
+          {overlayOn ? (
+            <canvas className="overvideo" ref={canvasRef}></canvas>
+          ) : (
+            <canvas
               className="overvideo"
-              ref={canvasRef}>  
-            </canvas>
-
-             :
-            <canvas 
-              className="overvideo"  
               style={{
-                display:"none"
+                display: "none",
               }}
-              ref={canvasRef}>
-            </canvas>
-        }
-        <Button 
-        variant="contained" 
-        onClick={()=>{stopRecording();click()}}
-        color="error"
-        >녹화종료</Button>
-        <Settings></Settings>
-      </>
-    }
+              ref={canvasRef}
+            ></canvas>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => {
+              click();
+            }}
+            color="error"
+          >
+            녹화종료
+          </Button>
+          <Settings></Settings>
+        </>
+      )}
     </div>
   );
 };

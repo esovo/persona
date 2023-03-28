@@ -16,6 +16,7 @@ import whisper
 # import boto3
 from kiwipiepy import Kiwi
 from starlette.middleware.cors import CORSMiddleware
+from pydub import AudioSegment;
 
 
 model = whisper.load_model("medium")
@@ -28,10 +29,17 @@ kiwi = Kiwi()
 app = FastAPI()
 detector = FER()
 # uvicorn main:app --reload
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/audio/")
 async def get_audio_file(file: UploadFile = File(...)):
-
+    print("실행")
     file_location = f"uploads/{file.filename}"
     with open(file_location, "wb") as file_object:
         file_object.write(file.file.read())
