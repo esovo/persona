@@ -35,6 +35,7 @@
     "jspdf": "^2.5.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-audio-voice-recorder": "^1.0.5",
     "react-dom": "^18.2.0",
     "react-media-recorder": "^1.6.6",
     "react-router-dom": "^6.2.2",
@@ -43,6 +44,8 @@
     "react-webcam": "^6.0.1",
     "styled-components": "^5.3.9",
     "terminal-image": "^2.0.0",
+    "video-converter": "^1.0.0",
+    "video-to-audio": "^1.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
