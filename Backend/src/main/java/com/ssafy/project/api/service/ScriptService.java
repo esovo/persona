@@ -8,4 +8,5 @@ import org.springframework.data.domain.Page;
 public interface ScriptService {
 
     public Page<ScriptDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO);
+    public ScriptDTO detailScript(Long scriptId);
 }

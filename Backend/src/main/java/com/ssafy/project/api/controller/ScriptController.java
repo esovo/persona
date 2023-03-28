@@ -32,5 +32,12 @@ public class ScriptController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scripts));
     }
 
+    @GetMapping
+    @ApiOperation(value = "대본 상세보기")
+    public ResponseEntity<ResponseDTO> scriptDetail(@RequestParam Long scriptId){
+        ScriptDTO scriptDTO = scriptService.detailScript(scriptId);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scriptDTO));
+    }
+
     //내가 참여한 대본 보기(영상, 참여 정보 다 가져와야 함)
 }

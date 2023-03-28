@@ -33,12 +33,18 @@ public class Script extends BaseTime {
 
     private String author;
 
+    private String actor;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String registrant;
-
     private Long viewCnt;
 
-    private Long bookmarkCnt;
+    @Builder.Default
+    @OneToMany(mappedBy = "script")
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "script")
+    private List<Participant> participants = new ArrayList<>();
 }

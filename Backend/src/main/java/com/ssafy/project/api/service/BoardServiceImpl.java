@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardResDTO> boardDTOList = boardList.map(board ->
             BoardResDTO.builder()
             .id(board.getId())
-            .likes(board.getLikeCnt())
+            .likeCnt(board.getLikeCnt())
             .videoUrl(board.getVideo().getUrl())
             .title(board.getTitle())
             .content(board.getContent())
@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
         List<BoardResDTO> boardDTOList = boardList.stream().map(board ->
                 BoardResDTO.builder()
                 .id(board.getId())
-                .likes(board.getLikeCnt())
+                .likeCnt(board.getLikeCnt())
                 .videoUrl(board.getVideo().getUrl())
                 .title(board.getTitle())
                 .content(board.getContent())
@@ -84,7 +84,7 @@ public class BoardServiceImpl implements BoardService {
 
         BoardResDTO boardResDTO = BoardResDTO.builder()
                 .id(board.getId())
-                .likes(board.getLikeCnt())
+                .likeCnt(board.getLikeCnt())
                 .videoUrl(board.getVideo().getUrl())
                 .title(board.getTitle())
                 .content(board.getContent())
@@ -109,7 +109,7 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardResDTO> boardDTOList = boardList.map(board ->
             BoardResDTO.builder()
                     .id(board.getId())
-                    .likes(board.getLikeCnt())
+                    .likeCnt(board.getLikeCnt())
                     .videoUrl(board.getVideo().getUrl())
                     .title(board.getTitle())
                     .content(board.getContent())

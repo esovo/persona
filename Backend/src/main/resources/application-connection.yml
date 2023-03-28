@@ -63,7 +63,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${mysql.port}/PERSONA?allowPublicKeyRetrieval=true&useSSL=false&useUniCode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    # url: jdbc:mysql://mysql-db:3306/PERSONA?useSSL=false&serverTimezone=UTC
     username: ${mysql.user}
     password: ${mysql.pwd}
 
