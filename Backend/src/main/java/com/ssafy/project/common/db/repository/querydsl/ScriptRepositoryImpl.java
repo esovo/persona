@@ -4,19 +4,16 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.project.common.db.dto.request.ScriptSearchReqDTO;
 import com.ssafy.project.common.db.dto.response.ScriptDTO;
 import com.ssafy.project.common.db.entity.base.EmotionEnum;
 import com.ssafy.project.common.db.entity.base.GenreEnum;
-import com.ssafy.project.common.db.entity.common.Script;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -75,8 +72,9 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
                         , script.participants.size()
                 ))
                 .from(script)
-                .where(emotionFilter(scriptSearchReqDTO.getEmotion()), genreFilter(scriptSearchReqDTO.getGenre())
-                        ,keywordFilter(scriptSearchReqDTO.getOption(), scriptSearchReqDTO.getKeyword()))
+                .where(emotionFilter(scriptSearchReqDTO.getEmotions())
+                        , genreFilter(scriptSearchReqDTO.getGenres())
+                        , keywordFilter(scriptSearchReqDTO.getOption(), scriptSearchReqDTO.getKeyword()))
                 .orderBy(makeOrder(scriptSearchReqDTO.getSort()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -85,15 +83,14 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
     }
 
     private OrderSpecifier<?> makeOrder(String sort) {
-        if(sort.equals("bookmarkCnt")) return script.bookmarks.size().desc();
-        else if(sort.equals("participantCnt")) return script.participants.size().desc();
-        else if(sort.equals("viewCnt")) return script.viewCnt.desc();
+        if(sort.equals("인기순")) return script.bookmarks.size().desc();
+        else if(sort.equals("참여순")) return script.participants.size().desc();
+        else if(sort.equals("조회순")) return script.viewCnt.desc();
         else return script.id.desc();
     }
 
     private BooleanExpression keywordFilter(String option, String keyword) {
         if(option == null || keyword == null) return null;
-
         if(option.equals("content")) return script.content.contains(keyword);
         if(option.equals("title")) return script.title.contains(keyword);
         if(option.equals("author")) return script.author.contains(keyword);

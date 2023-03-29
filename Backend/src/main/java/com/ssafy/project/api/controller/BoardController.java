@@ -4,7 +4,7 @@ import com.ssafy.project.api.service.BoardService;
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.BoardResDTO;
+import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
 import com.ssafy.project.common.util.Msg;
 import com.ssafy.project.common.util.ResponseDTO;
 import io.swagger.annotations.Api;
@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +30,15 @@ public class BoardController {
     //조회
     @GetMapping("/all")
     @ApiOperation(value="전체 게시물 조회")
-    public ResponseEntity<ResponseDTO> boardList(@RequestParam int page, String sort){
-        Page<BoardResDTO> boards = boardService.findAllBoard(page, sort);
+    public ResponseEntity<ResponseDTO> boardList(@RequestParam int page, String sort, String keyword){
+        Page<BoardAllResDTO> boards = boardService.findAllBoard(page, sort, keyword);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
     }
 
     @GetMapping("/top")
     @ApiOperation(value = "인기게시글 조회")
     public ResponseEntity<ResponseDTO> boardTopList(){
-        List<BoardResDTO> boards = boardService.findTopBoard();
+        List<BoardAllResDTO> boards = boardService.findTopBoard();
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
     }
 
@@ -48,17 +47,8 @@ public class BoardController {
     @GetMapping("/detail")
     @ApiOperation(value="게시글 상세 조회")
     public ResponseEntity<ResponseDTO> boardDetail(@RequestParam Long boardId){
-        BoardResDTO boardResDTO = boardService.detailBoard(boardId);
+        BoardAllResDTO boardResDTO = boardService.detailBoard(boardId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardResDTO));
-    }
-
-    //검색
-    @PostMapping("/search")
-    @ApiOperation(value = "게시글 검색")
-    public ResponseEntity<ResponseDTO> boardSearch(@RequestBody BoardSearchReqDTO boardSearchReqDTO){
-        Page<BoardResDTO> boardList = boardService.findByWord(boardSearchReqDTO);
-
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_SEARCH, boardList));
     }
 
     //등록

@@ -3,7 +3,7 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.BoardResDTO;
+import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
@@ -30,50 +30,19 @@ public class BoardServiceImpl implements BoardService {
     private final BoardLikeRepository boardLikeRepository;
 
     @Override
-    public Page<BoardResDTO> findAllBoard(int page, String sort) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sort).descending());
-        Page<Board> boardList = boardRepository.findAll(pageable);
-
-        Page<BoardResDTO> boardDTOList = boardList.map(board ->
-            BoardResDTO.builder()
-            .id(board.getId())
-            .likeCnt(board.getLikeCnt())
-            .videoUrl(board.getVideo().getUrl())
-            .title(board.getTitle())
-            .content(board.getContent())
-            .viewCnt(board.getViewCnt())
-            .createdDate(board.getCreatedDate())
-            .nickName(board.getUser().getNickname())
-            .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-            .build()
-        );
-         return boardDTOList;
+    public Page<BoardAllResDTO> findAllBoard(int page, String sort, String keyword) {
+        Page<BoardAllResDTO> boards = boardRepository.findAllWithFilter(page, sort, keyword);
+         return boards;
     }
 
     @Override
-    public List<BoardResDTO> findTopBoard() {
-
-        List<Board> boardList = boardRepository.findTop4ByOrderByLikeCntDesc();
-
-        List<BoardResDTO> boardDTOList = boardList.stream().map(board ->
-                BoardResDTO.builder()
-                .id(board.getId())
-                .likeCnt(board.getLikeCnt())
-                .videoUrl(board.getVideo().getUrl())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .viewCnt(board.getViewCnt())
-                .createdDate(board.getCreatedDate())
-                .nickName(board.getUser().getNickname())
-                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-                .build()).collect(Collectors.toList());
-
-        return boardDTOList;
+    public List<BoardAllResDTO> findTopBoard() {
+        return boardRepository.findTop3Board();
     }
 
 
     @Override
-    public BoardResDTO detailBoard(Long boardId) {
+    public BoardAllResDTO detailBoard(Long boardId) {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
 
         if(!optionalBoard.isPresent()) throw new RuntimeException();
@@ -82,45 +51,17 @@ public class BoardServiceImpl implements BoardService {
         board.setViewCnt(board.getViewCnt()+1L);
         boardRepository.save(board);
 
-        BoardResDTO boardResDTO = BoardResDTO.builder()
+        BoardAllResDTO boardResDTO = BoardAllResDTO.builder()
                 .id(board.getId())
-                .likeCnt(board.getLikeCnt())
-                .videoUrl(board.getVideo().getUrl())
+                .nickName(board.getUser().getNickname())
+                .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .viewCnt(board.getViewCnt())
-                .createdDate(board.getCreatedDate())
-                .nickName(board.getUser().getNickname())
-                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
+                .likeCnt(board.getBoardLikes().size())
+                .commentCnt(board.getComments().size())
                 .build();
         return boardResDTO;
     }
-
-    @Override
-    public Page<BoardResDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
-        Pageable pageable = PageRequest.of(boardSearchReqDTO.getPage(), 10, Sort.by(boardSearchReqDTO.getSort()).descending());
-        Page<Board> boardList = new PageImpl<>(new ArrayList<>());
-        // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
-
-        if(boardSearchReqDTO.getColumn().equals("title"))
-            boardList = boardRepository.findByTitleContaining(boardSearchReqDTO.getWord(), pageable);
-        else boardList = boardRepository.findByContentContaining(boardSearchReqDTO.getWord(), pageable);
-
-        Page<BoardResDTO> boardDTOList = boardList.map(board ->
-            BoardResDTO.builder()
-                    .id(board.getId())
-                    .likeCnt(board.getLikeCnt())
-                    .videoUrl(board.getVideo().getUrl())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .viewCnt(board.getViewCnt())
-                    .createdDate(board.getCreatedDate())
-                    .nickName(board.getUser().getNickname())
-                    .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-                    .build());
-        return boardDTOList;
-    }
-
     @Override
     public void addBoard(BoardAddReqDTO boardAddReqDTO) {
         Video video = videoRepository.getById(boardAddReqDTO.getVideoId());
