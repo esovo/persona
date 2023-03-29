@@ -98,13 +98,9 @@ async def get_audio_file(file: UploadFile = File(...)):
     for st in sentence:
         print(st.text)
 
-<<<<<<< HEAD
-    return {"message": {text}, sentence}
-=======
-    return {"message": {text}}, sentence
-    # return {"message": {text}}
 
->>>>>>> 55f7db2463e92639b3a715ac5666cc4324efb998
+    return {"message": {text}}, sentence
+
 
 
 @app.post("/script/save")
