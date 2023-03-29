@@ -37,7 +37,7 @@ public class InitDb {
                     + "나 너 안보고 못살아. 그것도 못 느꼈어?", 1L);
             em.persist(script2);
 
-            Script script3 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "the glory", "sojin", "seungmin", "fighting", 1L);
+            Script script3 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "the glory", "sojins", "seungmin", "fighting", 1L);
             em.persist(script3);
         }
 
