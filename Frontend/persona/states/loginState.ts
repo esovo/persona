@@ -7,7 +7,7 @@ export const user = atom<User | null>({
 });
 
 export const modal = atom<boolean>({
-  key: 'modal',
+  key: 'loginmodal',
   default: false,
 });
 
