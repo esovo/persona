@@ -110,6 +110,31 @@ async def save_script(script: str):
     return {"scripts": {StList}}
 
 
+@app.post("/ai/emotion")
+async def ai_emtion(script: str):
+    sentence = kiwi.split_into_sents(script)
+    messages = [{"role": "user", "content": "너는 연기 지도전문가야. 다음 문장에 대한 감정 표현에 대해서 알려줘. "
+                                            "너는 [화남], [행복], [역겨운], [놀란], [두려움], [중립], [슬픔]"
+                                            " 일곱 가지에서만 골라서 작성해줘"}]
+    result = [];
+    for st in sentence:
+        print(st.text)
+
+        content = st.text
+        messages.append({"role": "user", "content": content})
+
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+
+        chat_response = completion.choices[0].message.content
+        print(f'ChatGPT: {chat_response}')
+        messages.append({"role": "assistant", "content": chat_response})
+        result.append(chat_response)
+
+    return {"result": {result}}
+
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
     # await asyncio.sleep(0.1)
