@@ -76,9 +76,9 @@ async def get_audio_file(file: UploadFile = File(...)):
     # audio.export(audio_file_path, format="mp3")
     # print("audio란")
 
-    print(type(file_location))
-    print("=============모델로 돌린 번역=============")
-    resultSegment = model.transcribe(file_location)
+    # print(type(file_location))
+    # print("=============모델로 돌린 번역=============")
+    # resultSegment = model.transcribe(file_location)
     # print(resultSegment)
     # print("===================영어번역===============")
     # resulten = model.transcribe(f"{file_location}", task='translate')

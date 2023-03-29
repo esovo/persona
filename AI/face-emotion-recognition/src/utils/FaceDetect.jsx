@@ -23,6 +23,7 @@ import Button from '@mui/material/Button';
 import axios from "axios"
 import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
+import ScriptText from "../components/Script/ScriptText";
 
 const FaceDetect = () => {
   
@@ -474,15 +475,11 @@ const FaceDetect = () => {
         <video className="recordvideo" 
         src={mediaBlobUrl} controls
         />
-        {/* <AudioRecorder 
-          onRecordingComplete={(blob) => addAudioElement(blob)}
-          recorderControls={recorderControls}
-        />
-        <button onClick={recorderControls.stopRecording}>Stop recording</button>
-        <audio controls src={recorderControls.recordingBlob}>
-
-        </audio> */}
         <RecordedExpressionsModal />
+
+        <div>
+          <></>
+        </div>
       </div>
       :
       <>
