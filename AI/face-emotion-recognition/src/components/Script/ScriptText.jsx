@@ -1,8 +1,13 @@
-const ScriptText = (text) => {
+import "./ScriptText.css";
+
+
+const ScriptText = (props) => {
 
   return(
-  <div>
-    {text}
+  <div className="script">
+    <div className="scripttext">
+      {props.text}
+    </div>
   </div>
 
   );

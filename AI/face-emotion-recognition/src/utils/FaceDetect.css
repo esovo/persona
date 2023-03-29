@@ -19,3 +19,9 @@
   top:0; 
   margin: 1rem;
 }
+
+.scriptComponent{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

@@ -25,7 +25,7 @@ import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 
-const FaceDetect = () => {
+const FaceDetect = (props) => {
   
   const webcamRef = useRef(null);
   const { status, startRecording, stopRecording, mediaBlobUrl } =
@@ -68,6 +68,8 @@ const FaceDetect = () => {
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
+  const [text,setText] =useState("아주 긴 텍스트를 작성하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다.");
+  const [recordtext,setRecordtext] =useState("");
   useEffect(() => {
     if(!webcamOn){
       setendcam(true)
@@ -456,8 +458,9 @@ const FaceDetect = () => {
           },
         })
         .then((response) => {
-          console.log(response);
-          console.log(response.data.filename);
+          console.log(response.data.message);
+          setRecordtext(response.data.message[0])
+          // console.log(response.data.filename);
         });
     } catch (error) {
       console.log(error);
@@ -477,8 +480,9 @@ const FaceDetect = () => {
         />
         <RecordedExpressionsModal />
 
-        <div>
-          <></>
+        <div className="scriptComponent">
+          <ScriptText text={text}></ScriptText>
+          <ScriptText text={recordtext}></ScriptText>
         </div>
       </div>
       :

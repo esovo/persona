@@ -92,12 +92,14 @@ async def get_audio_file(file: UploadFile = File(...)):
     #     print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
 
     # print("=====================api 문장 별로 나누기======================")
-    sentence = kiwi.split_into_sents(text)
-    print(sentence)
-    for st in sentence:
-        print(st.text)
+    # sentence = kiwi.split_into_sents(text)
+    # print(sentence)
+    # for st in sentence:
+    #     print(st.text)
 
-    return {"message": {text}, "sentence": {sentence}}
+    # return {"message": {text}, "sentence": {sentence}}
+    return {"message": {text}}
+
 
 
 @app.post("/script/save")
