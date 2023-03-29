@@ -36,6 +36,9 @@ public class InitDb {
                     + "나 이제부터 잘나가는 사람한다. 대표까지 할테니까 5년만 기다려. \n"
                     + "나 너 안보고 못살아. 그것도 못 느꼈어?", 1L);
             em.persist(script2);
+
+            Script script3 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "the glory", "sojins", "seungmin", "fighting", 1L);
+            em.persist(script3);
         }
 
         public Script createScript(EmotionEnum emotion, GenreEnum genre, String title, String author, String actor, String content, Long viewCnt){
