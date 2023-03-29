@@ -1,34 +1,37 @@
 class script {
+  id: number;
   title: string;
   author: string;
+  actor: string;
   content: string;
-  registrant: string;
-  view_num: number;
-  register_date: string;
-  update_date: string;
-  genre: string;
+  viewCnt: number;
   emotion: string;
+  genre: string;
+  createdDate: string;
+  participantCnt: number;
 
   constructor(
+    id: number,
     title: string,
     author: string,
+    actor: string,
     content: string,
-    registrant: string,
-    view_num: number,
-    register_date: string,
-    update_date: string,
-    genre: string,
+    viewCnt: number,
     emotion: string,
+    genre: string,
+    createdDate: string,
+    participantCnt: number,
   ) {
+    this.id = id;
     this.title = title;
     this.author = author;
+    this.actor = actor;
     this.content = content;
-    this.register_date = register_date;
-    this.registrant = registrant;
-    this.view_num = view_num;
-    this.update_date = update_date;
-    this.genre = genre;
+    this.viewCnt = viewCnt;
     this.emotion = emotion;
+    this.genre = genre;
+    this.createdDate = createdDate;
+    this.participantCnt = participantCnt;
   }
 }
 

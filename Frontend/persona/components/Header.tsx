@@ -44,7 +44,7 @@ export default function Header() {
     <nav className={style.nav}>
       <div className={style.home}>
         <div className={style.logo}>
-          <Image src="/Header_logo.png" alt="로고다요" width="60" height="40" />
+          <Image src="/Header_logo.png" alt="로고다요" width="80" height="70" />
         </div>
         <div className={style.title}>
           <Link href="/">PERSONA</Link>
