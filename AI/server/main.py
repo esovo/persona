@@ -17,8 +17,6 @@ import whisper
 from kiwipiepy import Kiwi
 from starlette.middleware.cors import CORSMiddleware
 from pydub import AudioSegment;
-import subprocess
-import moviepy.editor as mp
 
 model = whisper.load_model("medium")
 openai.api_key = "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"
@@ -37,6 +35,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.post("/audio/")
 async def get_audio_file(file: UploadFile = File(...)):
@@ -68,7 +67,6 @@ async def get_audio_file(file: UploadFile = File(...)):
     # with open(file_location, "wb") as file_object:
     #     file_object.write(file.file.read())
 
-    
     # audio = AudioSegment.from_file(file_location, format=file.content_type.split("/")[-1])
     # print("위에서 에러인가?")
     # audio_filename = os.path.splitext(file.filename)[0] + ".wav"
@@ -94,14 +92,14 @@ async def get_audio_file(file: UploadFile = File(...)):
     # print("=====================세그먼트 별로 나누기===================")
     # for r in resultSegment['segments']:
     #     print(f'[{r["start"]} --> {r["end"]}] {r["text"]}')
-    
+
     # print("=====================api 문장 별로 나누기======================")
     sentence = kiwi.split_into_sents(text)
     print(sentence)
     for st in sentence:
         print(st.text)
 
-    return {"message":{text}}
+    return {"message": {text}, "sentence": {sentence}}
 
 
 @app.post("/script/save")
@@ -111,16 +109,14 @@ async def save_script(script: str):
     for st in sentence:
         StList.append(sentence[st])
 
-
-    return {"scripts": StList}
-
+    return {"scripts": {StList}}
 
 
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
     # await asyncio.sleep(0.1)
     await websocket.accept()
-    #while True:
+    # while True:
     try:
         payload = await websocket.receive_text()
         payload = json.loads(payload)
