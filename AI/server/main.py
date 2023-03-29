@@ -133,7 +133,7 @@ async def ai_emtion(script: str):
         messages.append({"role": "assistant", "content": chat_response})
         result.append(chat_response)
 
-    return {"result": {result}}
+    return result
 
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
