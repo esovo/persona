@@ -2,6 +2,7 @@
   position: relative;
   width: 600px;
   margin: auto;
+  margin-top: 100px;
 }
 
 .onvideo{
@@ -27,4 +28,8 @@
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 100px;
+}
+
+.blank{
+  margin-top: 10px;
 }
