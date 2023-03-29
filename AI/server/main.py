@@ -98,8 +98,8 @@ async def get_audio_file(file: UploadFile = File(...)):
     for st in sentence:
         print(st.text)
 
+
     return {"message": {text}}, sentence
-    # return {"message": {text}}
 
 
 
@@ -136,7 +136,7 @@ async def ai_emtion(script: str):
         messages.append({"role": "assistant", "content": chat_response})
         result.append(chat_response)
 
-    return {"result": {result}}
+    return result
 
 @app.websocket("/")
 async def websocket_endpoint(websocket: WebSocket):
