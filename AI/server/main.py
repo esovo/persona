@@ -97,7 +97,7 @@ async def get_audio_file(file: UploadFile = File(...)):
     for st in sentence:
         print(st.text)
 
-    return {"message": {text}, "sentence": {sentence}}
+    return {"message": {text}, sentence}
 
 
 @app.post("/script/save")
