@@ -31,6 +31,11 @@ public class InitDb {
         public void scriptInit() {
             Script script1 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "더 글로리", "김은숙", "문동은", "화이팅 박연진", 1L);
             em.persist(script1);
+
+            Script script2 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "멜로가 체질", "(김명준)", "민준 ", "나 회사 그만둔다고 말했어. \n"
+                    + "나 이제부터 잘나가는 사람한다. 대표까지 할테니까 5년만 기다려. \n"
+                    + "나 너 안보고 못살아. 그것도 못 느꼈어?", 1L);
+            em.persist(script2);
         }
 
         public Script createScript(EmotionEnum emotion, GenreEnum genre, String title, String author, String actor, String content, Long viewCnt){
@@ -41,6 +46,7 @@ public class InitDb {
             script.setAuthor(author);
             script.setActor(actor);
             script.setViewCnt(viewCnt);
+            script.setContent(content);
 
             return script;
         }
