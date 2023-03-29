@@ -1,7 +1,12 @@
 import { atom } from 'recoil';
 
-export const postmodal = atom<boolean>({
-  key: 'postmodal',
+export const postwritemodal = atom<boolean>({
+  key: 'postwritemodal',
+  default: false,
+});
+
+export const postdetailmodal = atom<boolean>({
+  key: 'postdetailmodal',
   default: false,
 });
 

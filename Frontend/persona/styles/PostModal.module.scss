@@ -11,8 +11,8 @@
   /* 모달 화면 */
   .container {
     padding: 1.5rem 3rem;
-    width: 55rem;
-    height: 35rem;
+    width: 900px;
+    height: 600px;
     border-radius: 0.313rem;
     display: flex;
     flex-direction: column;
@@ -37,18 +37,31 @@
     /* 텍스트 에디터 */
     .quill {
       height: 400px;
+      margin-top: 15px;
     }
     /* 하단 버튼 */
     .bottom {
-      .pull {
+      .video {
+        font-size: 20px;
         position: absolute;
         left: 50px;
-        bottom: 30px;
+        bottom: 38px;
+        .pull {
+          font-size: 18px;
+          padding-left: 10px;
+          background-color: transparent;
+          border: none;
+        }
       }
       .write {
+        font-size: 16px;
         position: absolute;
         right: 50px;
         bottom: 30px;
+        color: white;
+        background-color: black;
+        padding: 5px 30px;
+        border-radius: 0.313rem;
       }
     }
   }

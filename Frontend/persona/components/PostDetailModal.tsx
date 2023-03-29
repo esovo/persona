@@ -1,11 +1,12 @@
 // import axios from 'axios';
 import style from '../styles/PostModal.module.scss';
 import { useRecoilState } from 'recoil';
-import { postmodal } from '../states/communityState';
-import QuillEditor from './QuillEditor';
+import { postdetailmodal } from '../states/communityState';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export default function Modal() {
-  const [showModal, setShowModal] = useRecoilState(postmodal);
+  const [showModal, setShowModal] = useRecoilState(postdetailmodal);
 
   const shutModal = () => {
     setShowModal(false);
@@ -17,14 +18,11 @@ export default function Modal() {
         <div className={style.back}>
           <div className={style.container}>
             <div className={style.header}>
-              <div className={style.title}>글쓰기</div>
               <button className={style.close} onClick={shutModal}>
-                X
+                <FontAwesomeIcon icon={faXmark} style={{ color: '#545454' }} />
               </button>
             </div>
-            <QuillEditor />
             <div className={style.bottom}>
-              <button className={style.pull}>내 영상 가져오기</button>
               <button className={style.write}>게시</button>
             </div>
           </div>
