@@ -1,4 +1,4 @@
-import React, { useRef, useEffect,useState,useCallback } from "react";
+import React, { useRef, useEffect,useState,useCallback,PureComponent  } from "react";
 import { useDashboardContext } from "../components/Dashboard";
 import { Settings, useSettingsContext } from "../components/Settings";
 import Webcam from "react-webcam";
@@ -24,6 +24,9 @@ import axios from "axios"
 import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
+import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
+
+
 
 const FaceDetect = (props) => {
   
@@ -69,7 +72,7 @@ const FaceDetect = (props) => {
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
   const [text,setText] =useState("아주 긴 텍스트를 작성하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다.");
-  const [recordtext,setRecordtext] =useState("");
+  const [recordtext,setRecordtext] =useState("아주 긴 텍스트를 작석하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다다.");
   useEffect(() => {
     if(!webcamOn){
       setendcam(true)
@@ -458,14 +461,35 @@ const FaceDetect = (props) => {
           },
         })
         .then((response) => {
-          console.log(response.data.message);
-          setRecordtext(response.data.message[0])
+          console.log(response.data[1]);
+          setRecordtext(response.data[0].message[0])
+          
           // console.log(response.data.filename);
         });
     } catch (error) {
       console.log(error);
     }
   });
+
+  const newStyles = {
+    variables: {
+      light: {
+        highlightBackground: '#fffbdd',
+        highlightGutterBackground: '#fff5b1',
+      },
+      dark: {
+        highlightBackground: '#fefed5',
+        highlightGutterBackground: '#ffcd3c',
+      },
+    },
+    line: {
+      padding: '10px 2px',
+      '&:hover': {
+        background: '#a26ea1',
+      },
+    },
+  };
+
 
   
 
@@ -481,9 +505,23 @@ const FaceDetect = (props) => {
         <RecordedExpressionsModal />
 
         <div className="scriptComponent">
-          <ScriptText text={text}></ScriptText>
-          <ScriptText text={recordtext}></ScriptText>
+          {/* <ScriptText text={text}></ScriptText>
+          <ScriptText text={recordtext}></ScriptText> */}
+          <ReactDiffViewer
+            styles={newStyles}
+            oldValue={text} 
+            newValue={recordtext} 
+            splitView={true} 
+            compareMethod={DiffMethod.WORDS}
+           />
+
         </div>
+        
+        <Button 
+          variant="contained" 
+          onClick={()=>{}}
+          color="error"
+        >감정분석</Button>
       </div>
       :
       <>
@@ -509,9 +547,9 @@ const FaceDetect = (props) => {
             </canvas>
         }
         <Button 
-        variant="contained" 
-        onClick={()=>{click()}}
-        color="error"
+          variant="contained" 
+          onClick={()=>{click()}}
+          color="error"
         >녹화종료</Button>
         <Settings></Settings>
       </>
