@@ -25,7 +25,7 @@ public class Comment extends BaseTime {
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "useur_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String content;

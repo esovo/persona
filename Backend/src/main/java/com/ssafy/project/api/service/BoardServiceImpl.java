@@ -4,7 +4,6 @@ import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
 import com.ssafy.project.common.db.dto.response.BoardResDTO;
-import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
@@ -35,18 +34,19 @@ public class BoardServiceImpl implements BoardService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sort).descending());
         Page<Board> boardList = boardRepository.findAll(pageable);
 
-//        User user = userRepository.findById(board.user_id);
         Page<BoardResDTO> boardDTOList = boardList.map(board ->
             BoardResDTO.builder()
             .id(board.getId())
-            .likes(board.getLikeCnt())
+            .likeCnt(board.getLikeCnt())
             .videoUrl(board.getVideo().getUrl())
             .title(board.getTitle())
             .content(board.getContent())
             .viewCnt(board.getViewCnt())
             .createdDate(board.getCreatedDate())
             .nickName(board.getUser().getNickname())
-            .build());
+            .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
+            .build()
+        );
          return boardDTOList;
     }
 
@@ -58,13 +58,14 @@ public class BoardServiceImpl implements BoardService {
         List<BoardResDTO> boardDTOList = boardList.stream().map(board ->
                 BoardResDTO.builder()
                 .id(board.getId())
-                .likes(board.getLikeCnt())
+                .likeCnt(board.getLikeCnt())
                 .videoUrl(board.getVideo().getUrl())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCnt(board.getViewCnt())
                 .createdDate(board.getCreatedDate())
                 .nickName(board.getUser().getNickname())
+                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
                 .build()).collect(Collectors.toList());
 
         return boardDTOList;
@@ -81,16 +82,16 @@ public class BoardServiceImpl implements BoardService {
         board.setViewCnt(board.getViewCnt()+1L);
         boardRepository.save(board);
 
-
         BoardResDTO boardResDTO = BoardResDTO.builder()
                 .id(board.getId())
-                .likes(board.getLikeCnt())
+                .likeCnt(board.getLikeCnt())
                 .videoUrl(board.getVideo().getUrl())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCnt(board.getViewCnt())
                 .createdDate(board.getCreatedDate())
                 .nickName(board.getUser().getNickname())
+                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
                 .build();
         return boardResDTO;
     }
@@ -108,13 +109,14 @@ public class BoardServiceImpl implements BoardService {
         Page<BoardResDTO> boardDTOList = boardList.map(board ->
             BoardResDTO.builder()
                     .id(board.getId())
-                    .likes(board.getLikeCnt())
+                    .likeCnt(board.getLikeCnt())
                     .videoUrl(board.getVideo().getUrl())
                     .title(board.getTitle())
                     .content(board.getContent())
                     .viewCnt(board.getViewCnt())
                     .createdDate(board.getCreatedDate())
                     .nickName(board.getUser().getNickname())
+                    .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
                     .build());
         return boardDTOList;
     }
@@ -128,7 +130,7 @@ public class BoardServiceImpl implements BoardService {
                 .video(video)
                 .title(boardAddReqDTO.getTitle())
                 .content(boardAddReqDTO.getContent())
-//                .user()
+                .user(user)
                 .build();
         boardRepository.save(board);
     }
