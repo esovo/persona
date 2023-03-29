@@ -25,8 +25,8 @@ public class ScriptController {
     private final ScriptService scriptService;
 
     //대본 조회
-    @PutMapping("/all")
-    @ApiOperation(value = "전체 게시물 조회")
+    @PostMapping("/all")
+    @ApiOperation(value = "전체 대본 조회")
     public ResponseEntity<ResponseDTO> scriptList(@RequestBody ScriptSearchReqDTO scriptSearchReqDTO){
         Page<ScriptDTO> scripts = scriptService.findAllScript(scriptSearchReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scripts));

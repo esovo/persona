@@ -44,6 +44,4 @@ public class Board extends BaseTime {
 
     @ColumnDefault("0")
     private Long viewCnt;
-    @ColumnDefault("0")
-    private Long likeCnt;
 }
