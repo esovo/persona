@@ -18,10 +18,10 @@ export default function List() {
 
   type Post = {
     id: number;
-    nickname: string;
+    user: string;
     date: string;
     title: string;
-    body: string;
+    content: string;
     like: number;
     comment: number;
   };
@@ -43,46 +43,46 @@ export default function List() {
   const posts: Post[] = [
     {
       id: 1,
-      nickname: 'ovo',
+      user: 'ovo',
       date: '2023-03-24 11:04:30',
       title: '테스트 제목입니다.',
-      body: '테스트 글입니다.',
+      content: '테스트 글입니다.',
       like: 1,
       comment: 0,
     },
     {
       id: 2,
-      nickname: 'ovo6',
+      user: 'ovo6',
       date: '2023-03-28 11:04:30',
       title: '테스트2 제목입니다.',
-      body: '테스트2 글입니다.',
+      content: '테스트2 글입니다.',
       like: 2,
       comment: 0,
     },
     {
       id: 3,
-      nickname: 'ovovo',
+      user: 'ovovo',
       date: '2023-03-28 11:04:30',
       title: '테스트3 제목입니다.',
-      body: '테스트3 글입니다.',
+      content: '테스트3 글입니다.',
       like: 3,
       comment: 0,
     },
     {
       id: 4,
-      nickname: 'ovovo',
+      user: 'ovovo',
       date: '2023-03-28 11:04:30',
       title: '테스트4 제목입니다.',
-      body: '테스트4 글입니다.',
+      content: '테스트4 글입니다.',
       like: 4,
       comment: 0,
     },
     {
       id: 5,
-      nickname: 'ovovo',
+      user: 'ovovo',
       date: '2023-03-28 11:04:30',
       title: '테스트5 제목입니다.',
-      body: '테스트5 글입니다.',
+      content: '테스트5 글입니다.',
       like: 5,
       comment: 0,
     },
@@ -91,28 +91,28 @@ export default function List() {
   const poposts: Post[] = [
     {
       id: 1,
-      nickname: 'ovo',
+      user: 'ovo',
       date: '2023-03-24 11:04:30',
       title: '테스트 제목입니다.',
-      body: '테스트 글입니다.',
+      content: '테스트 글입니다.',
       like: 1,
       comment: 0,
     },
     {
       id: 2,
-      nickname: 'ovo6',
+      user: 'ovo6',
       date: '2023-03-28 11:04:30',
       title: '테스트2 제목입니다.',
-      body: '테스트2 글입니다.',
+      content: '테스트2 글입니다.',
       like: 2,
       comment: 0,
     },
     {
       id: 3,
-      nickname: 'ovovo',
+      user: 'ovovo',
       date: '2023-03-28 11:04:30',
       title: '테스트3 제목입니다.',
-      body: '테스트3 글입니다.',
+      content: '테스트3 글입니다.',
       like: 3,
       comment: 0,
     },
@@ -157,9 +157,9 @@ export default function List() {
               <div key={post.id} className={style.post}>
                 <div className={style.content} onClick={startDetailHandler}>
                   <div className={style.title}>{post.title}</div>
-                  <div className={style.body}>{post.body}</div>
+                  <div className={style.body}>{post.content}</div>
                   <div className={style.info}>
-                    <div className={style.nickname}>{post.nickname}</div> |<div className={style.date}>{post.date}</div>
+                    <div className={style.user}>{post.user}</div> |<div className={style.date}>{post.date}</div>
                   </div>
                 </div>
                 <div className={style.itmes}>
@@ -187,10 +187,9 @@ export default function List() {
                 <div key={post.id} className={style.post}>
                   <div className={style.content}>
                     <div className={style.title}>{post.title}</div>
-                    <div className={style.body}>{post.body}</div>
+                    <div className={style.body}>{post.content}</div>
                     <div className={style.info}>
-                      <div className={style.nickname}>{post.nickname}</div> |
-                      <div className={style.date}>{post.date}</div>
+                      <div className={style.user}>{post.user}</div> |<div className={style.date}>{post.date}</div>
                     </div>
                   </div>
                   <div className={style.itmes}>
