@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import axios from 'axios';
-import style from '../styles/PostModal.module.scss';
+import style from './PostModal.module.scss';
 import { useRecoilState } from 'recoil';
-import { postDetailModal, selectedPostState } from '../states/communityState';
+import { postDetailModal, selectedPostState } from '../../states/communityState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 

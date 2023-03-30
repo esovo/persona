@@ -5,13 +5,13 @@ import { postsState, selectedPostState, postWriteModal, postDetailModal } from '
 import { useRecoilValue } from 'recoil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import Header from '@/components/Header';
-import WriteModal from '@/components/PostWriteModal';
-import DetailModal from '@/components/PostDetailModal';
-import Footer from '@/components/Footer';
-import style from '../../styles/Community.module.scss';
+// import Header from '@/components/Header';
+import WriteModal from '../../components/CommunityPage/PostWriteModal';
+import DetailModal from '../../components/CommunityPage/PostDetailModal';
+import Post from '../../components/CommunityPage/Post';
+// import Footer from '@/components/Footer';
+import style from './Community.module.scss';
 import { faCommentDots, faHeart } from '@fortawesome/free-regular-svg-icons';
-import Post from '@/components/Post';
 
 export default function List() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,7 +61,7 @@ export default function List() {
 
   return (
     <div className={style.wrapper}>
-      <Header />
+      {/* <Header /> */}
       {showWriteModal && <WriteModal />}
       {showDetailModal && <DetailModal />}
       <div className={style.intro}>
@@ -133,7 +133,7 @@ export default function List() {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
