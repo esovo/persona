@@ -19,7 +19,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <>
+    <div>
       <Header />
       <div className={style.home}>
         <h1>
@@ -114,6 +114,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+    </div>
   );
 
   // return (
