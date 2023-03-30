@@ -5,6 +5,7 @@ import com.ssafy.project.common.util.Msg;
 import com.ssafy.project.common.util.ResponseDTO;
 import com.ssafy.project.common.util.provider.AuthProvider;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,6 @@ public class ScriptBookmarkController {
 
     @PostMapping
     public ResponseEntity<ResponseDTO> bookmarkAdd(@RequestParam Long scriptId) {
-        // userId 가져와서 넣기
 //        Long userId = authProvider.getUserIdFromPrincipal();
         Long userId = 1L;
         bookmarkService.AddBookmark(userId, scriptId);
@@ -38,6 +38,12 @@ public class ScriptBookmarkController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
-
-
+    @GetMapping
+    @ApiOperation(value = "북마크 여부 확인")
+    public ResponseEntity<ResponseDTO> bookmarkCheck(@RequestParam Long scriptId){
+//        Long userId = authProvider.getUserIdFromPrincipal();
+        Long userId = 1L;
+        boolean check = bookmarkService.checkBookmark(userId, scriptId);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, check));
+    }
 }

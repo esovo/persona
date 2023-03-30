@@ -36,4 +36,9 @@ public class BookmarkServiceImpl implements BookmarkService {
     public void removeBookmark(Long userId, Long scriptId) {
         bookmarkRepository.deleteByUserIdAndScriptId(userId, scriptId);
     }
+
+    @Override
+    public boolean checkBookmark(Long userId, Long scripId) {
+        return bookmarkRepository.existsScriptByUserIdAndScriptId(userId, scripId);
+    }
 }

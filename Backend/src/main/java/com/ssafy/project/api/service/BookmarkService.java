@@ -4,4 +4,5 @@ public interface BookmarkService {
 
     public void AddBookmark(Long userId, Long scriptId);
     public void removeBookmark(Long userId, Long scriptId);
+    public boolean checkBookmark(Long userId, Long scripId);
 }

@@ -44,4 +44,9 @@ public class BoardLikeServiceImpl implements BoardLikeService {
         board.getBoardLikes().remove(boardLike);
         boardRepository.save(board);
     }
+
+    @Override
+    public boolean checkBoardLike(Long userId, Long boardId) {
+        return boardLikeRepository.existsBoardLikeByUserIdAndBoardId(userId, boardId);
+    }
 }
