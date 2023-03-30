@@ -4,12 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class BoardSearchReqDTO {
-
     @Schema(description = "페이지번호", example = "0")
     private int page;
     @Schema(description = "검색 기준 컬럼명", example = "title")

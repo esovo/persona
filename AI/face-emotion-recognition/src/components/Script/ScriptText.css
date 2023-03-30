@@ -1,0 +1,18 @@
+.script{
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  border-radius: 12px;
+  overflow:scroll;
+  margin-top: 100px;
+}
+
+.scripttext{
+  margin-left: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

@@ -35,7 +35,6 @@ public class CommentServiceImpl implements CommentService{
 //                   .userProfile(comment.getUser().getUserProfile())
                    .nickname(comment.getUser().getNickname())
                    .content(comment.getContent())
-                   .commentLikes(comment.getCommentLikes().size())
                    .createdDate(comment.getCreatedDate())
                    .build());
         return commentDTOList;
