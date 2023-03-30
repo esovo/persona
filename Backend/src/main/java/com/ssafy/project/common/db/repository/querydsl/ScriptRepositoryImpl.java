@@ -40,7 +40,7 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
                         , script.author
                         , script.content
                         , script.registrant
-                        , script.viewNum
+                        , script.viewCnt
                         , script.emotion
                         , script.genre
                         , script.createdDate

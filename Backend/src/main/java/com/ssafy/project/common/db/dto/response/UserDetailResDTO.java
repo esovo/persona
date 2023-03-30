@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Builder
 @Setter
 @Getter
-public class UserDetailResDto {
+public class UserDetailResDTO {
 
     @NonNull
     private String email;

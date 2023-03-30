@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Setter
 @Getter
-public class UserModifyReqDto {
+public class UserModifyReqDTO {
 
     @NonNull
     private String nickname;

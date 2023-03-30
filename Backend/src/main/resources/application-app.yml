@@ -11,10 +11,10 @@ server:
   port: 8080
 
 mysql:
-#  port: localhost:3306
+  port: localhost:3306
 #  user: root
 #  pwd: ssafy
-  port: mysql-db:3306
+#  port: mysql-db:3306
   user: STEPUP
   pwd: "!stepup@persona#301"
 
@@ -36,3 +36,15 @@ oauth2:
 
 cors:
   allowedOrigins: http://localhost:3000
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIAXOKFGBIDWBDEY6IA
+      secret-key: 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
+    s3:
+      bucket: persona-test-bucket
+    region:
+      static: ap-northeast-2

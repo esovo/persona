@@ -1,38 +1,34 @@
 package com.ssafy.project.api.controller;
 
-import com.ssafy.project.common.util.provider.AuthProvider;
+import com.ssafy.project.api.service.VideoService;
+import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
+import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.util.provider.S3Provider;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Log4j2
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class testController {
 
-
+    VideoService videoService;
     @Autowired
-    AuthProvider authProvider;
+    S3Provider s3Provider;
 
-    @Value("${oauth2.google.id}")
-    private String clientId;
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public ResponseEntity<ResponseDTO> hi(@RequestParam("file") MultipartFile file) throws IOException {
 
-    @Value("${oauth2.google.secret}")
-    private String clientSecret;
 
-    //    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
-    private String redirectUri = "http://localhost:8080/oauth2/callback/google";
-
-    @RequestMapping(value = "/auth/account/googlesigncallback", method = RequestMethod.GET)
-    public String hi(HttpServletRequest request, HttpServletResponse response) {
-        log.info("test ======================================== : {}", authProvider.getUserIdFromPrincipal());
-
-        return "hi";
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "ok"));
     }
 
 }

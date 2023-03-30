@@ -17,9 +17,17 @@ public class Video {
     @Column(name = "video_id")
     private Long id;
 
+    private String videoUrl;
+
+    private String thumbnailUrl;
+
+    private String analysis;
+
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
     private Participant participant;
-    private String url;
-    private String analysis;
 }
