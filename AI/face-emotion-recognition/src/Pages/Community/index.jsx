@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState, FormEvent } from 'react';
 import { useRecoilState } from 'recoil';
-import { postwritemodal, postdetailmodal } from '../../states/communityState';
+import { postsState, selectedPostState, postWriteModal, postDetailModal } from '../../states/communityState';
+import { useRecoilValue } from 'recoil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Header from '@/components/Header';
@@ -10,23 +11,15 @@ import DetailModal from '@/components/PostDetailModal';
 import Footer from '@/components/Footer';
 import style from '../../styles/Community.module.scss';
 import { faCommentDots, faHeart } from '@fortawesome/free-regular-svg-icons';
+import Post from '@/components/Post';
 
 export default function List() {
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showWriteModal, setShowWriteModal] = useRecoilState(postwritemodal);
-  const [showDetailModal, setShowDetailModal] = useRecoilState(postdetailmodal);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showWriteModal, setShowWriteModal] = useRecoilState(postWriteModal);
+  const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
+  const posts = useRecoilValue(postsState); // Recoil atom에서 게시물 목록을 가져옵니다.
 
-  type Post = {
-    id: number;
-    user: string;
-    date: string;
-    title: string;
-    content: string;
-    like: number;
-    comment: number;
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     // 여기에 검색어를 사용하는 로직을 추가하세요.
     console.log(`Searching for: ${searchQuery}`);
@@ -36,59 +29,7 @@ export default function List() {
     setShowWriteModal(true);
   };
 
-  const startDetailHandler = () => {
-    setShowDetailModal(true);
-  };
-
-  const posts: Post[] = [
-    {
-      id: 1,
-      user: 'ovo',
-      date: '2023-03-24 11:04:30',
-      title: '테스트 제목입니다.',
-      content: '테스트 글입니다.',
-      like: 1,
-      comment: 0,
-    },
-    {
-      id: 2,
-      user: 'ovo6',
-      date: '2023-03-28 11:04:30',
-      title: '테스트2 제목입니다.',
-      content: '테스트2 글입니다.',
-      like: 2,
-      comment: 0,
-    },
-    {
-      id: 3,
-      user: 'ovovo',
-      date: '2023-03-28 11:04:30',
-      title: '테스트3 제목입니다.',
-      content: '테스트3 글입니다.',
-      like: 3,
-      comment: 0,
-    },
-    {
-      id: 4,
-      user: 'ovovo',
-      date: '2023-03-28 11:04:30',
-      title: '테스트4 제목입니다.',
-      content: '테스트4 글입니다.',
-      like: 4,
-      comment: 0,
-    },
-    {
-      id: 5,
-      user: 'ovovo',
-      date: '2023-03-28 11:04:30',
-      title: '테스트5 제목입니다.',
-      content: '테스트5 글입니다.',
-      like: 5,
-      comment: 0,
-    },
-  ];
-
-  const poposts: Post[] = [
+  const poposts= [
     {
       id: 1,
       user: 'ovo',
@@ -154,24 +95,8 @@ export default function List() {
           <div className={style.posts}>
             <div className={style.sort}>최신순</div>
             {posts.map((post) => (
-              <div key={post.id} className={style.post}>
-                <div className={style.content} onClick={startDetailHandler}>
-                  <div className={style.title}>{post.title}</div>
-                  <div className={style.body}>{post.content}</div>
-                  <div className={style.info}>
-                    <div className={style.user}>{post.user}</div> |<div className={style.date}>{post.date}</div>
-                  </div>
-                </div>
-                <div className={style.itmes}>
-                  <div className={style.like}>
-                    <FontAwesomeIcon icon={faHeart} style={{ color: '#ce4040' }} />
-                    <div>{post.like}</div>
-                  </div>
-                  <div className={style.comment}>
-                    <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />
-                    <div>{post.comment}</div>
-                  </div>
-                </div>
+              <div key={post.id}>
+                <Post key={post.id} {...post} />
               </div>
             ))}
           </div>

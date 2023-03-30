@@ -3,7 +3,7 @@ import { Dashboard } from './components/Dashboard';
 import * as ReactDOM from 'react-dom/client';
 // import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './index.css';
+import './App.css';
 import { DashboardContextProvider } from './components/Dashboard';
 import { SettingsContextProvider } from './components/Settings';
 import Main  from './Pages/Main/Main';
