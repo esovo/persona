@@ -1,17 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import style from './Main.module.scss';
-// import Image from 'next/image';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import Header from '../../components/Common/Header';
+import style from "./Main.module.scss";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Header from "../../components/Common/Header";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function Footer() {
   useEffect(() => {
     AOS.init();
-    document.querySelectorAll('div').forEach((img) => img.addEventListener('load', () => AOS.refresh()));
+    document
+      .querySelectorAll("div")
+      .forEach((img) => img.addEventListener("load", () => AOS.refresh()));
   }, []);
 
   return (
@@ -25,7 +26,7 @@ export default function Footer() {
           지금 그 자체로도 매력적인 당신 <br />
           자연스러운 표정과 선명한 발음으로 한층 더 멋지게!
         </div>
-        <img src="Main_home.jpg" alt="home" width="1200" height="500"/>
+        <img src="Main_home.jpg" alt="home" width="1200" height="500" />
       </div>
       <div className={style.introduce}>
         <h1>연기에 관심이 있는데 시작이 어려웠나요?</h1>
@@ -53,7 +54,14 @@ export default function Footer() {
       </div>
       <div className={style.easy}>
         <div className={style.left}>
-          <img src="Main_easy.jpg" alt="easy" width="500" height="350" data-aos="fade-up" data-aos-once="false" />
+          <img
+            src="Main_easy.jpg"
+            alt="easy"
+            width="500"
+            height="350"
+            data-aos="fade-up"
+            data-aos-once="false"
+          />
         </div>
         <div className={style.right}>
           <div className={style.title}>#SO EASY</div>
