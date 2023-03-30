@@ -21,8 +21,5 @@ public class Speech {
     @JoinColumn(name = "participant_id")
     private Participant participant;
 
-    //음석 인식된 내용
-    //어떻게 저장될 건지는 더 봐야함`
-    //인식한거 프론트에서 한번에 줄건지
     private String speechRecognition;
 }

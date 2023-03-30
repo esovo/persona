@@ -8,22 +8,27 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.CommentRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
+import com.ssafy.project.common.util.provider.AuthProvider;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final AuthProvider authProvider;
 
     @Override
     public Page<CommentDTO> findComment(Long boardId, int page) {
@@ -32,7 +37,7 @@ public class CommentServiceImpl implements CommentService{
         Page<CommentDTO> commentDTOList = commentList.map(comment ->
              CommentDTO.builder()
                    .id(comment.getId())
-//                   .userProfile(comment.getUser().getUserProfile())
+                   .userProfile(comment.getUser().getSocialAuth().getImageUrl())
                    .nickname(comment.getUser().getNickname())
                    .content(comment.getContent())
                    .createdDate(comment.getCreatedDate())
@@ -41,9 +46,26 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public Page<CommentDTO> findMyComment(int page) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Comment> comments = commentRepository.findByUserId(userId, pageable);
+        Page<CommentDTO> commentDTOS = comments.map(comment ->
+                CommentDTO.builder()
+                        .id(comment.getId())
+                        .userProfile(comment.getUser().getSocialAuth().getImageUrl())
+                        .nickname(comment.getUser().getNickname())
+                        .content(comment.getContent())
+                        .title(comment.getBoard().getTitle())
+                        .createdDate(comment.getCreatedDate())
+                        .build());
+        return commentDTOS;
+    }
+
+    @Override
     public Comment addComment(CommentAddReqDTO commentAddReqDTO) {
         Board board = boardRepository.getById(commentAddReqDTO.getBoardId());
-        User user = userRepository.getById(1L);
+        User user = userRepository.getById(authProvider.getUserIdFromPrincipal());
         Comment comment = Comment.builder()
                 .board(board)
                 .user(user)
@@ -56,8 +78,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void modifyComment(Long id, String content) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
+    public void modifyComment(Long boardId, String content) {
+        Optional<Comment> optionalComment = commentRepository.findById(boardId);
 
         if(!optionalComment.isPresent()) throw new RuntimeException();
 
@@ -67,7 +89,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void removeComment(Long id) {
-        commentRepository.deleteById(id);
+    public void removeComment(Long boardId) {
+        commentRepository.deleteById(boardId);
     }
 }

@@ -25,11 +25,11 @@ import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
+import { useLocation } from "react-router";
 
 
 
 const FaceDetect = (props) => {
-  
   const webcamRef = useRef(null);
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
@@ -74,6 +74,9 @@ const FaceDetect = (props) => {
   const [text,setText] =useState("아주 긴 텍스트를 작성하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다.");
   const [recordtext,setRecordtext] =useState("아주 긴 텍스트를 작석하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다다.");
   useEffect(() => {
+
+    
+
     if(!webcamOn){
       setendcam(true)
     }else{
@@ -261,7 +264,7 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  var socket = new WebSocket('ws://localhost:8000')
+  var socket = new WebSocket('ws://j8b301.p.ssafy.io:8000')
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -455,7 +458,7 @@ const FaceDetect = (props) => {
     try {
       console.log("axios 시작");
       axios
-        .post("http://127.0.0.1:8000/audio/", formData, {
+        .post("http://j8b301.p.ssafy.io:8000/audio/", formData, {
           headers: {
             "Content-Type": "audio/mpeg",
           },
@@ -490,7 +493,17 @@ const FaceDetect = (props) => {
     },
   };
 
+ function emotionAnalyze(text){
+  const config = { headers: {'Content-Type': 'application/json'} }
 
+  axios.post("http://j8b301.p.ssafy.io:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+  // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+        .then((response) => {
+          console.log(response);
+          
+          // console.log(response.data.filename);
+        });
+ }
   
 
   return (
@@ -522,7 +535,7 @@ const FaceDetect = (props) => {
         
         <Button 
           variant="contained" 
-          onClick={()=>{}}
+          onClick={()=>{emotionAnalyze(recordtext)}}
           color="error"
         >감정분석</Button>
 

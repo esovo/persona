@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     public Page<Comment> findByBoardId(Long boardId, Pageable pageable);
+    public Page<Comment> findByUserId(Long userId, Pageable pageable);
     //등록
     public Comment save(Comment comment);
     //삭제

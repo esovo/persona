@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
 
     //좋아요 눌렀는지 확인
-    public Optional<BoardLike> findByUserIdAndBoardId(Long userId, Long boardId);
+    Optional<BoardLike> findByUserIdAndBoardId(Long userId, Long boardId);
     boolean existsBoardLikeByUserIdAndBoardId(Long userId, Long boardId);
+    void deleteByUserIdAndBoardId(Long userId, Long boardId);
 }

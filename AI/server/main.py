@@ -117,8 +117,7 @@ async def save_script(script: str):
 async def ai_emtion(script: str):
     sentence = kiwi.split_into_sents(script)
     messages = [{"role": "user", "content": "너는 연기 지도전문가야. 다음 문장에 대한 감정 표현에 대해서 알려줘. "
-                                            "너는 [화남], [행복], [역겨운], [놀란], [두려움], [중립], [슬픔]"
-                                            " 일곱 가지에서만 골라서 작성해줘"}]
+                                            "너는 [화남], [행복], [역겨운], [놀람], [두려움], [중립], [슬픔] 일곱 가지 중에서 하나만 골라서 대답 해줘, 대답할때는 예를 들어 '[중립]' 이렇게만 답해줘"}]
     result = [];
     for st in sentence:
         print(st.text)
