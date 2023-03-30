@@ -4,10 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
 public class CommentAddReqDTO {
     @Schema(description = "게시글 id", example = "1")

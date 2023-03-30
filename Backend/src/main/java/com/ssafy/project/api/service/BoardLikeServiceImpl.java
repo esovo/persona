@@ -32,7 +32,6 @@ public class BoardLikeServiceImpl implements BoardLikeService {
                 .build();
 
         board.getBoardLikes().add(boardLike);
-        board.setLikeCnt(board.getLikeCnt()+1L);
         boardRepository.save(board);
     }
 
@@ -43,7 +42,11 @@ public class BoardLikeServiceImpl implements BoardLikeService {
         BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(user_id, board_id).orElseThrow(()->new RuntimeException());
 
         board.getBoardLikes().remove(boardLike);
-        board.setLikeCnt(board.getLikeCnt()-1L);
         boardRepository.save(board);
+    }
+
+    @Override
+    public boolean checkBoardLike(Long userId, Long boardId) {
+        return boardLikeRepository.existsBoardLikeByUserIdAndBoardId(userId, boardId);
     }
 }
