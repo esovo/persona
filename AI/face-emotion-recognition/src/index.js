@@ -13,18 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-    <DashboardContextProvider>
-      <SettingsContextProvider>
-        <Routes>
-          <Route path='/' element={<App/>} />
-          <Route path='/dashboard' element={
-            <React.Suspense fallback={<>Loading Fallback ...</>}>
-              <Dashboard />
-            </React.Suspense>
-          } />
-        </Routes>
-      </SettingsContextProvider>
-    </DashboardContextProvider>
+    <App></App>
   </BrowserRouter>,
   // document.getElementById('root')
 );

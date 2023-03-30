@@ -44,6 +44,7 @@ const RecordedExpressionsModal = () => {
    */
   const downloadChart = () => {
     html2canvas(chartRef.current).then((canvas) => {
+      console.log(recordedExpressions);
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
         orientation: "landscape",
