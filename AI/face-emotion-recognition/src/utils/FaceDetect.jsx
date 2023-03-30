@@ -499,8 +499,11 @@ const FaceDetect = (props) => {
       
       {webcamOff?
       <div>
-        <video className="recordvideo" 
-        src={mediaBlobUrl} controls
+        <video 
+          className="recordvideo" 
+          src={mediaBlobUrl} 
+          autoPlay
+          controls
         />
         <RecordedExpressionsModal />
 
@@ -522,6 +525,12 @@ const FaceDetect = (props) => {
           onClick={()=>{}}
           color="error"
         >감정분석</Button>
+
+        <Button 
+          variant="contained" 
+          onClick={()=>{}}
+          color="error"
+        >저장하기</Button>
       </div>
       :
       <>
@@ -546,12 +555,13 @@ const FaceDetect = (props) => {
               ref={canvasRef}>
             </canvas>
         }
+        <Settings></Settings>
         <Button 
           variant="contained" 
           onClick={()=>{click()}}
           color="error"
-        >녹화종료</Button>
-        <Settings></Settings>
+          >녹화종료
+        </Button>
       </>
     }
     </div>
