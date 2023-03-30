@@ -1,7 +1,7 @@
 // import axios from 'axios';
-import style from '../styles/PostModal.module.scss';
+import style from './PostModal.module.scss';
 import { useRecoilState } from 'recoil';
-import { postWriteModal } from '../states/communityState';
+import { postWriteModal } from '../../states/communityState';
 import QuillEditor from './QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';

@@ -1,21 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRecoilState } from 'recoil';
-import { postDetailModal, selectedPostState } from '../states/communityState';
-import style from '../styles/Community.module.scss';
+import { postDetailModal, selectedPostState } from '../../states/communityState';
+import style from '../../Pages/Community/Community.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faHeart } from '@fortawesome/free-regular-svg-icons';
 
-interface PostProps {
-  id: number;
-  user: string;
-  date: string;
-  title: string;
-  content: string;
-  like: number;
-  comment: number;
-}
-
-const Post = ({ id, user, date, title, content, like, comment }: PostProps) => {
+const Post = ({ id, user, date, title, content, like, comment }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
 
