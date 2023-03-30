@@ -2,6 +2,8 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { clickedEmotionState, clickedGenreState, clickedBtnState } from '../../states/practiceFilterState';
 
+import style from './FilterBtn.module.scss'
+
 
 const FilterBtn= ({ id, label, value }) => {
   const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
@@ -36,7 +38,7 @@ const FilterBtn= ({ id, label, value }) => {
     }
   };
 
-  return <button onClick={clickHandler}>{label}</button>;
+  return <div className={style.button} onClick={clickHandler}>{label}</div>;
 };
 
 export default FilterBtn;

@@ -1,12 +1,13 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { user, modal, tokenState } from '../../states/loginState';
-import { useState, useEffect, useRouter } from 'react';
+import { useState, useEffect } from 'react';
 
 import style from './Header.module.scss';
 // import User from '../models/user';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
@@ -16,6 +17,7 @@ export default function Header() {
   const token = useRecoilValue(tokenState);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const startHandler = () => {
     setShowModal(true);
@@ -41,8 +43,21 @@ export default function Header() {
   };
 
   useEffect(() => {
-    console.log(token);
-  }, [token]);
+    const unlisten = navigate((location) => {
+      const headers = new Headers();
+      for (const [key, value] of Object.entries(location.state.headers)) {
+        headers.append(key, value);
+      }
+
+      console.log('헤더 : ', headers);
+      // 토큰, 에러 키값 가져와 로직 구현하기
+
+    });
+    return () => {
+      unlisten();
+    }
+  }, [navigate]);
+  // 위 로직은 메인페이지에 옮겨야 할 수 있음
 
   return (
     <nav className={style.nav}>
