@@ -25,8 +25,7 @@ public class BoardLikeController {
     @PostMapping("/like")
     @ApiOperation(value = "게시글 좋아요")
     public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long board_id){
-        //유저정보 가져와서 안에 파라미터로 넘겨줘야 함.
-        boardLikeService.addBoardLike(1L, board_id);
+        boardLikeService.addBoardLike(board_id);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
@@ -34,17 +33,15 @@ public class BoardLikeController {
     @DeleteMapping
     @ApiOperation(value = "게시글 좋아요 취소")
     public ResponseEntity<ResponseDTO> boardLikeRemove(@RequestParam Long board_id){
-        //유저정보 가져와서 안에 파라미터로 넘겨줘야 함.
-        boardLikeService.removeBoardLike(1L, board_id);
+        boardLikeService.removeBoardLike(board_id);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
     //좋아요 했는지 확인
-    @GetMapping
+    @GetMapping("/check")
     @ApiOperation(value = "좋아요 여부 확인")
     public ResponseEntity<ResponseDTO> boardCheck(@RequestParam Long scriptId){
-        Long userId = 1L;
-        boolean check = boardLikeService.checkBoardLike(userId, scriptId);
+        boolean check = boardLikeService.checkBoardLike(scriptId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK,Msg.SUCCESS_READ, check));
     }
 

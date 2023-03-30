@@ -11,10 +11,12 @@ import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
+import com.ssafy.project.common.util.provider.AuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,12 +24,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
     private final UserRepository userRepository;
-    private final BoardLikeRepository boardLikeRepository;
+    private final AuthProvider authProvider;
 
     @Override
     public Page<BoardAllResDTO> findAllBoard(int page, String sort, String keyword) {
@@ -40,6 +43,23 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findTop3Board();
     }
 
+    @Override
+    public Page<BoardAllResDTO> findMyBoard(int page) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findByUserId(userId, pageable);
+        Page<BoardAllResDTO> boardAllResDTOS = boards.map(board ->
+                BoardAllResDTO.builder()
+                .id(board.getId())
+                .nickName(board.getUser().getNickname())
+                .createdDate(board.getCreatedDate())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .likeCnt(board.getBoardLikes().size())
+                .commentCnt(board.getComments().size())
+                .build());
+        return boardAllResDTOS;
+    }
 
     @Override
     public BoardAllResDTO detailBoard(Long boardId) {
@@ -65,19 +85,19 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void addBoard(BoardAddReqDTO boardAddReqDTO) {
         Video video = videoRepository.getById(boardAddReqDTO.getVideoId());
-        User user = userRepository.getReferenceById(1L);
-        //유저 아이디로 user객체 넣기 가져와서 entity에 넣기
+        User user = userRepository.getReferenceById(authProvider.getUserIdFromPrincipal());
         Board board = Board.builder()
                 .video(video)
                 .title(boardAddReqDTO.getTitle())
                 .content(boardAddReqDTO.getContent())
                 .user(user)
                 .build();
-        boardRepository.save(board);
+        user.getBoards().add(board);
+        userRepository.save(user);
     }
 
     @Override
-    public Board modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
+    public void modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
         Optional<Board> optionalBoard = boardRepository.findById(boardModifyReqDTO.getBoardId());
 
         if(!optionalBoard.isPresent()) throw new RuntimeException();
@@ -86,8 +106,6 @@ public class BoardServiceImpl implements BoardService {
         board.setContent(boardModifyReqDTO.getContent());
         board.setTitle(boardModifyReqDTO.getTitle());
         boardRepository.save(board);
-
-        return board;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package com.ssafy.project.common.db.entity.base;
 
 public enum EmotionEnum {
+    화남,
+    역겨움,
+    두려움,
     기쁨,
-    당황,
-    분노,
-    불안,
-    상처,
     슬픔,
+    놀람,
     중립
 }

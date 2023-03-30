@@ -14,11 +14,12 @@ public interface BoardService {
     //조회
     Page<BoardAllResDTO> findAllBoard(int page, String sort, String keyword);
     List<BoardAllResDTO> findTopBoard();
+    Page<BoardAllResDTO> findMyBoard(int page);
     BoardAllResDTO detailBoard(Long boardId);
     //등록
     void addBoard(BoardAddReqDTO boardAddReqDTO);
     //수정
-    Board modifyBoard(BoardModifyReqDTO boardModifyReqDTO);
+    void modifyBoard(BoardModifyReqDTO boardModifyReqDTO);
     //삭제
-   void removeBoard(Long id);
+     void removeBoard(Long id);
 }

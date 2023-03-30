@@ -20,6 +20,8 @@ public class CommentDTO {
     private String nickname;
     @Schema(description = "내용")
     private String content;
+    @Schema(description = "글 제목")
+    private String title;
+    @Schema(description = "생성일시")
     private LocalDateTime createdDate;
-
 }

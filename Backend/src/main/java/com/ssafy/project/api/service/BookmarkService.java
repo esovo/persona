@@ -1,8 +1,12 @@
 package com.ssafy.project.api.service;
 
+import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
+import org.springframework.data.domain.Page;
+
 public interface BookmarkService {
 
-    public void AddBookmark(Long userId, Long scriptId);
-    public void removeBookmark(Long userId, Long scriptId);
-    public boolean checkBookmark(Long userId, Long scripId);
+    void addBookmark(Long scriptId);
+    void removeBookmark(Long scriptId);
+    boolean checkBookmark(Long scripId);
+    Page<ScriptListResDTO> findMyBookmark(int page);
 }

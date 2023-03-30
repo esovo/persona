@@ -30,7 +30,7 @@ public class BoardController {
     //조회
     @GetMapping("/all")
     @ApiOperation(value="전체 게시물 조회")
-    public ResponseEntity<ResponseDTO> boardList(@RequestParam int page, String sort, String keyword){
+    public ResponseEntity<ResponseDTO> boardAllList(@RequestParam int page, String sort, String keyword){
         Page<BoardAllResDTO> boards = boardService.findAllBoard(page, sort, keyword);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
     }
@@ -42,7 +42,12 @@ public class BoardController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
     }
 
-    //내가 좋아한 게시글 가져오기
+    @GetMapping("my")
+    @ApiOperation(value = "내 게시물 조회")
+    public ResponseEntity<ResponseDTO> boardMyList(@RequestParam int page){
+        Page<BoardAllResDTO> boards = boardService.findMyBoard(page);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
+    }
 
     @GetMapping("/detail")
     @ApiOperation(value="게시글 상세 조회")
@@ -55,7 +60,6 @@ public class BoardController {
     @PostMapping
     @ApiOperation(value = "게시글 등록")
     public ResponseEntity<ResponseDTO> boardAdd(@RequestBody BoardAddReqDTO boardAddReqDTO){
-        //파일 서버에 저장하는 프로세스
         boardService.addBoard(boardAddReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }

@@ -1,32 +1,36 @@
 package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.ScriptSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.ScriptDTO;
+import com.ssafy.project.common.db.dto.response.ScriptDetailResDTO;
+import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
 import com.ssafy.project.common.db.entity.common.Script;
 import com.ssafy.project.common.db.repository.ScriptRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScriptServiceImpl implements ScriptService{
 
     private final ScriptRepository scriptRepository;
 
     @Override
-    public Page<ScriptDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO) {
-        Page<ScriptDTO> scripts = scriptRepository.findAllWithFilter(scriptSearchReqDTO);
+    public Page<ScriptListResDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO) {
+        Page<ScriptListResDTO> scripts = scriptRepository.findAllWithFilter(scriptSearchReqDTO);
         return scripts;
     }
 
     @Override
-    public ScriptDTO detailScript(Long scriptId) {
+    public ScriptDetailResDTO detailScript(Long scriptId) {
 
         Script script = scriptRepository.findById(scriptId).get();
         script.setViewCnt(script.getViewCnt()+1L);
 
-        ScriptDTO scriptDTO = ScriptDTO.builder()
+        ScriptDetailResDTO scriptDetailResDTO = ScriptDetailResDTO.builder()
                 .id(script.getId())
                 .title(script.getTitle())
                 .author(script.getAuthor())
@@ -42,6 +46,6 @@ public class ScriptServiceImpl implements ScriptService{
 
         scriptRepository.save(script);
 
-        return scriptDTO;
+        return scriptDetailResDTO;
     }
 }
