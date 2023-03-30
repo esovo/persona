@@ -57,10 +57,6 @@ public class User extends BaseTime {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<CommentLike> commentLikes = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default

@@ -39,4 +39,13 @@ public class BoardLikeController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
+    //좋아요 했는지 확인
+    @GetMapping
+    @ApiOperation(value = "좋아요 여부 확인")
+    public ResponseEntity<ResponseDTO> boardCheck(@RequestParam Long scriptId){
+        Long userId = 1L;
+        boolean check = boardLikeService.checkBoardLike(userId, scriptId);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK,Msg.SUCCESS_READ, check));
+    }
+
 }
