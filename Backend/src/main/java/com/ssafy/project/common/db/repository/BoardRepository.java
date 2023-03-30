@@ -14,5 +14,5 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
-
+    Page<Board> findByUserId(Long userId, Pageable pageable);
 }

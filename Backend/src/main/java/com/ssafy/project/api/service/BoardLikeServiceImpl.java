@@ -6,25 +6,30 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
+import com.ssafy.project.common.util.provider.AuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardLikeServiceImpl implements BoardLikeService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
+    private final AuthProvider authProvider;
 
     @Override
-    public void addBoardLike(Long user_id, Long board_id) {
-        Board board = boardRepository.findById(board_id).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(user_id).orElseThrow(()-> new RuntimeException());
+    public void addBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new RuntimeException());
+        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
 
-        if(boardLikeRepository.findByUserIdAndBoardId(user_id, board_id).isPresent()) throw new RuntimeException();
+        if(boardLikeRepository.findByUserIdAndBoardId(boardId, boardId).isPresent()) throw new RuntimeException();
 
         BoardLike boardLike = BoardLike.builder()
                 .board(board)
@@ -36,17 +41,18 @@ public class BoardLikeServiceImpl implements BoardLikeService {
     }
 
     @Override
-    public void removeBoardLike(Long user_id, Long board_id) {
-        Board board = boardRepository.findById(board_id).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(user_id).orElseThrow(()-> new RuntimeException());
-        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(user_id, board_id).orElseThrow(()->new RuntimeException());
+    public void removeBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new RuntimeException());
+        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
+        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(userId, boardId).orElseThrow(()->new RuntimeException());
 
-        board.getBoardLikes().remove(boardLike);
-        boardRepository.save(board);
+        boardLikeRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
 
     @Override
-    public boolean checkBoardLike(Long userId, Long boardId) {
+    public boolean checkBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
         return boardLikeRepository.existsBoardLikeByUserIdAndBoardId(userId, boardId);
     }
 }

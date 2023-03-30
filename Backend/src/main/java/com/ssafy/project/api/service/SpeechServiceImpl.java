@@ -7,8 +7,11 @@ import com.ssafy.project.common.db.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SpeechServiceImpl implements SpeechService {
 
     private final ParticipantRepository participantRepository;

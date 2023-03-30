@@ -8,8 +8,11 @@ import com.ssafy.project.common.db.repository.ParticipantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EmotionServiceImpl implements EmotionService {
 
     private final EmotionRepository emotionRepository;
@@ -21,13 +24,13 @@ public class EmotionServiceImpl implements EmotionService {
         Emotion emotion = Emotion.builder()
                 .participant(participant)
                 .time(emotionAddReqDTO.getTime())
-                .pleasure(emotionAddReqDTO.getPleasure())
-                .embarrassed(emotionAddReqDTO.getEmbarrassed())
-                .anger(emotionAddReqDTO.getAnger())
-                .anxiety(emotionAddReqDTO.getAnxiety())
-                .hurt(emotionAddReqDTO.getHurt())
-                .sad(emotionAddReqDTO.getSad())
-                .neutrality(emotionAddReqDTO.getNeutrality())
+                .angry(emotionAddReqDTO.getPleasure())
+                .disgust(emotionAddReqDTO.getEmbarrassed())
+                .fear(emotionAddReqDTO.getAnger())
+                .happy(emotionAddReqDTO.getAnxiety())
+                .sad(emotionAddReqDTO.getHurt())
+                .surprise(emotionAddReqDTO.getSad())
+                .neutral(emotionAddReqDTO.getNeutrality())
                 .build();
 
         participant.getEmotions().add(emotion);

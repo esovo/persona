@@ -23,17 +23,17 @@ public class Emotion {
 
      private double time;
 
-    private double pleasure;
+    private double angry;
 
-    private double embarrassed;
+    private double disgust;
 
-    private double anger;
+    private double fear;
 
-    private double anxiety;
-
-    private double hurt;
+    private double happy;
 
     private double sad;
 
-    private double neutrality;
+    private double surprise;
+
+    private double neutral;
 }
