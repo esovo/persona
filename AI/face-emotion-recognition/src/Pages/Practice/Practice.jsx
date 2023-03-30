@@ -1,9 +1,8 @@
 import React from 'react';
-// import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-// import { GetServerSideProps } from 'next';
 import {
   clickedEmotionState,
   clickedGenreState,
@@ -17,17 +16,13 @@ import {
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import FilterBtn from '@/components/FilterBtn';
+import FilterBtn from '@/compon';
 // import Script from '@/components/Script';
 
 import scriptmodel from '@/models/script';
 import style from '@/styles/PracticeIndex.module.scss';
 
-type Props = {
-  scripts: scriptmodel[];
-};
-const List: React.FC<Props> = () => {
-  // const List: React.FC<Props> = (props) => {
+const List = () => {
   const clickedEmotion = useRecoilValue(clickedEmotionState);
   const clickedGenre = useRecoilValue(clickedGenreState);
   const clickedBtn = useRecoilValue(clickedBtnState);
@@ -35,7 +30,7 @@ const List: React.FC<Props> = () => {
   const setClickedKeyword = useSetRecoilState(keywordState);
   const setClickedSorting = useSetRecoilState(sortingState);
 
-  const searchHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const searchHandler = (event) => {
     setClickedOption(event.target.value);
   };
 
@@ -55,7 +50,7 @@ const List: React.FC<Props> = () => {
   //   setClickedSorting('조회순');
   // };
 
-  const keywordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const keywordHandler = (event) => {
     setClickedKeyword(event.target.value);
   };
 

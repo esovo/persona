@@ -1,6 +1,6 @@
-import { useRecoilState } from 'recoil';
-import { user, modal } from '../states/loginState';
-import { useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { user, modal, tokenState } from '../states/loginState';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import style from '../styles/Header.module.scss';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ export default function Header() {
   const [showModal, setShowModal] = useRecoilState(modal);
   const [isLogin, setIsLogin] = useState(false);
   const [isDropdown, setIsDropdown] = useState(false);
+  const token = useRecoilValue(tokenState);
 
   const router = useRouter();
 
@@ -39,6 +40,10 @@ export default function Header() {
   const dropdownHandler = () => {
     setIsDropdown(!isDropdown);
   };
+
+  useEffect(() => {
+    console.log(token);
+  }, [token]);
 
   return (
     <nav className={style.nav}>
