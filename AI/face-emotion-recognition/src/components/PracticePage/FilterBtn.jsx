@@ -1,13 +1,12 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { clickedEmotionState, clickedGenreState, clickedBtnState } from '../states/practiceFilterState';
+import { clickedEmotionState, clickedGenreState, clickedBtnState } from '../../states/practiceFilterState';
 
 
 const FilterBtn= ({ id, label, value }) => {
   const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
   const [clickedGenre, setClickedGenre] = useRecoilState(clickedGenreState);
   const [clickedBtnIds, setClickedBtnIds] = useRecoilState(clickedBtnState);
-  // const [];
 
   const clickHandler = () => {
     if (id != 1 && id < 8) {

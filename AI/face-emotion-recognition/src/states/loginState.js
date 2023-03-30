@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
-import User from '../models/user';
+// import User from '../models/user';
 
-export const user = atom<User | null>({
+export const user = atom({
   key: 'user',
   default: null,
 });
 
-export const modal = atom<boolean>({
+export const modal = atom({
   key: 'loginmodal',
   default: false,
 });
@@ -16,7 +16,7 @@ export const dropdownMenuState = atom({
   default: '',
 });
 
-export const tokenState = atom<string>({
+export const tokenState = atom({
   key: 'tokenState',
   default: '',
 });
