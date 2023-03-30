@@ -6,12 +6,11 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.util.provider.AuthProvider;
+import com.ssafy.project.common.provider.AuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

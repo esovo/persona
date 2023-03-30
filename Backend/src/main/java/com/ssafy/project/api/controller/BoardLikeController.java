@@ -1,15 +1,14 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.BoardLikeService;
-import com.ssafy.project.common.util.Msg;
-import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.constant.Msg;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Log4j2

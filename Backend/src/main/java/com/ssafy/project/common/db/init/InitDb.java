@@ -1,4 +1,4 @@
-package com.ssafy.project.common;
+package com.ssafy.project.common.db.init;
 
 
 import com.ssafy.project.common.db.entity.base.EmotionEnum;
@@ -26,7 +26,6 @@ public class InitDb {
     static class InitService{
 
         public final EntityManager em;
-
 
         public void scriptInit() {
             Script script1 =  createScript(EmotionEnum.기쁨, GenreEnum.드라마, "더 글로리", "김은숙", "문동은", "화이팅 박연진", 1L);

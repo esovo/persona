@@ -1,10 +1,8 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.VideoService;
-import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
-import com.ssafy.project.common.util.ResponseDTO;
-import com.ssafy.project.common.util.provider.S3Provider;
-import io.swagger.annotations.ApiOperation;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
+import com.ssafy.project.common.provider.S3Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

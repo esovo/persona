@@ -1,7 +1,7 @@
 
-package com.ssafy.project.common.security.config;
+package com.ssafy.project.common.config;
 
-import com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.security.entrypoint.CustomAuthenticationEntryPoint;
 import com.ssafy.project.common.security.filter.TokenAuthenticationFilter;
 import com.ssafy.project.common.security.handler.OAuth2AuthenticationFailureHandler;

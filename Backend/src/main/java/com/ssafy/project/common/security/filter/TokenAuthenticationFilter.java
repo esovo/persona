@@ -1,11 +1,10 @@
 package com.ssafy.project.common.security.filter;
 
 import com.ssafy.project.common.security.service.CustomUserDetailsService;
-import com.ssafy.project.common.util.provider.TokenProvider;
+import com.ssafy.project.common.provider.TokenProvider;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 
 @Log4j2
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
