@@ -6,7 +6,5 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class ParticipantAddReqDTO {
-
     private Long scriptId;
-    private Long userId;
 }

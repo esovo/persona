@@ -12,13 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ScriptDTO {
+public class ScriptListResDTO {
 
     private Long id;
     private String title;
     private String author;
     private String actor;
-    private String content;
     private Long viewCnt;
     private EmotionEnum emotion;
     private GenreEnum genre;
