@@ -25,14 +25,20 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping
+    @GetMapping("/all")
     @ApiOperation(value="전체 댓글 조회")
     public ResponseEntity<ResponseDTO> commentList(@RequestParam Long boardId, @RequestParam int page) {
         Page<CommentDTO> comments = commentService.findComment(boardId, page);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, comments));
     }
 
-    //등록
+    @GetMapping("/my")
+    @ApiOperation(value="내 댓글 조회")
+    public ResponseEntity<ResponseDTO> commentMyList(@RequestParam int page) {
+        Page<CommentDTO> comments = commentService.findMyComment(page);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, comments));
+    }
+
     @PostMapping
     @ApiOperation(value="댓글 등록")
     public ResponseEntity<ResponseDTO> commentAdd(@RequestBody CommentAddReqDTO commentAddReqDTO){
@@ -55,6 +61,4 @@ public class CommentController {
         commentService.removeComment(commentId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
-
-
 }
