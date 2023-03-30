@@ -29,8 +29,4 @@ public class Comment extends BaseTime {
     private User user;
 
     private String content;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "comment", orphanRemoval = true)
-    private List<CommentLike> commentLikes = new ArrayList<>();
 }

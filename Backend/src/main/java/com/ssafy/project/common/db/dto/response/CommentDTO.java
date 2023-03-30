@@ -1,8 +1,5 @@
 package com.ssafy.project.common.db.dto.response;
 
-import com.ssafy.project.common.db.entity.common.Board;
-import com.ssafy.project.common.db.entity.common.CommentLike;
-import com.ssafy.project.common.db.entity.common.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -23,9 +20,8 @@ public class CommentDTO {
     private String nickname;
     @Schema(description = "내용")
     private String content;
-    @Schema(description = "좋아요수")
-    private int commentLikes;
-
+    @Schema(description = "글 제목")
+    private String title;
+    @Schema(description = "생성일시")
     private LocalDateTime createdDate;
-
 }

@@ -1,41 +1,76 @@
 package com.ssafy.project.api.service;
 
+import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
 import com.ssafy.project.common.db.entity.common.Bookmark;
 import com.ssafy.project.common.db.entity.common.Script;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BookmarkRepository;
 import com.ssafy.project.common.db.repository.ScriptRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
+import com.ssafy.project.common.util.provider.AuthProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookmarkServiceImpl implements BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final ScriptRepository scriptRepository;
+    private final AuthProvider authProvider;
 
     @Override
-    public void AddBookmark(Long userId, Long scriptId) {
-
+    public void addBookmark(Long scriptId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
         User user = userRepository.findById(userId).get();
         Script script = scriptRepository.findById(scriptId).get();
 
-        //뭔가 유저에 생명주기....해서 user list에서 더해주는걸로 하는 걸....
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
                 .script(script)
                 .build();
 
-        script.setBookmarkCnt(script.getBookmarkCnt()+1L);
-        scriptRepository.save(script);
-        //유저에 넣고 save 하기
+        user.getBookmarks().add(bookmark);
+        userRepository.save(user);
     }
 
     @Override
-    public void removeBookmark(Long userId, Long scriptId) {
+    public void removeBookmark(Long scriptId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        bookmarkRepository.deleteByUserIdAndScriptId(userId, scriptId);
+    }
 
+    @Override
+    public boolean checkBookmark(Long scripId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        return bookmarkRepository.existsScriptByUserIdAndScriptId(userId, scripId);
+    }
+
+    @Override
+    public Page<ScriptListResDTO> findMyBookmark(int page) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Bookmark> bookmarks = bookmarkRepository.findByUserId(authProvider.getUserIdFromPrincipal(), pageable);
+        Page<ScriptListResDTO> scripts = bookmarks.map(bookmark ->
+                ScriptListResDTO.builder()
+                        .id(bookmark.getScript().getId())
+                        .title(bookmark.getScript().getTitle())
+                        .author(bookmark.getScript().getAuthor())
+                        .actor(bookmark.getScript().getActor())
+                        .viewCnt(bookmark.getScript().getViewCnt())
+                        .emotion(bookmark.getScript().getEmotion())
+                        .genre(bookmark.getScript().getGenre())
+                        .createdDate(bookmark.getScript().getCreatedDate())
+                        .bookmarkCnt(bookmark.getScript().getBookmarks().size())
+                        .participantCnt(bookmark.getScript().getParticipants().size())
+                        .build());
+        return scripts;
     }
 }
