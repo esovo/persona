@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
 import { DashboardContextProvider } from './components/Dashboard';
 import { SettingsContextProvider } from './components/Settings';
-// import Main  from './components/Main/Main';
+import Main  from './Pages/Main/Main';
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
       <DashboardContextProvider>
         <SettingsContextProvider>
           <Routes>
-          {/* <Route path='/' element={
+          <Route path='/' element={
             <Main></Main>
-            } /> */}
+            } />
         {/* <Route path='/Bookmark' element={<Bookmark/>} />
           <Route path='/Community' element={<Community/>} />
           <Route path='/Mypage' element={<Mypage/>} />
