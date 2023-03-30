@@ -23,7 +23,7 @@ function App() {
           <Route path='/Mypage' element={<Mypage/>} />
           <Route path='/Practice' element={<Practice/>} />
           <Route path='/Storage' element={<Storage/>} /> */}
-            <Route path='/dashboard' element={
+            <Route path='/dashboard/:scriptid' element={
               <React.Suspense fallback={<>Loading Fallback ...</>}>
                 <Dashboard />
               </React.Suspense>
