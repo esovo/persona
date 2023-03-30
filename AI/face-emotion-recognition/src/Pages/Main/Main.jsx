@@ -4,6 +4,7 @@ import style from './Main.module.scss';
 // import Image from 'next/image';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Header from '../../components/Common/Header';
 
 import { useEffect } from 'react';
 
@@ -15,6 +16,7 @@ export default function Footer() {
 
   return (
     <>
+      <Header />
       <div className={style.home}>
         <h1>
           I'm Your Persona <br /> 너를 더 멋진 배우로 만들어줄게!

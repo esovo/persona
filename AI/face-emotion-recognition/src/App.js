@@ -8,6 +8,7 @@ import { DashboardContextProvider } from './components/Dashboard';
 import { SettingsContextProvider } from './components/Settings';
 import Main from './Pages/Main/Main';
 import Community from './Pages/Community/Community';
+import Practice from './Pages/Practice/Practice';
 
 function App() {
   return (
