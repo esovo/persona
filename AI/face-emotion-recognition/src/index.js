@@ -16,7 +16,7 @@ root.render(
     <DashboardContextProvider>
       <SettingsContextProvider>
         <Routes>
-          <Route path='/' element={<App />} />
+          <Route path='/' element={<App/>} />
           <Route path='/dashboard' element={
             <React.Suspense fallback={<>Loading Fallback ...</>}>
               <Dashboard />

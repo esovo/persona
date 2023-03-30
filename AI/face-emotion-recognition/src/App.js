@@ -1,5 +1,3 @@
-import Home from './components/Home';
-// import './App.css';
 import { Dashboard } from './components/Dashboard';
 
 function App() {
