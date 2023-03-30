@@ -28,7 +28,8 @@ const List = () => {
   const clickedBtn = useRecoilValue(clickedBtnState);
   const setClickedOption = useSetRecoilState(optionState);
   const setClickedKeyword = useSetRecoilState(keywordState);
-  const setClickedSorting = useSetRecoilState(sortingState);
+    const setClickedSorting = useSetRecoilState(sortingState);
+  const [page, setPage] = useRecoilState(pageState)
 
   const searchHandler = (event) => {
     setClickedOption(event.target.value);
