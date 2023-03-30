@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 
 import {
@@ -17,8 +17,9 @@ import Header from '../../components/Common/Header';
 import FilterBtn from '../../components/PracticePage/FilterBtn';
 // import Script from '@/components/Script';
 
-// import scriptmodel from '@/models/script';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import style from './Practice.module.scss';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const List = () => {
   const clickedEmotion = useRecoilValue(clickedEmotionState);
@@ -28,6 +29,8 @@ const List = () => {
   const setClickedKeyword = useSetRecoilState(keywordState);
   const setClickedSorting = useSetRecoilState(sortingState);
   const [page, setPage] = useRecoilState(pageState)
+
+  // const [searchQuery, setSearchQuery] = useState('');
 
   const searchHandler = (event) => {
     setClickedOption(event.target.value);
@@ -66,31 +69,29 @@ const List = () => {
         </div>
         <div className={style.filter}>
           <div className={style.search}>
-            <select name="findby" onChange={searchHandler}>
+
+            
+            <select className={style.selectbox} name="findby" onChange={searchHandler}>
               <option value="title">제목</option>
               <option value="content">내용</option>
               <option value="work">작품</option>
               <option value="character">배역</option>
             </select>
-            {/* <div className={style.searchInput}>
-              <input
+
+            <input
                 className={style.searchText}
                 type="text"
                 id="input_search"
                 placeholder="글 제목, 글 내용, 작성자 검색"
                 maxLength={200}
                 autoComplete="off"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
+                onChange={keywordHandler}
               />
-              <button type="submit" className={style.search}>
-                <FontAwesomeIcon icon={faMagnifyingGlass as IconProp} style={{ color: '#5e5e5e' }} />
+              <button type="submit" className={style.searchbtn}>
+                <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: '#5e5e5e' }} />
               </button>
-            </div> */}
-            <input className={style.searchbar} placeholder="search" onChange={keywordHandler} />
-            <button className={style.searchbtn}>
-              <img src="Header_logo.png" alt="임시버튼" width="50px" height="30px" />
-            </button>
+
+
           </div>
           {clickedEmotion.length > 0 ? <p>클릭된 감정 : {clickedEmotion.join(', ')}</p> : <p>비어있음</p>}
           {clickedGenre.length > 0 ? <p>클릭된 장르 : {clickedGenre.join(', ')}</p> : <p>비어있음</p>}
@@ -109,7 +110,6 @@ const List = () => {
             <FilterBtn id={10} label="#뮤지컬" value="뮤지컬 " />
             <FilterBtn id={11} label="#드라마" value="드라마" />
           </div>
-          <div className={style.options}></div>
         </div>
         <div className={style.script}>
           <div className={style.sorting}>
