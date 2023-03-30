@@ -1,4 +1,4 @@
-package com.ssafy.project.common.util;
+package com.ssafy.project.common.constant;
 
 public interface Msg {
 

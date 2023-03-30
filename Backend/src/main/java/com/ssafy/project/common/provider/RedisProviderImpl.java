@@ -1,4 +1,4 @@
-package com.ssafy.project.common.util.provider;
+package com.ssafy.project.common.provider;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

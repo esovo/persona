@@ -1,4 +1,4 @@
-package com.ssafy.project.common.security.common;
+package com.ssafy.project.common.security.authentication;
 
 import com.ssafy.project.common.db.entity.base.RoleEnum;
 import com.ssafy.project.common.db.entity.common.User;

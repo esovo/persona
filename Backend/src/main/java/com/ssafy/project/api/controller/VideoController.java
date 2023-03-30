@@ -3,7 +3,7 @@ package com.ssafy.project.api.controller;
 import com.ssafy.project.api.service.VideoService;
 import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
 import com.ssafy.project.common.db.dto.request.VideoDeleteReqDTO;
-import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +26,6 @@ public class VideoController {
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     @ApiOperation(value = "비디오 저장")
     public ResponseEntity<ResponseDTO> videoSave(@ModelAttribute VideoCreateReqDTO videoCreateReqDTO) throws IOException {
-
-
-        log.info(videoCreateReqDTO.getAnalysis());
-        log.info(videoCreateReqDTO.getParticipantId());
-        log.info(videoCreateReqDTO.getFile());
         videoService.saveVideo(videoCreateReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "hi"));
     }
@@ -38,7 +33,6 @@ public class VideoController {
     @DeleteMapping
     @ApiOperation(value = "비디오 삭제")
     public ResponseEntity<ResponseDTO> videoDelete(@RequestParam VideoDeleteReqDTO videoDeleteReqDTO){
-
         videoService.deleteVideo(videoDeleteReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "hi"));
     }

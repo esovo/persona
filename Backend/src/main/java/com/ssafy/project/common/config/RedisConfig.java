@@ -1,4 +1,4 @@
-package com.ssafy.project.common.security.config;
+package com.ssafy.project.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

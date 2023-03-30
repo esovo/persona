@@ -1,4 +1,4 @@
-package com.ssafy.project.common.util.provider;
+package com.ssafy.project.common.provider;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssafy.project.common.util.provider.CookieProvider;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssafy.project.common.provider.CookieProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.AuthenticationException;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Log4j2
 @Component

@@ -1,6 +1,6 @@
-package com.ssafy.project.common.util.provider;
+package com.ssafy.project.common.provider;
 
-import com.ssafy.project.common.security.common.UserPrincipal;
+import com.ssafy.project.common.security.authentication.UserPrincipal;
 import com.ssafy.project.common.security.properties.AppProperties;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;

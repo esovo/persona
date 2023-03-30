@@ -2,7 +2,7 @@ package com.ssafy.project.common.security.service;
 
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.security.common.UserPrincipal;
+import com.ssafy.project.common.security.authentication.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

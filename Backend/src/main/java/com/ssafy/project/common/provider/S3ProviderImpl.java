@@ -1,4 +1,4 @@
-package com.ssafy.project.common.util.provider;
+package com.ssafy.project.common.provider;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -50,7 +50,7 @@ public class S3ProviderImpl implements S3Provider {
     @Override
     public String uploadMultipartFile(MultipartFile file, String uri) throws IOException {
 
-        if (file != null || !file.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
 
             s3Client.putObject(new PutObjectRequest(bucket, uri, file.getInputStream(), null)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
@@ -67,7 +67,7 @@ public class S3ProviderImpl implements S3Provider {
     @Override
     public String uploadFile(File file, String uri) throws IOException {
 
-        if (file != null && file.isFile()) {
+        if (file != null) {
 
             s3Client.putObject(new PutObjectRequest(bucket, uri, file)
                     .withCannedAcl(CannedAccessControlList.PublicRead));

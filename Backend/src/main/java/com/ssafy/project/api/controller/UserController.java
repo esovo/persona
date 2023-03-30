@@ -1,10 +1,9 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.UserService;
-import com.ssafy.project.common.db.dto.request.UserModifyReqDTO;
-import com.ssafy.project.common.util.Msg;
-import com.ssafy.project.common.util.ResponseDTO;
-import com.ssafy.project.common.util.provider.AuthProvider;
+import com.ssafy.project.common.constant.Msg;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
+import com.ssafy.project.common.provider.AuthProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

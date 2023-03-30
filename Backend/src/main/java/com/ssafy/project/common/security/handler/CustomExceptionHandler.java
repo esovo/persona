@@ -2,7 +2,7 @@ package com.ssafy.project.common.security.handler;
 
 import com.ssafy.project.common.security.exception.CustomAuthException;
 import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
-import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
