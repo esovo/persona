@@ -8,7 +8,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class UserSearchDto {
+public class UserSearchDTO {
 
     @NonNull
     private String email;

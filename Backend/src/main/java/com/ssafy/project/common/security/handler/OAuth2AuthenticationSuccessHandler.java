@@ -1,7 +1,6 @@
 package com.ssafy.project.common.security.handler;
 
 import com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssafy.project.common.security.exception.BadRequestException;
 import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
 import com.ssafy.project.common.security.properties.AppProperties;
 import com.ssafy.project.common.util.provider.CookieProvider;

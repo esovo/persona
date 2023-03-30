@@ -1,18 +1,16 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.UserService;
-import com.ssafy.project.common.db.dto.request.UserModifyReqDto;
+import com.ssafy.project.common.db.dto.request.UserModifyReqDTO;
 import com.ssafy.project.common.util.Msg;
 import com.ssafy.project.common.util.ResponseDTO;
 import com.ssafy.project.common.util.provider.AuthProvider;
-import com.ssafy.project.common.util.provider.TokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +39,7 @@ public class UserController {
     @GetMapping("/mypage")
     @ApiOperation(value="마이페이지 조회")
     public ResponseEntity<ResponseDTO> userDetailById(){
-        long id = authProvider.getUserIdFromPrincipal();
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_SEARCH, userService.detailUserById(id)));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_SEARCH, userService.detailUserById()));
     }
 
     // 다른 사람의 정보를 조회 할 때
@@ -55,18 +52,14 @@ public class UserController {
     @DeleteMapping
     @ApiOperation(value="유저 탈퇴")
     public ResponseEntity<ResponseDTO> userDelete(){
-
-        long id = authProvider.getUserIdFromPrincipal();
-        userService.deleteUser(id);
+        userService.deleteUser();
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_DELETE));
     }
 
-    @PutMapping
-    @ApiOperation(value="유저 수정")
-    public ResponseEntity<ResponseDTO> userModify(@RequestBody UserModifyReqDto userModifyReqDto){
-
-        long id = authProvider.getUserIdFromPrincipal();
-        userService.modifyUser(id, userModifyReqDto);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_MODIFY));
-    }
+//    @PutMapping
+//    @ApiOperation(value="유저 수정")
+//    public ResponseEntity<ResponseDTO> userModify(@RequestBody UserModifyReqDTO userModifyReqDto){
+//        userService.modifyUser(userModifyReqDto);
+//        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_USER_MODIFY));
+//    }
 }
