@@ -8,13 +8,11 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class VideoDetailResDTO {
+public class VideoListResDTO {
 
     String id;
 
     String analysis;
-
-    String VideoUrl;
 
     String thumbnailUrl;
 

@@ -2,17 +2,18 @@ package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
 import com.ssafy.project.common.db.dto.request.VideoDeleteReqDTO;
+import com.ssafy.project.common.db.dto.response.VideoListResDTO;
 import com.ssafy.project.common.db.entity.common.Participant;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
 import com.ssafy.project.common.db.repository.ParticipantRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
+import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.provider.S3Provider;
 import com.ssafy.project.common.security.exception.BadRequestException;
 import com.ssafy.project.common.security.exception.CustomAuthException;
 import com.ssafy.project.common.util.FileUtils;
-import com.ssafy.project.common.provider.AuthProvider;
-import com.ssafy.project.common.provider.S3Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -62,10 +63,11 @@ public class VideoServiceImpl implements VideoService{
 
 
             videoRepository.save(Video.builder()
-                            .user(user)
+                            .title(videoCreateReqDTO.getTitle())
                             .videoUrl(s3Provider.uploadMultipartFile(videoFile, videoUri))
                             .thumbnailUrl(s3Provider.uploadFile(thumbnailFile, thumbnailUri))
                             .analysis(videoCreateReqDTO.getAnalysis())
+                            .user(user)
                             .participant(participant)
                             .build());
         }
@@ -86,7 +88,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Transactional
-    public Page<Video> findAllVideo(int page, String sort) {
+    public Page<VideoListResDTO> findAllVideo(int page, String sort) {
 
         final int SIZE = 10;
 
