@@ -15,7 +15,7 @@ import {
 import Header from '../../components/Common/Header';
 // import Footer from '@/components/Footer';
 import FilterBtn from '../../components/PracticePage/FilterBtn';
-// import Script from '@/components/Script';
+import Script from '../../components/PracticePage/Script';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import style from './Practice.module.scss';
@@ -116,7 +116,9 @@ const List = () => {
             {/* <div onClick={handler1}>최신순</div>|<div onClick={handler2}>인기순</div>|
             <div onClick={handler3}>참여순</div>|<div onClick={handler4}>조회순</div> */}
           </div>
-          <div className={style.scripts}></div>
+          <div className={style.scripts}>
+            <Script />
+          </div>
         </div>
       </div>
     </>

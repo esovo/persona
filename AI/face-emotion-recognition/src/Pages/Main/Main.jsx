@@ -7,16 +7,42 @@ import 'aos/dist/aos.css';
 import Header from '../../components/Common/Header';
 
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Button from '@mui/material/Button';
 
 
 export default function Footer() {
+
+  const navigate = useNavigate();
+  
+  
   useEffect(() => {
     AOS.init();
     document.querySelectorAll('div').forEach((img) => img.addEventListener('load', () => AOS.refresh()));
+
+    // 추가된 코드
+    const unlisten = navigate((location) => {
+      const headers = new Headers();
+      for (const [key, value] of Object.entries(location.state.headers)) {
+        headers.append(key, value);
+        
+      }
+      
+      // 'show' 키값에 대한 로직 구현
+      const showValue = headers.get('Authorization');
+      console.log('Authorization value: ', showValue);
+    });
+  
+    return () => {
+      unlisten();
+    }
+    // 추가된 코드
+
   }, []);
+
+
 
   return (
     <>

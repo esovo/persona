@@ -9,6 +9,7 @@ import { SettingsContextProvider } from './components/Settings';
 import Main from './Pages/Main/Main';
 import Community from './Pages/Community/Community';
 import Practice from './Pages/Practice/Practice';
+import Callback from './Pages/Callback';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           {/* <Route path='/Mypage' element={<Mypage/>} /> */}
           <Route path='/Practice' element={<Practice/>} />
           {/* <Route path='/Storage' element={<Storage/>} /> */}
+          <Route path='/oauth2/callback' element={<Callback />} />
             <Route path='/dashboard' element={
               <React.Suspense fallback={<>Loading Fallback ...</>}>
                 <Dashboard />
