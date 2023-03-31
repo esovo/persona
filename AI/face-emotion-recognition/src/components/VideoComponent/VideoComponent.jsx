@@ -7,7 +7,7 @@ import FaceDetect from "../../utils/FaceDetect";
 import FaceOverlay from "../../utils/FaceOverlay";
 import { useReactMediaRecorder } from "react-media-recorder";
 
-const VideoComponent = () => {
+const VideoComponent = (props) => {
   const {
     webcamOn, overlayOn,webcamOff,
     emojiOn
@@ -18,8 +18,8 @@ const VideoComponent = () => {
   return(
     <>
       {/* <VideoStream></VideoStream> */}
-      {webcamOn ?  <FaceDetect /> : <WebcamTurnedOff />}
-      {/* {webcamOn && overlayOn && !webcamOff &&  <FaceOverlay/>} */}
+      {webcamOn ?  <FaceDetect text={props.text}/> : <WebcamTurnedOff />}
+      {webcamOn && overlayOn && !webcamOff &&  <FaceOverlay/>}
       {webcamOn && emojiOn && !webcamOff && <span className="absolute top-8 right-8"><EmojiWidget /></span>}
     </>
   );

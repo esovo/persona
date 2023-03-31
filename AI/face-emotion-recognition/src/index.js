@@ -4,11 +4,11 @@ import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import './index.css';
 import App from './App';
-import { DashboardContextProvider } from './components/Dashboard';
-import { SettingsContextProvider } from './components/Settings';
+// import { DashboardContextProvider } from './components/Dashboard';
+// import { SettingsContextProvider } from './components/Settings';
 // import reportWebVitals from './reportWebVitals';
 
-const Dashboard = React.lazy(() => import("./components/Dashboard/Dashboard"));
+// const Dashboard = React.lazy(() => import("./components/Dashboard/Dashboard"));
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
