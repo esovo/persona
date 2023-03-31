@@ -20,7 +20,6 @@ public class BoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
-    //좋아요
     @PostMapping("/like")
     @ApiOperation(value = "게시글 좋아요")
     public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long board_id){
@@ -28,7 +27,6 @@ public class BoardLikeController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
-    //좋아요 취소
     @DeleteMapping
     @ApiOperation(value = "게시글 좋아요 취소")
     public ResponseEntity<ResponseDTO> boardLikeRemove(@RequestParam Long board_id){
@@ -36,12 +34,9 @@ public class BoardLikeController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
-    //좋아요 했는지 확인
     @GetMapping("/check")
     @ApiOperation(value = "좋아요 여부 확인")
     public ResponseEntity<ResponseDTO> boardCheck(@RequestParam Long scriptId){
-        boolean check = boardLikeService.checkBoardLike(scriptId);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK,Msg.SUCCESS_READ, check));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK,Msg.SUCCESS_READ, boardLikeService.checkBoardLike(scriptId)));
     }
-
 }
