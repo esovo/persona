@@ -11,15 +11,16 @@ server:
   port: 8080
 
 mysql:
-  port: localhost:3306
+# port: localhost:3306
 #  user: root
 #  pwd: ssafy
-#  port: mysql-db:3306
+  port: mysql-db:3306
   user: STEPUP
   pwd: "!stepup@persona#301"
 
 redis:
-  host: localhost
+#  host: local
+  host: redis-db
   port: 6379
   pwd:
 
