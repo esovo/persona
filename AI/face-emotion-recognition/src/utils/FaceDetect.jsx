@@ -41,7 +41,9 @@ const FaceDetect = (props) => {
     setMountedVideoComponent,
     setRecordedvideo,
     recordedvideo,
+    recordedExpressions,
     canvasRef
+
   } = useDashboardContext();
 
   const [stream, setStream] = useState();
@@ -71,7 +73,7 @@ const FaceDetect = (props) => {
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
-  const [text,setText] =useState("아주 긴 텍스트를 작성하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다.");
+  const [text,setText] =useState(props.text);
   const [recordtext,setRecordtext] =useState("아주 긴 텍스트를 작석하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다다.");
   useEffect(() => {
 
@@ -264,7 +266,7 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  var socket = new WebSocket('ws://j8b301.p.ssafy.io:8000')
+  var socket = new WebSocket('ws://j8b301.p.ssafy.io:8000/api/socket')
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -458,7 +460,7 @@ const FaceDetect = (props) => {
     try {
       console.log("axios 시작");
       axios
-        .post("http://j8b301.p.ssafy.io:8000/audio/", formData, {
+        .post("http://j8b301.p.ssafy.io:8000/api/audio/", formData, {
           headers: {
             "Content-Type": "audio/mpeg",
           },
@@ -496,13 +498,35 @@ const FaceDetect = (props) => {
  function emotionAnalyze(text){
   const config = { headers: {'Content-Type': 'application/json'} }
 
-  axios.post("http://j8b301.p.ssafy.io:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+  axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
   // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
         .then((response) => {
           console.log(response);
           
           // console.log(response.data.filename);
         });
+ }
+
+ function save(){
+  let getgraph=recordedExpressions
+  let blob =fetch(mediaBlobUrl).then(r => r.blob());
+  const userid="user"
+  console.log(blob)
+  const video = new File([mediaBlobUrl], userid+"video.mp4", {
+    lastModified: new Date().getTime(),
+    type: "video/mp4",
+  });
+  console.log(video)
+  let graphdata =[
+    getgraph[0].data,
+    getgraph[1].data,
+    getgraph[2].data,
+    getgraph[3].data,
+    getgraph[4].data,
+    getgraph[5].data,
+    getgraph[6].data
+  ]
+  console.log(graphdata)
  }
   
 
@@ -541,7 +565,7 @@ const FaceDetect = (props) => {
 
         <Button 
           variant="contained" 
-          onClick={()=>{}}
+          onClick={()=>{save()}}
           color="error"
         >저장하기</Button>
       </div>
