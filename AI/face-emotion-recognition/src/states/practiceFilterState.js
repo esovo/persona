@@ -38,5 +38,5 @@ export const keywordState = atom({
 
 export const sortingState = atom({
   key: 'sortingState',
-  default: '최신순',
+  default: '',
 });

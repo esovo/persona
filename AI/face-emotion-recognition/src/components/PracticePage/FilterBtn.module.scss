@@ -10,6 +10,7 @@
     text-align: center;
 
     // font-family: 'IBM Plex Sans KR';
+    color: #6F6F6F;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -20,6 +21,28 @@
     transition: background-color 0.3s;
   }
   
-  .button-selected {
-    background-color: #7f8c8d;
+  .selected {
+    padding: 5px 40px;
+    margin: 1vw;
+    
+    border: 1px solid #6F6F6F;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    // font-family: 'IBM Plex Sans KR';
+    color: #FFFFFF;
+    background-color: #FCBC8B;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    z-index: 1000;
+
+    border-radius: 40px;
+    // background-color: transparent;
+    transition: background-color 0.3s;
+
+    
+    
   }

@@ -5,6 +5,8 @@ export default function Script(props) {
     return (
         <div className={style.container}>
             <div className={style.newandbookmark}>
+                <div className={style.new}>NEW</div>
+                <div className={style.bookmark}></div>
 
             </div>
             <div className={style.date}>

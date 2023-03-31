@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 
 import {
@@ -27,7 +27,8 @@ const List = () => {
   const clickedBtn = useRecoilValue(clickedBtnState);
   const setClickedOption = useSetRecoilState(optionState);
   const setClickedKeyword = useSetRecoilState(keywordState);
-  const setClickedSorting = useSetRecoilState(sortingState);
+  // const setClickedSorting = useSetRecoilState(sortingState);
+  const [clickedSorting, setClickedSorting] = useRecoilValue(sortingState);
   const [page, setPage] = useRecoilState(pageState)
 
   // const [searchQuery, setSearchQuery] = useState('');
@@ -36,25 +37,17 @@ const List = () => {
     setClickedOption(event.target.value);
   };
 
-  // const handler1 = (event: React.MouseEvent<HTMLElement>) => {
-  //   setClickedSorting('최신순');
-  // };
-
-  // const handler2 = (event: React.MouseEvent<HTMLElement>) => {
-  //   setClickedSorting('인기순');
-  // };
-
-  // const handler3 = (event: React.MouseEvent<HTMLElement>) => {
-  //   setClickedSorting('참여순');
-  // };
-
-  // const handler4 = (event: React.MouseEvent<HTMLElement>) => {
-  //   setClickedSorting('조회순');
-  // };
-
   const keywordHandler = (event) => {
     setClickedKeyword(event.target.value);
   };
+
+  const sortingHandler = () => {
+    
+  }
+
+  useEffect(() => {
+    console.log(clickedSorting);
+  }, [clickedSorting])
 
   return (
     <>
@@ -102,21 +95,24 @@ const List = () => {
             <FilterBtn id={3} label="#당황한" value="당황" />
             <FilterBtn id={4} label="#화난" value="분노" />
             <FilterBtn id={5} label="#기쁜" value="기쁨" />
-            <FilterBtn id={5} label="#무서운" value="불안" />
-            <FilterBtn id={6} label="#혐오스러운" value="상처" />
-            <FilterBtn id={7} label="#중립" value="중립" />
-            <FilterBtn id={8} label="#영화" value="영화" />
-            <FilterBtn id={9} label="#연극" value="연극" />
-            <FilterBtn id={10} label="#뮤지컬" value="뮤지컬 " />
-            <FilterBtn id={11} label="#드라마" value="드라마" />
+            <FilterBtn id={6} label="#무서운" value="불안" />
+            <FilterBtn id={7} label="#혐오스러운" value="상처" />
+            <FilterBtn id={8} label="#중립" value="중립" />
+            <FilterBtn id={9} label="#영화" value="영화" />
+            <FilterBtn id={10} label="#연극" value="연극" />
+            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬 " />
+            <FilterBtn id={12} label="#드라마" value="드라마" />
           </div>
         </div>
         <div className={style.script}>
           <div className={style.sorting}>
-            {/* <div onClick={handler1}>최신순</div>|<div onClick={handler2}>인기순</div>|
-            <div onClick={handler3}>참여순</div>|<div onClick={handler4}>조회순</div> */}
+            <div className={style.text} onClick={() => {setClickedSorting('최신순')}}>최신순</div> | <div className={style.text} onClick={() => {setClickedSorting('인기순')}}>인기순</div>|
+            <div className={style.text} onClick={() => {setClickedSorting('참여순')}}>참여순</div> | <div className={style.text} onClick={() => {setClickedSorting('조회순')}}>조회순</div>
           </div>
           <div className={style.scripts}>
+            <Script />
+            <Script />
+            <Script />
             <Script />
           </div>
         </div>
