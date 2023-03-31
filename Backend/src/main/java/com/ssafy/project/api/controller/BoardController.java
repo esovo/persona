@@ -26,7 +26,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    //조회
     @GetMapping("/all")
     @ApiOperation(value="전체 게시물 조회")
     public ResponseEntity<ResponseDTO> boardAllList(@RequestParam int page, String sort, String keyword){
@@ -55,7 +54,6 @@ public class BoardController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardResDTO));
     }
 
-    //등록
     @PostMapping
     @ApiOperation(value = "게시글 등록")
     public ResponseEntity<ResponseDTO> boardAdd(@RequestBody BoardAddReqDTO boardAddReqDTO){
@@ -63,15 +61,13 @@ public class BoardController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
-    //삭제
     @DeleteMapping
     @ApiOperation(value = "게시글 삭제")
-    public ResponseEntity<ResponseDTO> boardRemove(@RequestParam("id")Long id) {
-        boardService.removeBoard(id);
+    public ResponseEntity<ResponseDTO> boardRemove(@RequestParam Long boardId) {
+        boardService.removeBoard(boardId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
-    //수정
     @PutMapping
     @ApiOperation(value = "게시글 수정")
     public ResponseEntity<ResponseDTO> boardModify(@RequestBody BoardModifyReqDTO boardModifyReqDTO){
