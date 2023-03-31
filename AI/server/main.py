@@ -26,7 +26,6 @@ app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc", openapi_url="/api/op
 
 api_router = APIRouter()
 detector = FER()
-# uvicorn main:app --reload
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
