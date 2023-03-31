@@ -63,7 +63,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String accessToken = tokenProvider.createToken(authentication);
         log.info(accessToken);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
+        targetUrl += "?token=Bearer " + accessToken;
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);

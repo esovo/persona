@@ -11,8 +11,9 @@ public class VideoCreateReqDTO {
 
     MultipartFile file;
 
-    @NonNull
+    String title;
+
     Long participantId;
-    @NonNull
+
     String analysis;
 }
