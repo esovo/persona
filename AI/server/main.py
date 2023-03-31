@@ -22,11 +22,10 @@ openai.api_key = "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"
 
 origins = ["http://localhost:3000"]
 kiwi = Kiwi()
-app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
+app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc", openapi_url="/api/openapi.json")
 
 api_router = APIRouter()
 detector = FER()
-# uvicorn main:app --reload
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -34,7 +33,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-@api_router.post("audio/")
+@api_router.post("/audio")
 async def get_audio_file(file: UploadFile = File(...)):
     print("실행")
     file_location = f"uploads/{file.filename}"
@@ -109,7 +108,6 @@ async def save_script(script: str):
 
     return {"scripts": {StList}}
 
-api_router.add_api_route("/script/save", save_script, methods=["POST"])
 
 @api_router.post("ai/emotion")
 async def ai_emtion(script: str):
