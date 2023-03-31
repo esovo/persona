@@ -3,7 +3,7 @@ import io
 import base64
 import asyncio
 from typing import Optional
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, APIRouter
 import cv2
 import numpy as np
 from fer import FER
@@ -22,8 +22,9 @@ openai.api_key = "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"
 
 origins = ["http://localhost:3000"]
 kiwi = Kiwi()
+app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc")
 
-app = FastAPI()
+api_router = APIRouter()
 detector = FER()
 # uvicorn main:app --reload
 app.add_middleware(
@@ -33,9 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.post("/audio/")
+@api_router.post("audio/")
 async def get_audio_file(file: UploadFile = File(...)):
     print("실행")
     file_location = f"uploads/{file.filename}"
@@ -101,9 +100,7 @@ async def get_audio_file(file: UploadFile = File(...)):
 
     return {"message": {text}}, sentence
 
-
-
-@app.post("/script/save")
+@api_router.post("script/save")
 async def save_script(script: str):
     sentence = kiwi.split_into_sents(script)
     StList = []
@@ -112,8 +109,9 @@ async def save_script(script: str):
 
     return {"scripts": {StList}}
 
+api_router.add_api_route("/script/save", save_script, methods=["POST"])
 
-@app.post("/ai/emotion")
+@api_router.post("ai/emotion")
 async def ai_emtion(script: str):
     sentence = kiwi.split_into_sents(script)
     messages = [{"role": "user", "content": "너는 연기 지도전문가야. 다음 문장에 대한 감정 표현에 대해서 알려줘. "
@@ -137,7 +135,8 @@ async def ai_emtion(script: str):
 
     return result
 
-@app.websocket("/")
+
+@api_router.websocket("/socket")
 async def websocket_endpoint(websocket: WebSocket):
     # await asyncio.sleep(0.1)
     await websocket.accept()
@@ -159,3 +158,6 @@ async def websocket_endpoint(websocket: WebSocket):
         websocket.close()
     except:
         websocket.close()
+
+
+app.include_router(api_router, prefix="/api")
