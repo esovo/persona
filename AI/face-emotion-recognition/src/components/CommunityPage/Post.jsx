@@ -19,7 +19,7 @@ const Post = ({ id, user, date, title, content, like, comment }) => {
         <div className={style.title}>{title}</div>
         <div className={style.body}>{content}</div>
         <div className={style.info}>
-          <div className={style.user}>{user}</div> |<div className={style.date}>{date}</div>
+          <div className={style.nickname}>{user}</div>|<div className={style.date}>{date}</div>
         </div>
       </div>
       <div className={style.itmes}>

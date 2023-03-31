@@ -65,3 +65,25 @@ export const postsState = atom({
     },
   ],
 });
+
+export const commentsState = atom({
+  key: 'commentsState',
+  default: [
+    {
+      id: 1,
+      nickname: 'ovo1',
+      createDate: '2023-03-24 11:04:30',
+      title: '테스트 제목입니다.',
+      content: '댓글 1입니다',
+      userProfile: '프로필 url',
+    },
+    {
+      id: 2,
+      nickname: 'ovo2',
+      createDate: '2023-03-24 11:04:30',
+      title: '테스트 제목입니다.',
+      content: '댓글 2입니다.',
+      userProfile: '프로필 url',
+    },
+  ],
+});

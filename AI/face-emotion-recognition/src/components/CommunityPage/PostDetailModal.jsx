@@ -1,8 +1,11 @@
 import axios from 'axios';
-import style from './PostModal.module.scss';
-import { useRecoilState } from 'recoil';
+import style from './PostDetailModal.module.scss';
+import Comment from './Comment';
+import { commentsState } from '../../states/communityState';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { postDetailModal, selectedPostState } from '../../states/communityState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCommentDots, faHeart, faEye } from '@fortawesome/free-regular-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export default function Modal() {
@@ -11,6 +14,7 @@ export default function Modal() {
   const shutModal = () => {
     setShowModal(false);
   };
+  const comments = useRecoilValue(commentsState); // Recoil atom에서 게시물 목록을 가져옵니다.
 
   return (
     <>
@@ -22,14 +26,41 @@ export default function Modal() {
                 <FontAwesomeIcon icon={faXmark} style={{ color: '#545454' }} />
               </button>
             </div>
-            <p>{selectedPost.user}</p>
-            <p>{selectedPost.date}</p>
-            <h2>{selectedPost.title}</h2>
-            <p>{selectedPost.content}</p>
-            <p>{selectedPost.like}</p>
-            <p>{selectedPost.comment}</p>
+            <div className={style.info}>
+              <div className={style.profile}>
+                <img src="user.png" alt="user" width="50" />
+              </div>
+              <div className={style.userdate}>
+                <div className={style.nickname}>{selectedPost.user}</div>
+                <div className={style.date}>{selectedPost.date}</div>
+              </div>
+            </div>
+            <div className={style.title}>{selectedPost.title}</div>
+            <div className={style.content}>{selectedPost.content}</div>
+            <div className={style.items}>
+              <div className={style.like}>
+                <FontAwesomeIcon icon={faHeart} style={{ color: '#ce4040' }} />
+                <div className={style.num}>{selectedPost.like}</div>
+              </div>
+              <div className={style.visited}>
+                <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} />
+                <div className={style.num}>10</div>
+              </div>
+              <div className={style.comment}>
+                <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />
+                <div className={style.num}>{selectedPost.comment}</div>
+              </div>
+            </div>
             <div className={style.bottom}>
-              <button className={style.write}>게시</button>
+              <div className={style.input}>
+                <input className={style.commentInput} type="text" />
+                <button className={style.push}>보내기</button>
+              </div>
+              {comments.map((comment) => (
+                <div key={comment.id}>
+                  <Comment key={comment.id} {...comment} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
