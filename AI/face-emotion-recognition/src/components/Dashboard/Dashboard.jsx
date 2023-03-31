@@ -10,7 +10,7 @@ import "./Dashboard.css";
 import ScriptText from "../Script/ScriptText";
 import { useLocation } from "react-router";
 import axios from "axios";
-
+import "../../index.css"
 const Dashboard = (props) => {
   const { pathname } = useLocation();
   const [text,setText] = useState();
