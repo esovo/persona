@@ -1,9 +1,12 @@
 import { atom } from 'recoil';
-// import User from '../models/user';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
 
 export const user = atom({
   key: 'user',
   default: null,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const modal = atom({
@@ -19,4 +22,11 @@ export const dropdownMenuState = atom({
 export const tokenState = atom({
   key: 'tokenState',
   default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const loginState = atom({
+  key: 'tokenState',
+  default: false,
+  effects_UNSTABLE: [persistAtom],
 });

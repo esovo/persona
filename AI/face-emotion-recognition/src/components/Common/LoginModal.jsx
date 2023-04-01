@@ -5,7 +5,7 @@ import { modal } from '../../states/loginState';
 
 const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
 const LOCAL_API_BASE_URL = 'http://localhost:8080';
-const WEB_REDURECT_URI = 'http://localhost:3000/oauth2/callback';
+const WEB_REDURECT_URI = 'http://localhost:3000/oauth2/token';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(modal);
@@ -23,7 +23,7 @@ export default function Modal() {
             <div className={style.banner}>로그인 고르셈</div>
             <div className={style.loginSelect}>
             
-            <a href={`${LOCAL_API_BASE_URL}/oauth2/authorization/google?redirect_uri=${WEB_REDURECT_URI}`}>
+            <a href={`${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${WEB_REDURECT_URI}`}>
               {/* <a href={`http://${API_BASE_URL}/app/oauth2/authorization/google`}> */}
                 <img src="Modal_google.png" alt="구글로그인버튼" className={style.google} width="300" />
               </a>

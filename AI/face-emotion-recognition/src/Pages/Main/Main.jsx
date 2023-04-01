@@ -4,13 +4,42 @@ import style from "./Main.module.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Header from "../../components/Common/Header";
+import axios from 'axios';
 
 import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { tokenState, user } from "../../states/loginState";
 
 export default function Footer() {
+
+  const [token, setToken] = useRecoilState(tokenState);
+  const [userinfo, setUserinfo] = useRecoilState(user);
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   
   
   useEffect(() => {
+    console.log('메인페이지로 토큰이 잘 넘어왔다능 : ' + token);
+    axios({
+      url: `${API_BASE_URL}/user`, // 통신할 웹문서
+      method: 'get', // 통신할 방식
+      headers: {
+        'Authorization': token
+      }
+    }).then((res) => {
+      if (token.length !== 0) {
+        console.log(res.data.value);
+        const data = res.data.value;
+        setUserinfo({
+          nickname: data.nickname,
+          email: data.email,
+          img: data.imageUrl,
+        })
+
+
+      }
+    })
+    
+
     AOS.init();
     document
       .querySelectorAll("div")
