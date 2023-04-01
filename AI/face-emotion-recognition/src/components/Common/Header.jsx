@@ -2,7 +2,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { user, modal, tokenState } from '../../states/loginState';
 import { useState } from 'react';
 
-import style from './Header.module.scss';
+import style from "./Header.module.scss";
 // import User from '../models/user';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
@@ -21,7 +21,7 @@ export default function Header() {
 
   const startHandler = () => {
     setShowModal(true);
-    setLoginUser('로그인 유저', '내 닉네임이다요', '인증정보');
+    setLoginUser("로그인 유저", "내 닉네임이다요", "인증정보");
     setIsLogin(!isLogin);
   };
 
@@ -31,9 +31,9 @@ export default function Header() {
   };
 
   const itemClickHandler = (item) => {
-    if (item === 'My Page') {
-      navigate('/mypage');
-    } else if (item === 'Log Out') {
+    if (item === "My Page") {
+      navigate("/mypage");
+    } else if (item === "Log Out") {
       logoutHandler();
     }
   };
@@ -66,9 +66,6 @@ export default function Header() {
           <div className={style.menuItem}>
             <Link to="/storage">보관함</Link>
           </div>
-          <div className={style.menuItem}>
-            <Link to="/bookmark">북마크</Link>
-          </div>
         </div>
       )}
 
@@ -84,7 +81,7 @@ export default function Header() {
             {/* <div className={style.left}>
             </div> */}
             <div className={style.right}>
-              <DropdownMenu items={['My Page', 'Log Out']} onItemClick={itemClickHandler} />
+              <DropdownMenu items={["My Page", "Log Out"]} onItemClick={itemClickHandler} />
             </div>
           </div>
         )}
