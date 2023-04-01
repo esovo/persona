@@ -1,9 +1,9 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.VideoService;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
 import com.ssafy.project.common.db.dto.request.VideoDeleteReqDTO;
-import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +35,12 @@ public class VideoController {
     public ResponseEntity<ResponseDTO> videoDelete(@RequestParam VideoDeleteReqDTO videoDeleteReqDTO){
         videoService.deleteVideo(videoDeleteReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "hi"));
+    }
+
+    @GetMapping
+    @ApiOperation(value = "내 비디오 조회")
+    public ResponseEntity<ResponseDTO> videoMyList() {
+        
+        return ;
     }
 }

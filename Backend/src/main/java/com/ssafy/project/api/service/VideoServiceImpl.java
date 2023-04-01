@@ -88,12 +88,21 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Transactional
-    public Page<VideoListResDTO> findAllVideo(int page, String sort) {
+    public Page<VideoListResDTO> findAllVideo(int page) {
 
         final int SIZE = 10;
+        final String SORT = "createdDate";
 
-        Page<Video> videos = videoRepository.findAll(PageRequest.of(page, SIZE, Sort.by(sort)));
+        Page<Video> videos = videoRepository.findAllByUserId(authProvider.getUserIdFromPrincipal(),
+                PageRequest.of(page, SIZE, Sort.by(SORT).descending()));
 
-        return null;
+        return videos.map(video -> VideoListResDTO.builder()
+                .id(video.getId())
+                .title(video.getTitle())
+                .thumbnailUrl(video.getThumbnailUrl())
+                .analysis(video.getAnalysis())
+                .createdDate(video.getCreatedDate())
+                .build());
     }
+
 }
