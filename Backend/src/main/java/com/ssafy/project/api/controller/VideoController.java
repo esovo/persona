@@ -40,11 +40,7 @@ public class VideoController {
     @GetMapping
     @ApiOperation(value = "내 비디오 조회")
     public ResponseEntity<ResponseDTO> videoMyList() {
-<<<<<<< HEAD
-
-=======
         
->>>>>>> e668677545bb38f357cc5bf078c346e2571b7e1b
         return null;
     }
 }
