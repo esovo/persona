@@ -41,6 +41,6 @@ public class VideoController {
     @ApiOperation(value = "내 비디오 조회")
     public ResponseEntity<ResponseDTO> videoMyList() {
         
-        return ;
+        return null;
     }
 }
