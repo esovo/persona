@@ -1,16 +1,23 @@
 // import axios from 'axios';
+import React, { useState } from 'react';
 import style from './PostWriteModal.module.scss';
 import { useRecoilState } from 'recoil';
-import { postWriteModal } from '../../states/communityState';
+import { postWriteModal, videoModal } from '../../states/communityState';
 import QuillEditor from './QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
+import VideoModal from './VideoModal';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(postWriteModal);
+  const [showVideoModal, setShowVideoModal] = useRecoilState(videoModal);
 
-  const shutModal = () => {
+  const closeModal = () => {
     setShowModal(false);
+  };
+
+  const openVideoModal = () => {
+    setShowVideoModal(true);
   };
 
   return (
@@ -24,11 +31,11 @@ export default function Modal() {
             <input className={style.input} type="text" placeholder="제목을 입력하세요." />
             <QuillEditor />
             <div className={style.bottom}>
-              <div className={style.video}>
+              <div className={style.video} onClick={openVideoModal}>
                 <FontAwesomeIcon icon={faCirclePlay} style={{ color: '#5c5c5c' }} />
-                <button className={style.pull}>내 영상 가져오기</button>
+                <div className={style.pull}>내 영상 가져오기</div>
               </div>
-              <button className={style.close} onClick={shutModal}>
+              <button className={style.close} onClick={closeModal}>
                 취소
               </button>
               <button className={style.write}>게시</button>
@@ -36,6 +43,7 @@ export default function Modal() {
           </div>
         </div>
       )}
+      {showVideoModal && <VideoModal closeModal={() => setShowVideoModal(false)} />}
     </>
   );
 }
