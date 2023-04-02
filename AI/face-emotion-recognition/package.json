@@ -10,6 +10,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -50,6 +51,7 @@
     "react-video-recorder": "^3.19.4",
     "react-webcam": "^6.0.1",
     "recoil": "^0.7.7",
+    "recoil-persist": "^4.2.0",
     "sass": "^1.60.0",
     "styled-components": "^5.3.9",
     "terminal-image": "^2.0.0",

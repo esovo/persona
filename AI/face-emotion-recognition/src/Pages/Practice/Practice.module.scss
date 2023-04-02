@@ -39,20 +39,72 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      background-color: #FFFFFF;
   
-      width: 100%;
+      
       .search {
-        margin-bottom: 5vh;
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 3vh;
+
+        .selectbox {
+          width: 130px;
+          height: 40px;
+          
+
+        }
+
+        .searchText {
+          padding: 20px;
+          height: 40px;
+          width: 670px;
+          border: none;
+          // outline: none;
+          font-size: 16px;
+          // background: transparent;
+        }
+        .searchbtn {
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+        }
+
       }
-      .options {
+
+      .filterButton {
+        width: 80%;
+        display: flex;
+        flex-flow: row wrap;
       }
     }
     .script {
+      display: flex;
+      flex-direction: column;
+
+      margin: 50px;
+      background-color: #F2F6F9;
+
       .sorting {
+        width: 90%;
         display: flex;
-        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        .text {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
       }
-      .script {
+      .scripts {
+        
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
       }
     }
   }

@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 
 export const clickedEmotionState = atom({
   key: 'clickedEmotionState',
-  default: [],
+  default: ['슬픔'],
 });
 
 export const clickedGenreState = atom({
@@ -13,7 +13,7 @@ export const clickedGenreState = atom({
 
 export const clickedBtnState = atom({
   key: 'clickedBtnState',
-  default: [],
+  default: [1],
 });
 
 export const pageState = atom({
@@ -28,12 +28,12 @@ export const scriptState = atom({
 
 export const optionState = atom({
   key: 'optionState',
-  default: '제목',
+  default: 'title',
 });
 
 export const keywordState = atom({
   key: 'keywordState',
-  default: '',
+  default: '최신순',
 });
 
 export const sortingState = atom({
