@@ -35,7 +35,6 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
                         , script.title
                         , script.author
                         , script.actor
-                        , script.content
                         , script.viewCnt
                         , script.emotion
                         , script.genre
