@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import {
   clickedEmotionState,
@@ -23,15 +23,15 @@ import style from './Practice.module.scss';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const List = () => {
-  const clickedEmotion = useRecoilValue(clickedEmotionState);
-  const clickedGenre = useRecoilValue(clickedGenreState);
-  const clickedBtn = useRecoilValue(clickedBtnState);  
-  const [clickedOption, setClickedOption] = useRecoilValue(optionState);
-  const [clickedKeyword, setClickedKeyword] = useRecoilValue(keywordState);
-  const [clickedSorting, setClickedSorting] = useRecoilValue(sortingState);  
+  const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
+  const [clickedGenre, setClickedGenre] = useRecoilState(clickedGenreState);
+  const [clickedBtn, setClickedBtn] = useRecoilState(clickedBtnState);  
+  const [clickedOption, setClickedOption] = useRecoilState(optionState);
+  const [clickedKeyword, setClickedKeyword] = useRecoilState(keywordState);
+  const [clickedSorting, setClickedSorting] = useRecoilState(sortingState);  
   const [page, setPage] = useRecoilState(pageState);
 
-  const [scripts, setScripts] = useRecoilValue(scriptState);
+  const [scripts, setScripts] = useRecoilState(scriptState);
 
   // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
@@ -48,10 +48,13 @@ const List = () => {
     
   }
 
-  const loading = () => {
-    setPage(1); //로직 확인
+  const loading = async () => {
 
-    axios.post(`${API_BASE_URL}/script/all`,{
+    setScripts([]);
+    console.log(clickedEmotion);
+    console.log(clickedGenre);
+    console.log(clickedSorting);
+    await axios.post(`${API_BASE_URL}/script/all`,{
       option: clickedOption,
       keyword: clickedKeyword,
       emotion: clickedEmotion,
@@ -59,8 +62,7 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      console.log(res.data.value.content);
-      // setScripts(); //대본 정보 담기
+      setScripts(res.data.value.content);
     })
   };
 
@@ -79,18 +81,23 @@ const List = () => {
     })
   };
 
-  // useEffect(() => {
-
-    
-  //   loading();
-    
-  // }, [scripts]);
+  const selectHandler = () => {
+    // // if (clickedBtn.includes(1)) {      
+    // // }
+    // setClickedBtn([]);
+    // setClickedEmotion([]);
+    // setClickedGenre([]);
+  }
 
   useEffect(() => {
+    
+    // console.log(clickedEmotion);
+    // console.log(clickedGenre);
+    // console.log(clickedSorting);
     loading();
-    console.log(scripts);
+    console.log()
 
-  }, [])
+  }, [clickedEmotion, clickedGenre, clickedSorting])
 
   return (
     <>
@@ -133,18 +140,18 @@ const List = () => {
           {clickedGenre.length > 0 ? <p>클릭된 장르 : {clickedGenre.join(', ')}</p> : <p>비어있음</p>}
           {clickedBtn.length > 0 ? <p>클릭된 버튼 : {clickedBtn.join(', ')}</p> : <p>비어있음</p>}
           <div className={style.filterButton}>
-            <FilterBtn id={1} label="전체" value="" />
-            <FilterBtn id={2} label="#슬픈" value="슬픔" onClick={loading}/>
-            <FilterBtn id={3} label="#당황한" value="놀람" />
-            <FilterBtn id={4} label="#화난" value="화남" />
-            <FilterBtn id={5} label="#기쁜" value="기쁨" />
-            <FilterBtn id={6} label="#무서운" value="두려움" />
-            <FilterBtn id={7} label="#혐오스러운" value="역겨움" />
-            <FilterBtn id={8} label="#중립" value="중립" />
-            <FilterBtn id={9} label="#영화" value="영화" />
-            <FilterBtn id={10} label="#연극" value="연극" />
-            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬 " />
-            <FilterBtn id={12} label="#드라마" value="드라마" />
+            {/* <FilterBtn sensor={selectHandler} id={1} label="전체" value="" /> */}
+            <FilterBtn sensor={selectHandler} id={2} label="#슬픈" value="슬픔" onClick={loading}/>
+            <FilterBtn sensor={selectHandler} id={3} label="#당황한" value="놀람" />
+            <FilterBtn sensor={selectHandler} id={4} label="#화난" value="화남" />
+            <FilterBtn sensor={selectHandler} id={5} label="#기쁜" value="기쁨" />
+            <FilterBtn sensor={selectHandler} id={6} label="#무서운" value="두려움" />
+            <FilterBtn sensor={selectHandler} id={7} label="#혐오스러운" value="역겨움" />
+            <FilterBtn sensor={selectHandler} id={8} label="#중립" value="중립" />
+            <FilterBtn sensor={selectHandler} id={9} label="#영화" value="영화" />
+            <FilterBtn sensor={selectHandler} id={10} label="#연극" value="연극" />
+            <FilterBtn sensor={selectHandler} id={11} label="#뮤지컬" value="뮤지컬 " />
+            <FilterBtn sensor={selectHandler} id={12} label="#드라마" value="드라마" />
           </div>
         </div>
         <div className={style.script}>
@@ -153,10 +160,7 @@ const List = () => {
             <div className={style.text} onClick={() => {setClickedSorting('참여순')}}>참여순</div> | <div className={style.text} onClick={() => {setClickedSorting('조회순')}}>조회순</div>
           </div>
           <div className={style.scripts}>
-            <Script />
-            <Script />
-            <Script />
-            <Script />
+            {scripts.map((info) => (<Script data={info} />))}
           </div>
         </div>
       </div>
@@ -165,15 +169,3 @@ const List = () => {
 };
 
 export default List;
-
-
-
-  // const scripts = await axios.put("/script/all", {
-  //   option: clickedOption,
-  //   keyword: clickedKeyword,
-  //   emotion: clickedEmotion,
-  //   genre: clickedGenre,
-  //   page: page,
-  //   sort: clickedSort,
-  // })
-
