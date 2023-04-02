@@ -2,13 +2,14 @@ package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.UserModifyReqDTO;
 import com.ssafy.project.common.db.dto.response.UserDetailResDTO;
+import com.ssafy.project.common.db.dto.response.UserHomeResDTO;
 import com.ssafy.project.common.db.dto.response.UserSearchDTO;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.security.exception.CustomAuthException;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.provider.RedisProvider;
 import com.ssafy.project.common.provider.TokenProvider;
+import com.ssafy.project.common.security.exception.CustomAuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,18 @@ public class UserServiceImpl implements UserService{
         long remainTime = expireTime.getTime() - nowTime.getTime();
 
         redisProvider.setBlackList(token, id, remainTime , TimeUnit.MILLISECONDS);
+    }
+
+    @Transactional
+    @Override
+    public UserHomeResDTO homeUser() {
+
+        long id = authProvider.getUserIdFromPrincipal();
+        User user = userRepository.findById(id).orElseThrow(() -> new CustomAuthException("로그인 되어있지 않습니다."));
+
+        return UserHomeResDTO.builder()
+                .nickname(user.getNickname())
+                .imageUrl(user.getSocialAuth().getImageUrl()).build();
     }
 
     @Transactional

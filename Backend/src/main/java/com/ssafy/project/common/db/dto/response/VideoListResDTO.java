@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Setter
 @Getter
-public class VideoDetailResDTO {
+public class VideoListResDTO {
 
-    String id;
-
-    String analysis;
-
-    String VideoUrl;
-
+    Long id;
+    String title;
     String thumbnailUrl;
+    String analysis;
+    LocalDateTime createdDate;
 
 }

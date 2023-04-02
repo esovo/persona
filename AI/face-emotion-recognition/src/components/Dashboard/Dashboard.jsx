@@ -21,7 +21,7 @@ const Dashboard = (props) => {
   // when the component is just mounted
   useEffect(() => {
     const name= pathname.substring(11);
-    axios.get("https://j8b301.p.ssafy.io:/app/script?scriptId="+name,{
+    axios.get("https://j8b301.p.ssafy.io/app/script?scriptId="+name,{
   
     }).then((response) =>{
         setText(response.data.value.content)

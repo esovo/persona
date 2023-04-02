@@ -60,11 +60,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        String accessToken = tokenProvider.createToken(authentication);
-        log.info(accessToken);
-
-        response.setHeader("Authorization", "Bearer " + accessToken);
-
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
@@ -86,9 +81,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // 리디렉션 uri가 있으면 그 값으로, 없으면 defaultUri ("/")
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
+        String accessToken = tokenProvider.createToken(authentication);
+        log.info(accessToken);
 
         return UriComponentsBuilder.fromUriString(targetUri)
                 .queryParam("error", "")
+                .queryParam("token", accessToken)
                 .build().toUriString();
     }
 
