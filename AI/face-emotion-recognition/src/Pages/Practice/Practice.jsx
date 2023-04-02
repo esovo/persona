@@ -31,7 +31,7 @@ const List = () => {
   const [clickedSorting, setClickedSorting] = useRecoilState(sortingState);  
   const [page, setPage] = useRecoilState(pageState);
 
-  const [scripts, setScripts] = useRecoilValue(scriptState);
+  const [scripts, setScripts] = useRecoilState(scriptState);
 
   // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
@@ -48,10 +48,13 @@ const List = () => {
     
   }
 
-  const loading = () => {
-    setPage(1); //로직 확인
+  const loading = async () => {
 
-    axios.post(`${API_BASE_URL}/script/all`,{
+    setScripts([]);
+    console.log(clickedEmotion);
+    console.log(clickedGenre);
+    console.log(clickedSorting);
+    await axios.post(`${API_BASE_URL}/script/all`,{
       option: clickedOption,
       keyword: clickedKeyword,
       emotion: clickedEmotion,
@@ -59,8 +62,7 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      console.log(res.data.value.content);
-      // setScripts(); //대본 정보 담기
+      setScripts(res.data.value.content);
     })
   };
 
@@ -88,10 +90,14 @@ const List = () => {
   }
 
   useEffect(() => {
+    
+    // console.log(clickedEmotion);
+    // console.log(clickedGenre);
+    // console.log(clickedSorting);
     loading();
-    console.log(scripts);
+    console.log()
 
-  }, [clickedBtn])
+  }, [clickedEmotion, clickedGenre, clickedSorting])
 
   return (
     <>
@@ -154,10 +160,7 @@ const List = () => {
             <div className={style.text} onClick={() => {setClickedSorting('참여순')}}>참여순</div> | <div className={style.text} onClick={() => {setClickedSorting('조회순')}}>조회순</div>
           </div>
           <div className={style.scripts}>
-            <Script />
-            <Script />
-            <Script />
-            <Script />
+            {scripts.map((info) => (<Script data={info} />))}
           </div>
         </div>
       </div>
@@ -166,15 +169,3 @@ const List = () => {
 };
 
 export default List;
-
-
-
-  // const scripts = await axios.put("/script/all", {
-  //   option: clickedOption,
-  //   keyword: clickedKeyword,
-  //   emotion: clickedEmotion,
-  //   genre: clickedGenre,
-  //   page: page,
-  //   sort: clickedSort,
-  // })
-
