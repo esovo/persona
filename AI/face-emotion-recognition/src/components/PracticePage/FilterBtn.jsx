@@ -31,12 +31,6 @@ const FilterBtn= ({ id, label, value }) => {
         setClickedGenre([...clickedGenre, value]);
       }
     }
-    
-    else if (id == 1 && clickedBtnIds.length > 0) {
-      setClickedEmotion([]);
-      setClickedGenre([]);
-      setClickedBtnIds(clickedBtnIds.filter((ids) => ids === id));
-    }
 
     if (clickedBtnIds.includes(id)) {
       setClickedBtnIds(clickedBtnIds.filter((ids) => ids !== id));
