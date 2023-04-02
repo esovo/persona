@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { clickedEmotionState, clickedGenreState, clickedBtnState } from '../../states/practiceFilterState';
+
+import style from './FilterBtn.module.scss'
 
 
 const FilterBtn= ({ id, label, value }) => {
   const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
   const [clickedGenre, setClickedGenre] = useRecoilState(clickedGenreState);
   const [clickedBtnIds, setClickedBtnIds] = useRecoilState(clickedBtnState);
+
+  const dynamic = clickedBtnIds.includes(id) ? style.selected : style.button;
+
+  useEffect(() => {
+    console.log("changed");
+  }, [clickedBtnIds])
+
 
   const clickHandler = () => {
     if (id != 1 && id < 8) {
@@ -36,7 +45,7 @@ const FilterBtn= ({ id, label, value }) => {
     }
   };
 
-  return <button onClick={clickHandler}>{label}</button>;
+  return <div className={dynamic} onClick={clickHandler}>{label}</div>;
 };
 
 export default FilterBtn;

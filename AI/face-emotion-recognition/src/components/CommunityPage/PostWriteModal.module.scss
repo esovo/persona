@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 30000;
   /* 모달 화면 */
   .container {
     padding: 1.5rem 3rem;
@@ -36,8 +37,15 @@
     }
     /* 텍스트 에디터 */
     .quill {
-      height: 400px;
+      height: 350px;
       margin-top: 15px;
+    }
+    /* 제목 입력창 */
+    .input {
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 10px;
+      border: solid 1px #c0c0c0;
     }
     /* 하단 버튼 */
     .bottom {
@@ -52,6 +60,16 @@
           background-color: transparent;
           border: none;
         }
+      }
+      .close {
+        font-size: 16px;
+        position: absolute;
+        right: 160px;
+        bottom: 30px;
+        color: white;
+        background-color: black;
+        padding: 5px 30px;
+        border-radius: 0.313rem;
       }
       .write {
         font-size: 16px;
