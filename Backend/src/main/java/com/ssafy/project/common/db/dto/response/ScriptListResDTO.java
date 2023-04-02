@@ -6,10 +6,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class ScriptListResDTO {
@@ -25,5 +23,18 @@ public class ScriptListResDTO {
     private int bookmarkCnt;
     private int participantCnt;
 
+     @Builder
+     public ScriptListResDTO(Long id, String title, String author, String actor, String content, Long viewCnt, EmotionEnum emotion, GenreEnum genre, LocalDateTime createdDate, int bookmarkCnt, int participantCnt) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.actor = actor;
+        this.viewCnt = viewCnt;
+        this.emotion = emotion;
+        this.genre = genre;
+        this.createdDate = createdDate;
+        this.bookmarkCnt = bookmarkCnt;
+        this.participantCnt = participantCnt;
+    }
 
 }

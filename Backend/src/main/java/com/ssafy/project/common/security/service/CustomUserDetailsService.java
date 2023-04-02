@@ -21,14 +21,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email : " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일의 회원이 없습니다. : " + email));
         return UserPrincipal.create(user);
     }
 
     @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
+                .orElseThrow(() -> new UsernameNotFoundException("해당 아이디의 회원이 없습니다. : " + id));
         return UserPrincipal.create(user);
     }
 

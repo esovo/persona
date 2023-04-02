@@ -1,28 +1,25 @@
 app:
   oauth2:
     authorized-redirect-uris:
-      - http://localhost:8080/oauth2/callback
+      - https://j8b301.p.ssafy.io/oauth2/token
+      - http://localhost:3000/oauth2/token
 
   auth:
     tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
     tokenExpirationMsec: 2592000000
 
-server:
-  port: 8080
-
 mysql:
 #  port: localhost:3306
 #  user: root
 #  pwd: ssafy
-  port: mysql-db:3306
+  port: mysql-db
   user: STEPUP
   pwd: "!stepup@persona#301"
 
 redis:
-#  host: local
   host: redis-db
   port: 6379
-  pwd:
+  pwd: ssafy3542
 
 oauth2:
   google:

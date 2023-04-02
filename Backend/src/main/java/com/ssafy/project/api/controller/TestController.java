@@ -9,22 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-public class testController {
+public class TestController {
 
     VideoService videoService;
     @Autowired
     S3Provider s3Provider;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public ResponseEntity<ResponseDTO> hi(@RequestParam("file") MultipartFile file) throws IOException {
-
+    public ResponseEntity<ResponseDTO> hi(@RequestParam("json") Map<String, String> json) throws IOException {
 
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "ok"));
     }
