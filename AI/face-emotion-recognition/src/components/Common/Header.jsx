@@ -1,33 +1,30 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { user, modal, tokenState } from '../../states/loginState';
-import { useState } from 'react';
+import { user, modal, tokenState, loginState } from '../../states/loginState';
+import { useState, useEffect } from 'react';
 
 import style from "./Header.module.scss";
 // import User from '../models/user';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
   const [showModal, setShowModal] = useRecoilState(modal);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [isDropdown, setIsDropdown] = useState(false);
   const token = useRecoilValue(tokenState);
 
   const navigate = useNavigate();
-  // const location = useLocation();
 
   const startHandler = () => {
     setShowModal(true);
-    setLoginUser("로그인 유저", "내 닉네임이다요", "인증정보");
-    setIsLogin(!isLogin);
   };
 
   const logoutHandler = () => {
     setLoginUser(null);
-    setIsLogin(!isLogin);
+    setIsLogin(false);
   };
 
   const itemClickHandler = (item) => {
@@ -41,6 +38,8 @@ export default function Header() {
   const dropdownHandler = () => {
     setIsDropdown(!isDropdown);
   };
+
+  const profile = loginUser === null ? null : { backgroundImage: `url("${loginUser.img}")` };
 
   return (
     <nav className={style.nav}>
@@ -76,7 +75,7 @@ export default function Header() {
           </button>
         ) : (
           <div className={style.login} onClick={dropdownHandler}>
-            <div className={style.profile} />
+            <div className={style.profile} style={profile} />
             <div className={style.nick}>{loginUser?.nickname}</div>
             {/* <div className={style.left}>
             </div> */}
