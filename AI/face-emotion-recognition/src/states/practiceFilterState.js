@@ -13,7 +13,7 @@ export const clickedGenreState = atom({
 
 export const clickedBtnState = atom({
   key: 'clickedBtnState',
-  default: [1],
+  default: [],
 });
 
 export const pageState = atom({
@@ -33,7 +33,7 @@ export const optionState = atom({
 
 export const keywordState = atom({
   key: 'keywordState',
-  default: '최신순',
+  default: '',
 });
 
 export const sortingState = atom({
