@@ -63,6 +63,7 @@ const List = () => {
       sort: clickedSorting,
     }).then((res) => {
       setScripts(res.data.value.content);
+      console.log(res);
     })
   };
 
