@@ -59,7 +59,7 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      console.log(res);
+      console.log(res.data.value.content);
       // setScripts(); //대본 정보 담기
     })
   };
