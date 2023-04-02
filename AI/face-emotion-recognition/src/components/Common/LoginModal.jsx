@@ -27,10 +27,10 @@ export default function Modal() {
               {/* <a href={`http://${API_BASE_URL}/app/oauth2/authorization/google`}> */}
                 <img src="Modal_google.png" alt="구글로그인버튼" className={style.google} width="300" />
               </a>
-              <a href={`${API_BASE_URL}/oauth2/authorization/naver`}>
+              <a href={`${API_BASE_URL}/oauth2/authorization/naver?redirect_uri=${WEB_REDURECT_URI}`}>
                 <img src="Modal_naver.png" alt="네이버로그인버튼" className={style.naver} width="300" />
               </a>
-              <a href={`${API_BASE_URL}/oauth2/authorization/kakao`}>
+              <a href={`${API_BASE_URL}/oauth2/authorization/kakao?redirect_uri=${WEB_REDURECT_URI}`}>
                 <img src="Modal_kakao.png" alt="카카오로그인버튼" className={style.kakao} width="300" />
               </a>
             </div>

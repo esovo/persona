@@ -26,7 +26,7 @@ export const tokenState = atom({
 });
 
 export const loginState = atom({
-  key: 'tokenState',
+  key: 'loginState',
   default: false,
   effects_UNSTABLE: [persistAtom],
 });

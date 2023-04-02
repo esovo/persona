@@ -10,7 +10,7 @@ import "./Dashboard.css";
 import ScriptText from "../Script/ScriptText";
 import { useLocation } from "react-router";
 import axios from "axios";
-
+import "../../index.css"
 const Dashboard = (props) => {
   const { pathname } = useLocation();
   const [text,setText] = useState();
@@ -21,7 +21,7 @@ const Dashboard = (props) => {
   // when the component is just mounted
   useEffect(() => {
     const name= pathname.substring(11);
-    axios.get("http://j8b301.p.ssafy.io:8080/script?scriptId="+name,{
+    axios.get("https://j8b301.p.ssafy.io/app/script?scriptId="+name,{
   
     }).then((response) =>{
         setText(response.data.value.content)
@@ -35,18 +35,21 @@ const Dashboard = (props) => {
   return(
     // loadedModels? 
     <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
+        <div className="textfield">
+          {webcamOff? <></>:  <>
+          <div>
+              <ScriptText text={text}></ScriptText>
+          </div>
+          </>
+        }
+        </div>
         <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
           <div className="flex flex-col w-fit relative">
-            <VideoComponent />
+            <VideoComponent text={text}/>
           </div>
         </div>
-        {webcamOff? <></>:  <>
-        <div>
-            <ScriptText text={text}></ScriptText>
-        </div>
-        </>
-        }
-        <div>
+
+        <div className="emotiongraph">
           {webcamOff? <></>:  <>
                   <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-16 md:my-0">
                   <div className="realtime-emotion flex flex-col items-center justify-center w-[400px] h-[300px] sm:w-[600px] sm:-h[400px] md:w-[700px] md:h-[450px] lg:w-[500px] lg:h-[400px]">

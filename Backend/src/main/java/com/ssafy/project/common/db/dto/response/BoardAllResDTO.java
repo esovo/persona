@@ -1,5 +1,6 @@
 package com.ssafy.project.common.db.dto.response;
 
+import com.ssafy.project.common.db.entity.common.Board;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

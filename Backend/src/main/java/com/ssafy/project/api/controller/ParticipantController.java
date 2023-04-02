@@ -2,9 +2,8 @@ package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.ParticipantService;
 import com.ssafy.project.common.db.dto.request.ParticipantAddReqDTO;
-import com.ssafy.project.common.db.entity.common.Participant;
-import com.ssafy.project.common.util.Msg;
-import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.constant.Msg;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

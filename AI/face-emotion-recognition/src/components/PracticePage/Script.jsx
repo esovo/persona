@@ -5,21 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faEye, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as empty } from '@fortawesome/free-regular-svg-icons';
 
-export default function Script() {
+export default function Script({ data }) {
 
-    const data = {
-        id: 1234,
-        title: '타이틀이다요',
-        author: '작가',
-        actor: '배우',
-        content: '내용',
-        viewCnt: 123456,
-        emotion: '감정',
-        genre: '장르',
-        createdDate: '이건무슨타입일까?',
-        bookmarkCnt: 123,
-        participantCnt: 12
-    }
+    // const data = datas;
+    // {
+    //     id: 1234,
+    //     title: '타이틀이다요',
+    //     author: '작가',
+    //     actor: '배우',
+    //     content: '내용',
+    //     viewCnt: 123456,
+    //     emotion: '감정',
+    //     genre: '장르',
+    //     createdDate: '이건무슨타입일까?',
+    //     bookmarkCnt: 123,
+    //     participantCnt: 12
+    // }
 
     const bookmark = false ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={empty} />
 

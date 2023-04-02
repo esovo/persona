@@ -1,6 +1,7 @@
 package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.CommentAddReqDTO;
+import com.ssafy.project.common.db.dto.request.CommentModReqDTO;
 import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.Comment;
@@ -8,8 +9,9 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.CommentRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.util.provider.AuthProvider;
-import lombok.Builder;
+import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,18 +80,16 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void modifyComment(Long boardId, String content) {
-        Optional<Comment> optionalComment = commentRepository.findById(boardId);
+    public void modifyComment(CommentModReqDTO commentModReqDTO) {
+        Comment comment = commentRepository.findById(commentModReqDTO.getCommentId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
 
-        if(!optionalComment.isPresent()) throw new RuntimeException();
-
-        Comment comment = optionalComment.get();
-        comment.setContent(content);
+        comment.setContent(commentModReqDTO.getContent());
         commentRepository.save(comment);
     }
 
     @Override
-    public void removeComment(Long boardId) {
-        commentRepository.deleteById(boardId);
+    public void removeComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
+        commentRepository.deleteById(commentId);
     }
 }

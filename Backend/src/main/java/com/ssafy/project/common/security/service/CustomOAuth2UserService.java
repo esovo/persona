@@ -5,7 +5,7 @@ import com.ssafy.project.common.db.dto.social.*;
 import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.security.common.UserPrincipal;
+import com.ssafy.project.common.security.authentication.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

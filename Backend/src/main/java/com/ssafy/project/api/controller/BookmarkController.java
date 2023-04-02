@@ -1,15 +1,13 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.BookmarkService;
-import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
-import com.ssafy.project.common.util.Msg;
-import com.ssafy.project.common.util.ResponseDTO;
-import com.ssafy.project.common.util.provider.AuthProvider;
+import com.ssafy.project.common.constant.Msg;
+import com.ssafy.project.common.db.dto.common.ResponseDTO;
+import com.ssafy.project.common.provider.AuthProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

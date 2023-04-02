@@ -25,6 +25,7 @@ export default function Header() {
   const logoutHandler = () => {
     setLoginUser(null);
     setIsLogin(false);
+    navigate('/');
   };
 
   const itemClickHandler = (item) => {
