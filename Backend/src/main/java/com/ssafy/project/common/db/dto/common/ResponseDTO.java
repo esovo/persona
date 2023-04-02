@@ -24,12 +24,7 @@ public class ResponseDTO {
     public static ResponseDTO of(HttpStatus status, String message, Object value) {
         return new ResponseDTO(status, message, value);
     }
-
     public static ResponseDTO of(HttpStatus status, String message) {
-        return new ResponseDTO(status, message);
-    }
-
-    public static ResponseDTO fail(HttpStatus status, String message) {
         return new ResponseDTO(status, message);
     }
 }

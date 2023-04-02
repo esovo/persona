@@ -7,6 +7,8 @@ import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,10 @@ public class BoardLikeServiceImpl implements BoardLikeService {
     @Override
     public void addBoardLike(Long boardId) {
         Long userId = authProvider.getUserIdFromPrincipal();
-        Board board = boardRepository.findById(boardId).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(()-> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
 
-        if(boardLikeRepository.findByUserIdAndBoardId(boardId, boardId).isPresent()) throw new RuntimeException();
+        if(boardLikeRepository.findByUserIdAndBoardId(boardId, boardId).isPresent()) throw new CommonApiException(CommonErrorCode.BOOKMARK_ALREADY_EXIST);
 
         BoardLike boardLike = BoardLike.builder()
                 .board(board)
@@ -42,9 +44,9 @@ public class BoardLikeServiceImpl implements BoardLikeService {
     @Override
     public void removeBoardLike(Long boardId) {
         Long userId = authProvider.getUserIdFromPrincipal();
-        Board board = boardRepository.findById(boardId).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(userId).orElseThrow(()-> new RuntimeException());
-        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(userId, boardId).orElseThrow(()->new RuntimeException());
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(()-> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(userId, boardId).orElseThrow(()->new CommonApiException(CommonErrorCode.BOOKMARK_NOT_FOUND));
 
         boardLikeRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
