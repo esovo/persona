@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dashboard } from './components/Dashboard';
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from 'recoil';
 // import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -17,33 +17,32 @@ function App() {
     <div className="App">
       <header className="App-header">
         <RecoilRoot>
-      <DashboardContextProvider>
+          <DashboardContextProvider>
             <SettingsContextProvider>
-          <Routes>
-          <Route path='/' element={
-            <Main></Main>
-            } />
-        {/* <Route path='/Bookmark' element={<Bookmark/>} /> */}
-          <Route path='/Community' element={<Community/>} />
-          {/* <Route path='/Mypage' element={<Mypage/>} /> */}
-          <Route path='/Practice' element={<Practice/>} />
-          <Route path='/Practice/Detail' element={<PracticeDetail />} />
-          {/* <Route path='/Storage' element={<Storage/>} /> */}
-          <Route path='/oauth2/token' element={<Token />} />
-            <Route path='/dashboard' element={
-              <React.Suspense fallback={<>Loading Fallback ...</>}>
-                <Dashboard />
-              </React.Suspense>
-            } />
-          </Routes>
-        </SettingsContextProvider>
+              <Routes>
+                <Route path="/" element={<Main></Main>} />
+                {/* <Route path='/Bookmark' element={<Bookmark/>} /> */}
+                <Route path="/Community" element={<Community />} />
+                {/* <Route path='/Mypage' element={<Mypage/>} /> */}
+                <Route path="/Practice" element={<Practice />} />
+                <Route path="/Practice/Detail" element={<PracticeDetail />} />
+                {/* <Route path='/Storage' element={<Storage/>} /> */}
+                <Route path="/oauth2/token" element={<Token />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <React.Suspense fallback={<>Loading Fallback ...</>}>
+                      <Dashboard />
+                    </React.Suspense>
+                  }
+                />
+              </Routes>
+            </SettingsContextProvider>
           </DashboardContextProvider>
-          </RecoilRoot>
+        </RecoilRoot>
       </header>
     </div>
   );
 }
 
 export default App;
-
-
