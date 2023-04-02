@@ -19,13 +19,19 @@ export default function Footer() {
   
   useEffect(() => {
     console.log('메인페이지로 토큰이 잘 넘어왔다능 : ' + token);
-    axios({
-      url: `${API_BASE_URL}/user`, // 통신할 웹문서
-      method: 'get', // 통신할 방식
+    // axios({
+    //   url: `${API_BASE_URL}/user`, // 통신할 웹문서
+    //   method: 'get', // 통신할 방식
+    //   headers: {
+    //     'Authorization': token
+    //   }
+    // })
+    axios.get(`${API_BASE_URL}/user`, {
       headers: {
         'Authorization': token
       }
-    }).then((res) => {
+    })
+    .then((res) => {
       if (token.length !== 0) {
         console.log(res.data.value);
         const data = res.data.value;

@@ -9,8 +9,9 @@ import {
   keywordState,
   sortingState,
   pageState,
+  scriptState
 } from '../../states/practiceFilterState';
-// import axios from 'axios';
+import axios from 'axios';
 
 import Header from '../../components/Common/Header';
 // import Footer from '@/components/Footer';
@@ -24,14 +25,16 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 const List = () => {
   const clickedEmotion = useRecoilValue(clickedEmotionState);
   const clickedGenre = useRecoilValue(clickedGenreState);
-  const clickedBtn = useRecoilValue(clickedBtnState);
-  const setClickedOption = useSetRecoilState(optionState);
-  const setClickedKeyword = useSetRecoilState(keywordState);
-  // const setClickedSorting = useSetRecoilState(sortingState);
-  const [clickedSorting, setClickedSorting] = useRecoilValue(sortingState);
-  const [page, setPage] = useRecoilState(pageState)
+  const clickedBtn = useRecoilValue(clickedBtnState);  
+  const [clickedOption, setClickedOption] = useRecoilValue(optionState);
+  const [clickedKeyword, setClickedKeyword] = useRecoilValue(keywordState);
+  const [clickedSorting, setClickedSorting] = useRecoilValue(sortingState);  
+  const [page, setPage] = useRecoilState(pageState);
 
-  // const [searchQuery, setSearchQuery] = useState('');
+  const [scripts, setScripts] = useRecoilValue(scriptState);
+
+  // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
 
   const searchHandler = (event) => {
     setClickedOption(event.target.value);
@@ -45,9 +48,49 @@ const List = () => {
     
   }
 
+  const loading = () => {
+    setPage(1); //로직 확인
+
+    axios.post(`${API_BASE_URL}/script/all`,{
+      option: clickedOption,
+      keyword: clickedKeyword,
+      emotion: clickedEmotion,
+      genre: clickedGenre,
+      page: page,
+      sort: clickedSorting,
+    }).then((res) => {
+      console.log(res);
+      // setScripts(); //대본 정보 담기
+    })
+  };
+
+  const loadingNext = () => {
+    setPage(page + 1);  //로직 확인
+
+    axios.post(`${API_BASE_URL}/sciprt/all`,{
+      option: clickedOption,
+      keyword: clickedKeyword,
+      emotions: clickedEmotion,
+      genres: clickedGenre,
+      page: page,
+      sort: clickedSorting,
+    }).then((res) => {
+      setScripts([...scripts, res.data]); //대본 정보 담기
+    })
+  };
+
+  // useEffect(() => {
+
+    
+  //   loading();
+    
+  // }, [scripts]);
+
   useEffect(() => {
-    console.log(clickedSorting);
-  }, [clickedSorting])
+    loading();
+    console.log(scripts);
+
+  }, [])
 
   return (
     <>
@@ -67,8 +110,8 @@ const List = () => {
             <select className={style.selectbox} name="findby" onChange={searchHandler}>
               <option value="title">제목</option>
               <option value="content">내용</option>
-              <option value="work">작품</option>
-              <option value="character">배역</option>
+              <option value="author">작가</option>
+              <option value="actor">배역</option>
             </select>
 
             <input
@@ -91,12 +134,12 @@ const List = () => {
           {clickedBtn.length > 0 ? <p>클릭된 버튼 : {clickedBtn.join(', ')}</p> : <p>비어있음</p>}
           <div className={style.filterButton}>
             <FilterBtn id={1} label="전체" value="" />
-            <FilterBtn id={2} label="#슬픈" value="슬픔" />
-            <FilterBtn id={3} label="#당황한" value="당황" />
-            <FilterBtn id={4} label="#화난" value="분노" />
+            <FilterBtn id={2} label="#슬픈" value="슬픔" onClick={loading}/>
+            <FilterBtn id={3} label="#당황한" value="놀람" />
+            <FilterBtn id={4} label="#화난" value="화남" />
             <FilterBtn id={5} label="#기쁜" value="기쁨" />
-            <FilterBtn id={6} label="#무서운" value="불안" />
-            <FilterBtn id={7} label="#혐오스러운" value="상처" />
+            <FilterBtn id={6} label="#무서운" value="두려움" />
+            <FilterBtn id={7} label="#혐오스러운" value="역겨움" />
             <FilterBtn id={8} label="#중립" value="중립" />
             <FilterBtn id={9} label="#영화" value="영화" />
             <FilterBtn id={10} label="#연극" value="연극" />
@@ -125,12 +168,12 @@ export default List;
 
 
 
-//   const scripts = await axios.put("/script/all", {
-//     option: clickedOption,
-//     keyword: clickedKeyword,
-//     emotion: clickedEmotion,
-//     genre: clickedGenre,
-//     page: page,
-//     sort: clickedSort,
-//   })
+  // const scripts = await axios.put("/script/all", {
+  //   option: clickedOption,
+  //   keyword: clickedKeyword,
+  //   emotion: clickedEmotion,
+  //   genre: clickedGenre,
+  //   page: page,
+  //   sort: clickedSort,
+  // })
 
