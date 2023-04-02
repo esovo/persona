@@ -1,4 +1,4 @@
-package com.ssafy.project.common.db.dto.response;
+package com.ssafy.project.common.db.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,12 +8,8 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class UserSearchDto {
+public class UserModifyReqDTO {
 
     @NonNull
-    private String email;
-    @NonNull
     private String nickname;
-    @NonNull
-    private String imageUrl;
 }

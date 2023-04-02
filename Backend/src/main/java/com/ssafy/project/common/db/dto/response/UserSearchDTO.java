@@ -1,17 +1,18 @@
-package com.ssafy.project.common.db.dto.request;
+package com.ssafy.project.common.db.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Builder
 @Setter
 @Getter
-public class UserModifyReqDto {
+public class UserSearchDTO {
 
-    @NonNull
+
+    private String email;
     private String nickname;
+
+    private String imageUrl;
 }

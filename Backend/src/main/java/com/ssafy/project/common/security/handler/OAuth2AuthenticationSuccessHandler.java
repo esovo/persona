@@ -1,11 +1,10 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssafy.project.common.security.exception.BadRequestException;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
 import com.ssafy.project.common.security.properties.AppProperties;
-import com.ssafy.project.common.util.provider.CookieProvider;
-import com.ssafy.project.common.util.provider.TokenProvider;
+import com.ssafy.project.common.provider.CookieProvider;
+import com.ssafy.project.common.provider.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import static com.ssafy.project.common.security.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 
 @Log4j2
@@ -82,6 +81,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // 리디렉션 uri가 있으면 그 값으로, 없으면 defaultUri ("/")
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
+        String accessToken = tokenProvider.createToken(authentication);
+        log.info(accessToken);
 
         String accessToken = tokenProvider.createToken(authentication);
         log.info(accessToken);

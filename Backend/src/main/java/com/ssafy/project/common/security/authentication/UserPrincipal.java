@@ -1,10 +1,11 @@
-package com.ssafy.project.common.security.common;
+package com.ssafy.project.common.security.authentication;
 
 import com.ssafy.project.common.db.entity.base.RoleEnum;
 import com.ssafy.project.common.db.entity.common.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@ToString
 @Getter
 @AllArgsConstructor
 public class UserPrincipal implements OAuth2User, UserDetails {
