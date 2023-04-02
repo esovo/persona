@@ -5,6 +5,7 @@ import { Button, Toggle } from '../AnimatedComponents';
 import { SettingsIcon } from '../Icons';
 import { useReactMediaRecorder } from 'react-media-recorder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRecordVinyl } from '@fortawesome/free-solid-svg-icons';
 
 const Settings = () => {
   const { webcamOn, setWebcamOn, setWebcamOff, setSettingsVisible } = useSettingsContext();
@@ -20,7 +21,7 @@ const Settings = () => {
         <span className="flex flex-row items-center justify-center text-gray-600 text-xl mr-4">Webcam</span>
         <span className="flex flex-col items-center justify-center">
           <Button initialState={webcamOn} onClick={() => setWebcamOn(true)}>
-            <FontAwesomeIcon icon={['fas', 'record-vinyl']} />
+            <FontAwesomeIcon icon={faRecordVinyl} style={{ width: '30px', height: '30px' }} />
           </Button>
         </span>
       </div>
