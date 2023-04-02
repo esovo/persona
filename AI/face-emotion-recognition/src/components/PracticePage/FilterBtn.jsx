@@ -14,7 +14,7 @@ const FilterBtn= ({ id, label, value }) => {
 
   useEffect(() => {
     console.log("changed");
-  }, [clickedBtnIds])
+  }, [dynamic])
 
 
   const clickHandler = () => {
@@ -31,12 +31,12 @@ const FilterBtn= ({ id, label, value }) => {
         setClickedGenre([...clickedGenre, value]);
       }
     }
-    // else {
-    //   if (clickedEmotion.length + clickedGenre.length == 11) {
-    //     setClickedEmotion([]);
-    //     setClickedGenre([]);
-    //   }
-    // }
+    
+    else if (id == 1 && clickedBtnIds.length > 0) {
+      setClickedEmotion([]);
+      setClickedGenre([]);
+      setClickedBtnIds(clickedBtnIds.filter((ids) => ids === id));
+    }
 
     if (clickedBtnIds.includes(id)) {
       setClickedBtnIds(clickedBtnIds.filter((ids) => ids !== id));

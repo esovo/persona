@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 
 export const clickedEmotionState = atom({
   key: 'clickedEmotionState',
-  default: ['슬픔'],
+  default: [],
 });
 
 export const clickedGenreState = atom({
