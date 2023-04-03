@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = {"게시판 좋아요 API"})
-@RequestMapping("/board_like")
+@RequestMapping("/boardlike")
 public class BoardLikeController {
 
     private final BoardLikeService boardLikeService;
 
-    @PostMapping("/like")
+    @PostMapping
     @ApiOperation(value = "게시글 좋아요")
     public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long board_id){
         boardLikeService.addBoardLike(board_id);
@@ -29,8 +29,8 @@ public class BoardLikeController {
 
     @DeleteMapping
     @ApiOperation(value = "게시글 좋아요 취소")
-    public ResponseEntity<ResponseDTO> boardLikeRemove(@RequestParam Long board_id){
-        boardLikeService.removeBoardLike(board_id);
+    public ResponseEntity<ResponseDTO> boardLikeRemove(@RequestParam Long boardId){
+        boardLikeService.removeBoardLike(boardId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 

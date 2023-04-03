@@ -29,29 +29,25 @@ public class BoardController {
     @GetMapping("/all")
     @ApiOperation(value="전체 게시물 조회")
     public ResponseEntity<ResponseDTO> boardAllList(@RequestParam int page, String sort, String keyword){
-        Page<BoardAllResDTO> boards = boardService.findAllBoard(page, sort, keyword);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.findAllBoard(page, sort, keyword)));
     }
 
     @GetMapping("/top")
     @ApiOperation(value = "인기게시글 조회")
     public ResponseEntity<ResponseDTO> boardTopList(){
-        List<BoardAllResDTO> boards = boardService.findTopBoard();
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.findTopBoard()));
     }
 
     @GetMapping("my")
     @ApiOperation(value = "내 게시물 조회")
     public ResponseEntity<ResponseDTO> boardMyList(@RequestParam int page){
-        Page<BoardAllResDTO> boards = boardService.findMyBoard(page);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boards));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.findMyBoard(page)));
     }
 
     @GetMapping("/detail")
     @ApiOperation(value="게시글 상세 조회")
     public ResponseEntity<ResponseDTO> boardDetail(@RequestParam Long boardId){
-        BoardAllResDTO boardResDTO = boardService.detailBoard(boardId);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardResDTO));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.detailBoard(boardId)));
     }
 
     @PostMapping
