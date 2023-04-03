@@ -35,7 +35,6 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
                         , script.title
                         , script.author
                         , script.actor
-                        , script.content
                         , script.viewCnt
                         , script.emotion
                         , script.genre
@@ -71,6 +70,7 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
     }
 
     private BooleanBuilder emotionFilter(List<String> emotions) {
+        System.out.println("emotions size = " + emotions.size());
         if(emotions.size() == 0) return null;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         for(String emotion : emotions){
@@ -80,6 +80,7 @@ public class ScriptRepositoryImpl implements ScriptRepositoryCustom {
     }
 
     private BooleanBuilder genreFilter(List<String> genres) {
+        System.out.println("genres size = " + genres.size());
         if(genres.size() == 0) return null;
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         for(String genre : genres){

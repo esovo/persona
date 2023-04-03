@@ -1,6 +1,7 @@
 package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.CommentAddReqDTO;
+import com.ssafy.project.common.db.dto.request.CommentModReqDTO;
 import com.ssafy.project.common.db.dto.response.CommentDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.Comment;
@@ -9,14 +10,16 @@ import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.CommentRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -30,6 +33,7 @@ public class CommentServiceImpl implements CommentService{
     private final AuthProvider authProvider;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CommentDTO> findComment(Long boardId, int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Comment> commentList = commentRepository.findByBoardId(boardId, pageable);
@@ -45,10 +49,12 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CommentDTO> findMyComment(int page) {
         Long userId = authProvider.getUserIdFromPrincipal();
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Comment> comments = commentRepository.findByUserId(userId, pageable);
+
         Page<CommentDTO> commentDTOS = comments.map(comment ->
                 CommentDTO.builder()
                         .id(comment.getId())
@@ -58,13 +64,15 @@ public class CommentServiceImpl implements CommentService{
                         .title(comment.getBoard().getTitle())
                         .createdDate(comment.getCreatedDate())
                         .build());
+
         return commentDTOS;
     }
 
     @Override
-    public Comment addComment(CommentAddReqDTO commentAddReqDTO) {
-        Board board = boardRepository.getById(commentAddReqDTO.getBoardId());
-        User user = userRepository.getById(authProvider.getUserIdFromPrincipal());
+    public void addComment(CommentAddReqDTO commentAddReqDTO) {
+        Board board = boardRepository.findById(commentAddReqDTO.getBoardId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(authProvider.getUserIdFromPrincipal()).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+
         Comment comment = Comment.builder()
                 .board(board)
                 .user(user)
@@ -72,23 +80,18 @@ public class CommentServiceImpl implements CommentService{
                 .build();
 
         board.getComments().add(comment);
-        boardRepository.save(board);
-        return comment;
     }
 
     @Override
-    public void modifyComment(Long boardId, String content) {
-        Optional<Comment> optionalComment = commentRepository.findById(boardId);
+    public void modifyComment(CommentModReqDTO commentModReqDTO) {
+        Comment comment = commentRepository.findById(commentModReqDTO.getCommentId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
 
-        if(!optionalComment.isPresent()) throw new RuntimeException();
-
-        Comment comment = optionalComment.get();
-        comment.setContent(content);
-        commentRepository.save(comment);
+        comment.setContent(commentModReqDTO.getContent());
     }
 
     @Override
-    public void removeComment(Long boardId) {
-        commentRepository.deleteById(boardId);
+    public void removeComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
+        commentRepository.deleteById(commentId);
     }
 }

@@ -53,8 +53,6 @@ public class VideoServiceImpl implements VideoService{
         User user = userRepository.findById(authProvider.getUserIdFromPrincipal())
                 .orElseThrow(() -> new CustomAuthException("존재하지 않는 회원입니다."));
 
-        if(authProvider.getUserIdFromPrincipal() == participant.getUser().getId()) {
-
             MultipartFile videoFile = videoCreateReqDTO.getFile();
             String baseUri = fileUtils.makeUri(videoFile);
             String videoUri = fileUtils.getVideoUri(baseUri);
@@ -70,9 +68,6 @@ public class VideoServiceImpl implements VideoService{
                             .user(user)
                             .participant(participant)
                             .build());
-        }
-
-        else { throw new BadRequestException("로그인한 계정과 다른 요청입니다."); }
     }
 
     @Transactional
@@ -104,5 +99,4 @@ public class VideoServiceImpl implements VideoService{
                 .createdDate(video.getCreatedDate())
                 .build());
     }
-
 }

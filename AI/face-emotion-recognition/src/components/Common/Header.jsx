@@ -1,37 +1,38 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { user, modal, tokenState } from '../../states/loginState';
-import { useState, useEffect, useRouter } from 'react';
+import { user, modal, tokenState, loginState } from '../../states/loginState';
+import { useState, useEffect } from 'react';
 
-import style from './Header.module.scss';
+import style from "./Header.module.scss";
 // import User from '../models/user';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
 import { Link, useNavigate } from "react-router-dom";
 
+
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
   const [showModal, setShowModal] = useRecoilState(modal);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [isDropdown, setIsDropdown] = useState(false);
-  const token = useRecoilValue(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
 
   const navigate = useNavigate();
 
   const startHandler = () => {
     setShowModal(true);
-    setLoginUser('로그인 유저', '내 닉네임이다요', '인증정보');
-    setIsLogin(!isLogin);
   };
 
   const logoutHandler = () => {
     setLoginUser(null);
-    setIsLogin(!isLogin);
+    setToken('');
+    setIsLogin(false);
+    navigate('/');
   };
 
   const itemClickHandler = (item) => {
-    if (item === 'My Page') {
-      navigate('/mypage');
-    } else if (item === 'Log Out') {
+    if (item === "My Page") {
+      navigate("/mypage");
+    } else if (item === "Log Out") {
       logoutHandler();
     }
   };
@@ -40,9 +41,7 @@ export default function Header() {
     setIsDropdown(!isDropdown);
   };
 
-  useEffect(() => {
-    console.log(token);
-  }, [token]);
+  const profile = loginUser === null ? null : { backgroundImage: `url("${loginUser.img}")` };
 
   return (
     <nav className={style.nav}>
@@ -68,9 +67,6 @@ export default function Header() {
           <div className={style.menuItem}>
             <Link to="/storage">보관함</Link>
           </div>
-          <div className={style.menuItem}>
-            <Link to="/bookmark">북마크</Link>
-          </div>
         </div>
       )}
 
@@ -81,12 +77,12 @@ export default function Header() {
           </button>
         ) : (
           <div className={style.login} onClick={dropdownHandler}>
-            <div className={style.profile} />
+            <div className={style.profile} style={profile} />
             <div className={style.nick}>{loginUser?.nickname}</div>
             {/* <div className={style.left}>
             </div> */}
             <div className={style.right}>
-              <DropdownMenu items={['My Page', 'Log Out']} onItemClick={itemClickHandler} />
+              <DropdownMenu items={["My Page", "Log Out"]} onItemClick={itemClickHandler} />
             </div>
           </div>
         )}

@@ -15,5 +15,5 @@ public class ScriptSearchReqDTO {
     private List<String> emotions = new ArrayList<>();
     private List<String> genres = new ArrayList<>();
     private int page;
-    private String sort = "id";
+    private String sort;
 }

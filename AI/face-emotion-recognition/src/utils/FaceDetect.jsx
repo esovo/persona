@@ -26,11 +26,15 @@ import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
 import { useLocation } from "react-router";
-
+import AWS from 'aws-sdk';
+import html2canvas from "html2canvas";
+import {jsPDF} from "jspdf";
 
 
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
+  const chartRef = useRef(null);
+
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
 
@@ -54,16 +58,6 @@ const FaceDetect = (props) => {
   const [audioUrl, setAudioUrl] = useState();
 
 
-  const recorderControls = useAudioRecorder()
-
-  const addAudioElement = (blob) => {
-    const url = URL.createObjectURL(blob);
-    const audio = document.createElement("audio");
-    audio.src = url;
-    audio.controls = true;
-    document.body.appendChild(audio);
-  };
-
   const {
     webcamOn,
     webcamOff,
@@ -74,7 +68,23 @@ const FaceDetect = (props) => {
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
   const [text,setText] =useState(props.text);
-  const [recordtext,setRecordtext] =useState("아주 긴 텍스트를 작석하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다다.");
+  const [recordtext,setRecordtext] =useState("아주");
+
+  
+  const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
+  const SECRET_ACCESS_KEY = "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";
+  const REGION = "ap-northeast-2";
+  const S3_BUCKET = "step-up-bucket";
+
+  AWS.config.update({
+    accessKeyId: ACCESS_KEY,
+    secretAccessKey: SECRET_ACCESS_KEY
+  });
+
+  const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET},
+    region: REGION,
+  });
   useEffect(() => {
 
     
@@ -496,39 +506,73 @@ const FaceDetect = (props) => {
   };
 
  function emotionAnalyze(text){
-  const config = { headers: {'Content-Type': 'application/json'} }
+  // const config = { headers: {'Content-Type': 'application/json'} }
 
-  axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
-  // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
-        .then((response) => {
-          console.log(response);
+  // axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
+  // // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+  //       .then((response) => {
+  //         console.log(response);
           
-          // console.log(response.data.filename);
-        });
+  //         // console.log(response.data.filename);
+  //       });
  }
 
  function save(){
-  let getgraph=recordedExpressions
-  let blob =fetch(mediaBlobUrl).then(r => r.blob());
   const userid="user"
-  console.log(blob)
-  const video = new File([mediaBlobUrl], userid+"video.mp4", {
-    lastModified: new Date().getTime(),
-    type: "video/mp4",
+  const gettext= recordtext;
+  axios.get(mediaBlobUrl, { responseType : "blob"})
+  .then((response) => {
+     console.log(response.data);
+     const video = new File([response.data], userid+"video.mp4", {
+      lastModified: new Date().getTime(),
+      type: "video/mp4",
+    });
+    uploadFile(video)
   });
-  console.log(video)
-  let graphdata =[
-    getgraph[0].data,
-    getgraph[1].data,
-    getgraph[2].data,
-    getgraph[3].data,
-    getgraph[4].data,
-    getgraph[5].data,
-    getgraph[6].data
-  ]
-  console.log(graphdata)
+  html2canvas(document.querySelector(".chart")).then((canvas) => {
+    // const imgData = canvas.toDataURL("image/jpeg");
+    canvas.toBlob((blob) => {
+      let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
+      uploadFile(file);
+    }, 'image/jpeg');
+    
+  });
  }
+
+ const uploadFile = (file) => {
+  // console.log(file)
+  // console.log(S3_BUCKET)
+  const params = {
+    ACL: 'public-read',
+    Body: file,
+    Bucket: S3_BUCKET,
+    Key: file.name
+  };
   
+  myBucket.putObject(params)
+    .on('httpUploadProgress', (evt) => {
+
+    })
+    .send((err) => {
+      if (err) console.log(err)
+    })
+  }
+  function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type:mimeString});
+  }  
 
   return (
 
@@ -542,7 +586,7 @@ const FaceDetect = (props) => {
           autoPlay
           controls
         />
-        <RecordedExpressionsModal />
+        <RecordedExpressionsModal ref={chartRef} />
 
         <div className="scriptComponent">
           {/* <ScriptText text={text}></ScriptText>
@@ -592,13 +636,14 @@ const FaceDetect = (props) => {
               ref={canvasRef}>
             </canvas>
         }
-        <Settings></Settings>
-        <Button 
+        <Settings endrecord={click}></Settings>
+        {/* <Button
+          className="endrecord"
           variant="contained" 
           onClick={()=>{click()}}
           color="error"
           >녹화종료
-        </Button>
+        </Button> */}
       </>
     }
     </div>
