@@ -9,12 +9,9 @@ app:
     tokenExpirationMsec: 2592000000
 
 mysql:
-  port: mysql-db
+  port: mysql-db:3306
   user: STEPUP
   pwd: "!stepup@persona#301"
-#  port: mysql-db:3306
-#  user: root
-#  pwd: ssafy
 
 redis:
   host: redis-db
@@ -33,7 +30,7 @@ oauth2:
     secret: TYOC8nfxKUwIQC9aW8nTv61V8Cs5Ushx
 
 cors:
-  allowedOrigins: http://localhost:3000
+  allowedOrigins: http://localhost:3000, https://j8b301.p.ssafy.io
 
 cloud:
   aws:

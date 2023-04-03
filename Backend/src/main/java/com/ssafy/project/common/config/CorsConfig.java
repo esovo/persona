@@ -7,11 +7,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 @Configuration
 public class CorsConfig {
 
     @Value("${cors.allowedOrigins}")
-    private String allowedOrigins;
+    String[] allowedOrigins;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -20,7 +22,7 @@ public class CorsConfig {
         // cors로 인해 몇몇 기본헤더를 제외하고는 접근에 제한이있다. JWT인증을 위해 해당 헤더를 추가시킨다.
         config.addExposedHeader("Authorization");
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern(allowedOrigins);
+        Arrays.stream(allowedOrigins).forEach(config::addAllowedOriginPattern);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
