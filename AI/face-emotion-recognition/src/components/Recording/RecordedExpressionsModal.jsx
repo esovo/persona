@@ -1,16 +1,15 @@
-import {useEffect, useRef } from "react";
-import { ResponsiveAreaBump } from "@nivo/bump";
-import html2canvas from "html2canvas";
-import {jsPDF} from "jspdf";
-import { Button} from "../AnimatedComponents";
+import { useEffect, useRef } from 'react';
+import { ResponsiveAreaBump } from '@nivo/bump';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { Button } from '../AnimatedComponents';
 // import { CloseIcon } from "../Icons";
-import { useDashboardContext } from "../Dashboard";
-import "./RecordedExpressionsModal.css";
+import { useDashboardContext } from '../Dashboard';
+import './RecordedExpressionsModal.css';
 
 const RecordedExpressionsModal = () => {
-
   const chartRef = useRef(null);
-  const {recordedExpressions, setRecordedExpressions, setRecordedExpressionsVisible} = useDashboardContext();
+  const { recordedExpressions, setRecordedExpressions, setRecordedExpressionsVisible } = useDashboardContext();
   // const {recordedvideo } =useDashboardContext()
   /**
    * 1) Clears all the recordedExpressions.
@@ -20,14 +19,12 @@ const RecordedExpressionsModal = () => {
   //   setRecordedExpressions([]);
   //   setRecordedExpressionsVisible(false);
   // };
-  // useEffect(() => {  
+  // useEffect(() => {
 
   // }, [])
-  
-
 
   /**
-   * 
+   *
    * @param {object} data - Data of the expression which was hovered.
    * @returns {HTMLSpanElement} - Reutrns a <span> with the name of the expression which was hovered.
    */
@@ -45,42 +42,38 @@ const RecordedExpressionsModal = () => {
   const downloadChart = () => {
     html2canvas(chartRef.current).then((canvas) => {
       console.log(recordedExpressions);
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [600, 200]
+        orientation: 'landscape',
+        unit: 'px',
+        format: [600, 200],
       });
-      pdf.addImage(imgData, "PNG", 0, 0);
-      pdf.save("record.pdf");
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('record.pdf');
     });
   };
 
-
-
   const handleClick = (event) => {
     const x = event.clientX;
-    const video = document.querySelector("video");
-    const hole=1280-170;
-    const k= x-170;
-    console.log(x) 
-    console.log(k)
-    const res= (k*video.duration)/hole
-    console.log(video.duration)
-    console.log(res)
+    const video = document.querySelector('video');
+    const hole = 1280 - 170;
+    const k = x - 170;
+    console.log(x);
+    console.log(k);
+    const res = (k * video.duration) / hole;
+    console.log(video.duration);
+    console.log(res);
     // const clickedData = data.find((d) => d.x === x);
     // const videoTime = clickedData.x / data.length * videoLength;
 
     // HTML5 비디오 요소를 찾는다.
     // 비디오를 이동.
-    if(k>=0 && k<1280){
+    if (k >= 0 && k < 1280) {
       video.currentTime = res;
     }
   };
 
-
-
-  return(
+  return (
     // <Modal
     //   backdropClickEvent={handleModalClose}
     //   extraClasses={"w-fit h-fit"}
@@ -96,22 +89,24 @@ const RecordedExpressionsModal = () => {
           </span>
         </Button>
       </div> */}
-      
-      
-      <div className="chart" ref={chartRef} 
-      onClick={(e)=>{handleClick(e)}}
-      >
+
+      <div
+        className="chart"
+        ref={chartRef}
+        onClick={(e) => {
+          handleClick(e);
+        }}>
         <ResponsiveAreaBump
           data={recordedExpressions}
-          keys={["percent"]}
-          indexBy={"expression"}
+          keys={['percent']}
+          indexBy={'expression'}
           // layout={"vertical"}
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           borderRadius={10}
           padding={0.4}
           spacing={10}
           // valueScale={{ type: "linear" }}
-          colors={{ scheme: 'set1' }}          
+          colors={{ scheme: 'set1' }}
           // animate={true}
           // enableLabel={false}
           axisTop={null}
@@ -119,18 +114,17 @@ const RecordedExpressionsModal = () => {
           // axisRight={null}
           // axisLeft={null}
           tooltip={(data) => getTooltip(data)}
-          
         />
       </div>
       <div className="w-full flex flex-row items-center justify-evenly mb-4">
         {/* <pre className="text-lg p-2 bg-fg-1 rounded-lg"><code>X-axis: Time Elapsed, Y-axis: Emotions</code></pre> */}
-        <Button
+        {/* <Button
           onClick={downloadChart}
         >
           <span className="p-2 bg-fg-1 rounded-lg text-gray-700 text-base">Download</span>
-        </Button>
+        </Button> */}
       </div>
-      </div>
+    </div>
     // </Modal>
   );
 };
