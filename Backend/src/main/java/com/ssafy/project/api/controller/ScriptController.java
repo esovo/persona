@@ -28,14 +28,12 @@ public class ScriptController {
     @PostMapping("/all")
     @ApiOperation(value = "전체 대본 조회")
     public ResponseEntity<ResponseDTO> scriptList(@RequestBody ScriptSearchReqDTO scriptSearchReqDTO){
-        Page<ScriptListResDTO> scripts = scriptService.findAllScript(scriptSearchReqDTO);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scripts));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scriptService.findAllScript(scriptSearchReqDTO)));
     }
 
     @GetMapping
     @ApiOperation(value = "대본 상세보기")
     public ResponseEntity<ResponseDTO> scriptDetail(@RequestParam Long scriptId){
-        ScriptDetailResDTO scriptDetailResDTO = scriptService.detailScript(scriptId);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scriptDetailResDTO));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, scriptService.detailScript(scriptId)));
     }
 }

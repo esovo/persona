@@ -11,8 +11,8 @@ import com.ssafy.project.common.security.exception.CommonApiException;
 import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +38,6 @@ public class BoardLikeServiceImpl implements BoardLikeService {
                 .build();
 
         board.getBoardLikes().add(boardLike);
-        boardRepository.save(board);
     }
 
     @Override
@@ -52,6 +51,7 @@ public class BoardLikeServiceImpl implements BoardLikeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkBoardLike(Long boardId) {
         Long userId = authProvider.getUserIdFromPrincipal();
         return boardLikeRepository.existsBoardLikeByUserIdAndBoardId(userId, boardId);

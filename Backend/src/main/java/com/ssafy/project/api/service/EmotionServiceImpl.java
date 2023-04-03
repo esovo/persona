@@ -36,6 +36,5 @@ public class EmotionServiceImpl implements EmotionService {
                 .build();
 
         participant.getEmotions().add(emotion);
-        participantRepository.save(participant);
     }
 }
