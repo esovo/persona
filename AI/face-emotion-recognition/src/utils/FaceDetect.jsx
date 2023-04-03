@@ -636,13 +636,14 @@ const FaceDetect = (props) => {
               ref={canvasRef}>
             </canvas>
         }
-        <Settings></Settings>
-        <Button 
+        <Settings endrecord={click}></Settings>
+        {/* <Button
+          className="endrecord"
           variant="contained" 
           onClick={()=>{click()}}
           color="error"
           >녹화종료
-        </Button>
+        </Button> */}
       </>
     }
     </div>
