@@ -43,9 +43,7 @@ export default function Script({ data }) {
                     <FontAwesomeIcon icon={faUsers} />
                     {data.participantCnt}
                 </div>
-
             </div>
-
         </div>
     );
 }
