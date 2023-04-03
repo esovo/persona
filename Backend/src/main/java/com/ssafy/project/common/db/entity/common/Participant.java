@@ -24,10 +24,6 @@ public class Participant {
     @JoinColumn(name = "script_id")
     private Script script;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Builder.Default
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Emotion> emotions = new ArrayList<>();

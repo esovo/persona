@@ -18,8 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService{
     private final AuthProvider authProvider;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CommentDTO> findComment(Long boardId, int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Comment> commentList = commentRepository.findByBoardId(boardId, pageable);
@@ -48,10 +49,12 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CommentDTO> findMyComment(int page) {
         Long userId = authProvider.getUserIdFromPrincipal();
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Comment> comments = commentRepository.findByUserId(userId, pageable);
+
         Page<CommentDTO> commentDTOS = comments.map(comment ->
                 CommentDTO.builder()
                         .id(comment.getId())
@@ -61,13 +64,15 @@ public class CommentServiceImpl implements CommentService{
                         .title(comment.getBoard().getTitle())
                         .createdDate(comment.getCreatedDate())
                         .build());
+
         return commentDTOS;
     }
 
     @Override
-    public Comment addComment(CommentAddReqDTO commentAddReqDTO) {
-        Board board = boardRepository.getById(commentAddReqDTO.getBoardId());
-        User user = userRepository.getById(authProvider.getUserIdFromPrincipal());
+    public void addComment(CommentAddReqDTO commentAddReqDTO) {
+        Board board = boardRepository.findById(commentAddReqDTO.getBoardId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(authProvider.getUserIdFromPrincipal()).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+
         Comment comment = Comment.builder()
                 .board(board)
                 .user(user)
@@ -75,8 +80,6 @@ public class CommentServiceImpl implements CommentService{
                 .build();
 
         board.getComments().add(comment);
-        boardRepository.save(board);
-        return comment;
     }
 
     @Override
@@ -84,7 +87,6 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(commentModReqDTO.getCommentId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
 
         comment.setContent(commentModReqDTO.getContent());
-        commentRepository.save(comment);
     }
 
     @Override

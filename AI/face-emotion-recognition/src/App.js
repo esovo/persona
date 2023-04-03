@@ -12,6 +12,7 @@ import Practice from './Pages/Practice/Practice';
 import PracticeDetail from './Pages/Practice/PracticeDetail';
 import Storage from './Pages/Storage/Storage';
 import Token from './Pages/Token';
+import Mypage from './Pages/Mypage/Mypage';
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import {
   clickedEmotionState,
@@ -11,6 +11,7 @@ import {
   pageState,
   scriptState
 } from '../../states/practiceFilterState';
+import { tokenState } from "../../states/loginState";
 import axios from 'axios';
 
 import Header from '../../components/Common/Header';
@@ -31,10 +32,14 @@ const List = () => {
   const [clickedSorting, setClickedSorting] = useRecoilState(sortingState);  
   const [page, setPage] = useRecoilState(pageState);
 
+  const token = useRecoilValue(tokenState);
+
   const [scripts, setScripts] = useRecoilState(scriptState);
 
-  // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
-  const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+  
+  // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  
 
   const searchHandler = (event) => {
     setClickedOption(event.target.value);
@@ -50,26 +55,12 @@ const List = () => {
 
   const loading = async () => {
 
-    setScripts([]);
-    console.log(clickedEmotion);
-    console.log(clickedGenre);
-    console.log(clickedSorting);
+    setPage(0);
+
     await axios.post(`${API_BASE_URL}/script/all`,{
-      option: clickedOption,
-      keyword: clickedKeyword,
-      emotion: clickedEmotion,
-      genre: clickedGenre,
-      page: page,
-      sort: clickedSorting,
-    }).then((res) => {
-      setScripts(res.data.value.content);
-    })
-  };
-
-  const loadingNext = () => {
-    setPage(page + 1);  //로직 확인
-
-    axios.post(`${API_BASE_URL}/sciprt/all`,{
+      headers: {
+        'Authorization': token
+      },
       option: clickedOption,
       keyword: clickedKeyword,
       emotions: clickedEmotion,
@@ -77,25 +68,37 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      setScripts([...scripts, res.data]); //대본 정보 담기
+      setScripts(res.data.value.content);
+    })
+
+  };
+
+  const loadingNext = () => {
+
+    setPage(page + 1);  //로직 확인
+
+    axios.post(`${API_BASE_URL}/sciprt/all`,{
+      headers: {
+        'Authorization': token
+      },
+      option: clickedOption,
+      keyword: clickedKeyword,
+      emotions: clickedEmotion,
+      genres: clickedGenre,
+      page: page,
+      sort: clickedSorting,
+    }).then((res) => {
+      setScripts([...scripts, res.data.value.content]); //대본 정보 담기
     })
   };
 
-  const selectHandler = () => {
-    // // if (clickedBtn.includes(1)) {      
-    // // }
-    // setClickedBtn([]);
-    // setClickedEmotion([]);
-    // setClickedGenre([]);
-  }
+  // const selectHandler = () => {
+  //   console.log('센서 함수 정상 동작')
+  // }
 
   useEffect(() => {
-    
-    // console.log(clickedEmotion);
-    // console.log(clickedGenre);
-    // console.log(clickedSorting);
     loading();
-    console.log()
+    console.log(scripts);
 
   }, [clickedEmotion, clickedGenre, clickedSorting])
 
@@ -136,22 +139,22 @@ const List = () => {
 
 
           </div>
-          {clickedEmotion.length > 0 ? <p>클릭된 감정 : {clickedEmotion.join(', ')}</p> : <p>비어있음</p>}
+          {/* {clickedEmotion.length > 0 ? <p>클릭된 감정 : {clickedEmotion.join(', ')}</p> : <p>비어있음</p>}
           {clickedGenre.length > 0 ? <p>클릭된 장르 : {clickedGenre.join(', ')}</p> : <p>비어있음</p>}
-          {clickedBtn.length > 0 ? <p>클릭된 버튼 : {clickedBtn.join(', ')}</p> : <p>비어있음</p>}
+          {clickedBtn.length > 0 ? <p>클릭된 버튼 : {clickedBtn.join(', ')}</p> : <p>비어있음</p>} */}
           <div className={style.filterButton}>
             {/* <FilterBtn sensor={selectHandler} id={1} label="전체" value="" /> */}
-            <FilterBtn sensor={selectHandler} id={2} label="#슬픈" value="슬픔" onClick={loading}/>
-            <FilterBtn sensor={selectHandler} id={3} label="#당황한" value="놀람" />
-            <FilterBtn sensor={selectHandler} id={4} label="#화난" value="화남" />
-            <FilterBtn sensor={selectHandler} id={5} label="#기쁜" value="기쁨" />
-            <FilterBtn sensor={selectHandler} id={6} label="#무서운" value="두려움" />
-            <FilterBtn sensor={selectHandler} id={7} label="#혐오스러운" value="역겨움" />
-            <FilterBtn sensor={selectHandler} id={8} label="#중립" value="중립" />
-            <FilterBtn sensor={selectHandler} id={9} label="#영화" value="영화" />
-            <FilterBtn sensor={selectHandler} id={10} label="#연극" value="연극" />
-            <FilterBtn sensor={selectHandler} id={11} label="#뮤지컬" value="뮤지컬 " />
-            <FilterBtn sensor={selectHandler} id={12} label="#드라마" value="드라마" />
+            <FilterBtn id={2} label="#슬픈" value="슬픔" onClick={loading}/>
+            <FilterBtn id={3} label="#당황한" value="놀람" />
+            <FilterBtn id={4} label="#화난" value="화남" />
+            <FilterBtn id={5} label="#기쁜" value="기쁨" />
+            <FilterBtn id={6} label="#무서운" value="두려움" />
+            <FilterBtn id={7} label="#혐오스러운" value="역겨움" />
+            <FilterBtn id={8} label="#중립" value="중립" />
+            <FilterBtn id={9} label="#영화" value="영화" />
+            <FilterBtn id={10} label="#연극" value="연극" />
+            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬 " />
+            <FilterBtn id={12} label="#드라마" value="드라마" />
           </div>
         </div>
         <div className={style.script}>

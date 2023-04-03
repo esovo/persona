@@ -41,10 +41,7 @@ public class BookmarkController {
     @GetMapping("/check")
     @ApiOperation(value = "북마크 여부 확인")
     public ResponseEntity<ResponseDTO> bookmarkCheck(@RequestParam Long scriptId){
-//        Long userId = authProvider.getUserIdFromPrincipal();
-        Long userId = 1L;
-        boolean check = bookmarkService.checkBookmark(scriptId);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, check));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, bookmarkService.checkBookmark(scriptId)));
     }
 
     @GetMapping("/my")
