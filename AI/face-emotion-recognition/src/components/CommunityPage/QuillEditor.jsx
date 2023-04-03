@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import style from './PostModal.module.scss';
+import style from './PostWriteModal.module.scss';
 import ReactQuill from 'react-quill';
 
 const modules = {
@@ -53,6 +53,7 @@ export default function Home() {
       formats={formats}
       theme="snow"
       onChange={handleEditorChange}
+      placeholder="내용을 입력하세요."
     />
   );
 }

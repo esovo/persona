@@ -8,6 +8,8 @@ import com.ssafy.project.common.db.repository.BookmarkRepository;
 import com.ssafy.project.common.db.repository.ScriptRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,8 +32,8 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Override
     public void addBookmark(Long scriptId) {
         Long userId = authProvider.getUserIdFromPrincipal();
-        User user = userRepository.findById(userId).get();
-        Script script = scriptRepository.findById(scriptId).get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+        Script script = scriptRepository.findById(scriptId).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
 
         Bookmark bookmark = Bookmark.builder()
                 .user(user)
@@ -39,19 +41,19 @@ public class BookmarkServiceImpl implements BookmarkService {
                 .build();
 
         user.getBookmarks().add(bookmark);
-        userRepository.save(user);
     }
 
     @Override
     public void removeBookmark(Long scriptId) {
         Long userId = authProvider.getUserIdFromPrincipal();
+        if(!bookmarkRepository.existsScriptByUserIdAndScriptId(userId, scriptId)) throw new CommonApiException(CommonErrorCode.BOOKMARK_NOT_FOUND);
         bookmarkRepository.deleteByUserIdAndScriptId(userId, scriptId);
     }
 
     @Override
-    public boolean checkBookmark(Long scripId) {
+    public boolean checkBookmark(Long scriptId) {
         Long userId = authProvider.getUserIdFromPrincipal();
-        return bookmarkRepository.existsScriptByUserIdAndScriptId(userId, scripId);
+        return bookmarkRepository.existsScriptByUserIdAndScriptId(userId, scriptId);
     }
 
     @Override

@@ -5,11 +5,13 @@ import com.ssafy.project.common.db.dto.response.ScriptDetailResDTO;
 import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
 import com.ssafy.project.common.db.entity.common.Script;
 import com.ssafy.project.common.db.repository.ScriptRepository;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class ScriptServiceImpl implements ScriptService{
     private final ScriptRepository scriptRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Page<ScriptListResDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO) {
         Page<ScriptListResDTO> scripts = scriptRepository.findAllWithFilter(scriptSearchReqDTO);
         return scripts;
@@ -27,7 +30,7 @@ public class ScriptServiceImpl implements ScriptService{
     @Override
     public ScriptDetailResDTO detailScript(Long scriptId) {
 
-        Script script = scriptRepository.findById(scriptId).get();
+        Script script = scriptRepository.findById(scriptId).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
         script.setViewCnt(script.getViewCnt()+1L);
 
         ScriptDetailResDTO scriptDetailResDTO = ScriptDetailResDTO.builder()
@@ -43,8 +46,6 @@ public class ScriptServiceImpl implements ScriptService{
                 .bookmarkCnt(script.getBookmarks().size())
                 .participantCnt(script.getParticipants().size())
                 .build();
-
-        scriptRepository.save(script);
 
         return scriptDetailResDTO;
     }

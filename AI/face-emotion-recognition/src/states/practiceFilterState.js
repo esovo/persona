@@ -28,7 +28,7 @@ export const scriptState = atom({
 
 export const optionState = atom({
   key: 'optionState',
-  default: '제목',
+  default: 'title',
 });
 
 export const keywordState = atom({
@@ -39,4 +39,9 @@ export const keywordState = atom({
 export const sortingState = atom({
   key: 'sortingState',
   default: '최신순',
+});
+
+export const detailState = atom({
+  key: 'detailState',
+  default: '',
 });

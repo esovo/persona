@@ -1,7 +1,6 @@
 package com.ssafy.project.common.constant;
 
 public interface Msg {
-
     //CRUD
     String SUCCESS_READ = "조회에 성공했습니다.";
     String SUCCESS_CREATE = "등록에 성공했습니다.";

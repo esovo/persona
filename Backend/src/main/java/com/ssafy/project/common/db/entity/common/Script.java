@@ -45,6 +45,6 @@ public class Script extends BaseTime {
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "script")
+    @OneToMany(mappedBy = "script", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants = new ArrayList<>();
 }
