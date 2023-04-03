@@ -18,7 +18,8 @@ const FilterBtn= ({ id, label, value }) => {
 
 
   const clickHandler = () => {
-    if (id != 1 && id < 8) {
+
+    if (id !== 1 && id < 8) {
       if (clickedEmotion.includes(value)) {
         setClickedEmotion(clickedEmotion.filter((target) => target !== value));
       } else {
@@ -32,7 +33,7 @@ const FilterBtn= ({ id, label, value }) => {
       }
     }
 
-    if (clickedBtnIds.includes(id)) {
+    if (id !==1 & clickedBtnIds.includes(id)) {
       setClickedBtnIds(clickedBtnIds.filter((ids) => ids !== id));
     } else {
       setClickedBtnIds([...clickedBtnIds, id]);

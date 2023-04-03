@@ -32,6 +32,8 @@ const Settings = (props) => {
       <Button onClick={() => setSettingsVisible(true)} rotateAnimation={true}>
         <SettingsIcon />
       </Button>
+ 
+
     </div>
   );
 };

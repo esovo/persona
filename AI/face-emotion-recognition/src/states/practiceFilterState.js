@@ -40,3 +40,8 @@ export const sortingState = atom({
   key: 'sortingState',
   default: '최신순',
 });
+
+export const detailState = atom({
+  key: 'detailState',
+  default: '',
+});

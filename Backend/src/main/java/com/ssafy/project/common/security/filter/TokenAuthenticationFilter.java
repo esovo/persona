@@ -37,7 +37,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 Long id = tokenProvider.getUserIdFromToken(token);
 
                     UserDetails userDetails = customUserDetailsService.loadUserById(id);
-                    log.info(userDetails.toString());
+
                     // Object 타입의 principal의 식별자에 더해 상세정보를 담기 위해 자리에 userDetails를 set
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
