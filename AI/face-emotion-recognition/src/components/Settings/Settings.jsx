@@ -7,7 +7,7 @@ import { useReactMediaRecorder } from 'react-media-recorder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRecordVinyl } from '@fortawesome/free-solid-svg-icons';
 
-const Settings = () => {
+const Settings = (props) => {
   const { webcamOn, setWebcamOn, setWebcamOff, setSettingsVisible } = useSettingsContext();
   const { setRecordedExpressionsVisible, setMountedVideoComponent } = useDashboardContext();
   const { stopRecording } = useReactMediaRecorder({ video: true });
@@ -27,6 +27,16 @@ const Settings = () => {
       <Button onClick={() => setSettingsVisible(true)} rotateAnimation={true}>
         <SettingsIcon />
       </Button>
+      {webcamOn?
+      <Button
+        className="endrecord"
+        variant="contained" 
+        onClick={props.endrecord}
+        color="error"
+        >녹화종료
+      </Button>
+      :<></>}
+
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dashboard } from './components/Dashboard';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from "recoil";
 // import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <RecoilRoot>
-          <DashboardContextProvider>
+      <DashboardContextProvider>
             <SettingsContextProvider>
               <Routes>
                 <Route path="/" element={<Main></Main>} />
@@ -40,10 +40,12 @@ function App() {
               </Routes>
             </SettingsContextProvider>
           </DashboardContextProvider>
-        </RecoilRoot>
+          </RecoilRoot>
       </header>
     </div>
   );
 }
 
 export default App;
+
+

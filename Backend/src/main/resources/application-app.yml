@@ -18,7 +18,9 @@ mysql:
 
 redis:
   host: redis-db
+#  host: localhost
   port: 6379
+#  pwd:
   pwd: ssafy3542
 
 oauth2:
@@ -33,7 +35,7 @@ oauth2:
     secret: TYOC8nfxKUwIQC9aW8nTv61V8Cs5Ushx
 
 cors:
-  allowedOrigins: http://localhost:3000
+  allowedOrigins: http://j8b301.p.ssafy.io:3000
 
 cloud:
   aws:

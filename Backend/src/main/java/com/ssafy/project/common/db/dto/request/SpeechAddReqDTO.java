@@ -8,8 +8,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class SpeechAddReqDTO {
-
     private Long participantId;
     private String speechRecognition;
-
 }
