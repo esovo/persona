@@ -11,6 +11,7 @@ import Community from './Pages/Community/Community';
 import Practice from './Pages/Practice/Practice';
 import PracticeDetail from './Pages/Practice/PracticeDetail';
 import Token from './Pages/Token';
+import Mypage from './Pages/Mypage/Mypage';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
                 <Route path="/" element={<Main></Main>} />
                 {/* <Route path='/Bookmark' element={<Bookmark/>} /> */}
                 <Route path="/Community" element={<Community />} />
-                {/* <Route path='/Mypage' element={<Mypage/>} /> */}
+                <Route path='/Mypage' element={<Mypage/>} />
                 <Route path="/Practice" element={<Practice />} />
                 <Route path="/Practice/Detail" element={<PracticeDetail />} />
                 {/* <Route path='/Storage' element={<Storage/>} /> */}

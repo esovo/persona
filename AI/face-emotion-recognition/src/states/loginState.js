@@ -7,6 +7,7 @@ export const user = atom({
   key: 'user',
   default: null,
   effects_UNSTABLE: [persistAtom],
+  // dangerouslyAllowMutability: true,
 });
 
 export const modal = atom({
