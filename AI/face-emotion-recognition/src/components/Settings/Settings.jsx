@@ -18,7 +18,6 @@ const Settings = () => {
   return (
     <div className="flex flex-row justify-between mx-4 my-6 px-4 py-2 bg-bg-2 rounded-lg shadow-2xl border-2 border-fg-1">
       <div className="flex flex-row">
-        <span className="flex flex-row items-center justify-center text-gray-600 text-xl mr-4">Webcam</span>
         <span className="flex flex-col items-center justify-center">
           <Button initialState={webcamOn} onClick={() => setWebcamOn(true)}>
             <FontAwesomeIcon icon={faRecordVinyl} style={{ width: '30px', height: '30px' }} />
