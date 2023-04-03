@@ -33,7 +33,6 @@ public class ParticipantServiceImpl implements ParticipantService {
                 .participateDate(LocalDateTime.now())
                 .build();
 
-        script.getParticipants().add(participant);
         participantRepository.save(participant);
         return participant.getId();
     }
