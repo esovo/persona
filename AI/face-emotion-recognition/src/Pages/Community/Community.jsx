@@ -19,8 +19,9 @@ export default function List() {
   const [showWriteModal, setShowWriteModal] = useRecoilState(postWriteModal);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   // const posts = useRecoilValue(postsState); // Recoil atom에서 게시물 목록을 가져옵니다.
-  const poposts = useRecoilValue(popostsState);
-  const [list, setlist] = useState([]);
+  // const poposts = useRecoilValue(popostsState);
+  const [posts, setPosts] = useState([]);
+  const [poposts, setPoposts] = useState([]);
   const page = 0;
   const sort = '';
   const keyword = '';
@@ -30,7 +31,14 @@ export default function List() {
     console.log(communityApis.BOARD_LIST_GET_API(page, sort, keyword));
     axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
       console.log(res.data.value.content);
-      setlist(res.data.value.content);
+      setPosts(res.data.value.content);
+    });
+  }, []);
+  useEffect(() => {
+    console.log(communityApis.BOARD_TOP_LIST_GET_API());
+    axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API()).then((res) => {
+      console.log(res.data.value.content);
+      setPoposts(res.data.value.content);
     });
   }, []);
 
@@ -79,7 +87,7 @@ export default function List() {
           </div>
           <div className={style.posts}>
             <div className={style.sort}>최신순</div>
-            {list?.map((post) => (
+            {posts?.map((post) => (
               <div key={post.id}>
                 <Post key={post.id} {...post} />
               </div>
