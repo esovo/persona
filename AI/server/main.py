@@ -20,7 +20,7 @@ from pydub import AudioSegment;
 openai.api_key = "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"
 # origins = ["*"]
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000", "https://j8b301.p.ssafy.io", "http://j8b301.p.ssafy.io:3000"]
 kiwi = Kiwi()
 app = FastAPI(docs_url="/api/docs", redoc_url="/api/redoc", openapi_url="/api/openapi.json")
 

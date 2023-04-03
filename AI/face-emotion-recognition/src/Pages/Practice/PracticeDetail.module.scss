@@ -2,27 +2,48 @@
     margin-top: 75px;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
+    justify-content: center;
+    // align-items: center;    
 
-    .info {
-        // display: flex;
-
-        // height: 10vh;
-
+    .maintext {
     }
-    .subinfo {
+    
+    .subtext {
 
     }
     .script {
+
+        width: 80%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         .detail {
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            width: 50vw;
+            height: 80vh;
+            border: solid 1px #6A6A6A;
+            border-radius: 50px;
 
         }
         .edit {
 
+            width: 50vw;
+            height: 80vh;
+            border: solid 1px #6A6A6A;
+            border-radius: 50px;
+
         }
     }
     .route {
+        width: 80%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
         .button {
 
         }

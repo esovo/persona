@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 
-const Post = ({ id, user, date, title, content, like, comment }) => {
+const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   const [isClicked, setIsClicked] = useState(false);
 
   const openModal = () => {
-    setSelectedPost({ id, user, date, title, content, like, comment });
+    setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, commentCnt });
     setShowDetailModal(true);
   };
   const heartClickHandler = () => {
@@ -24,18 +24,18 @@ const Post = ({ id, user, date, title, content, like, comment }) => {
         <div className={style.title}>{title}</div>
         <div className={style.body}>{content}</div>
         <div className={style.info}>
-          <div className={style.nickname}>{user}</div>|<div className={style.date}>{date}</div>
+          <div className={style.nickname}>{nickName}</div>|<div className={style.date}>{createdDate}</div>
         </div>
       </div>
       <div className={style.itmes}>
         <div className={style.like} onClick={heartClickHandler}>
           <FontAwesomeIcon icon={isClicked ? solidHeart : regularHeart} style={{ color: '#ce4040' }} />
-          <div>{like}</div>
+          <div>{likeCnt}</div>
         </div>
         <div className={style.comment}>
           <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />
           <div className={style.commentbtn} onClick={openModal}>
-            {comment}
+            {commentCnt}
           </div>
         </div>
       </div>
