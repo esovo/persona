@@ -4,9 +4,9 @@ import { useRecoilState } from 'recoil';
 import { modal } from '../../states/loginState';
 
 const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
-const LOCAL_API_BASE_URL = 'http://localhost:8080/app';
-// const WEB_REDIRECT_URI = 'https://j8b301.p.ssafy.io/oauth2/token';
-const WEB_REDIRECT_URI = 'http://localhost:3000/oauth2/token';
+// const LOCAL_API_BASE_URL = 'http://localhost:8080/app';
+const WEB_REDIRECT_URI = 'https://j8b301.p.ssafy.io/oauth2/token';
+// const WEB_REDIRECT_URI = 'http://localhost:3000/oauth2/token';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(modal);

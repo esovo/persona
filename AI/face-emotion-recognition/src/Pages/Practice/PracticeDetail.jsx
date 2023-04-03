@@ -13,8 +13,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PracticeDetail() {
 
-    // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
-    const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+    const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+    // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
     const getId = useRecoilValue(detailState);
     const token = useRecoilValue(tokenState);
 
