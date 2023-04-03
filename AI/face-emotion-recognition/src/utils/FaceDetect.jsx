@@ -556,24 +556,16 @@ const FaceDetect = (props) => {
               />
             </div>
           </div>
-
-          <Button
-            variant="contained"
-            onClick={() => {
-              emotionAnalyze(recordtext);
-            }}
-            color="error">
-            감정분석
-          </Button>
-
-          <Button
-            variant="contained"
-            onClick={() => {
-              save();
-            }}
-            color="error">
-            저장하기
-          </Button>
+          <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                save();
+              }}
+              color="error">
+              저장하기
+            </Button>
+          </div>
         </div>
       ) : (
         <>
