@@ -37,8 +37,8 @@ const List = () => {
   const [scripts, setScripts] = useRecoilState(scriptState);
 
   
-  const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
-  // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   
 
   const searchHandler = (event) => {
