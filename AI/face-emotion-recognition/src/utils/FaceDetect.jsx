@@ -27,7 +27,6 @@ import ScriptText from '../components/Script/ScriptText';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 import { useLocation } from 'react-router';
 import AWS from 'aws-sdk';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
@@ -465,6 +464,9 @@ const FaceDetect = (props) => {
         background: '#a26ea1',
       },
     },
+    marker: {
+      display: 'none',
+    },
   };
 
   function emotionAnalyze(text) {
@@ -518,19 +520,41 @@ const FaceDetect = (props) => {
     <div>
       {webcamOff ? (
         <div>
-          <video className="recordvideo" src={mediaBlobUrl} autoPlay controls />
+          <video
+            style={{ width: '1000px', height: '650px', objectFit: 'cover' }}
+            className="recordvideo"
+            src={mediaBlobUrl}
+            autoPlay
+            controls
+          />
           <RecordedExpressionsModal />
 
           <div className="scriptComponent">
             {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
-            <ReactDiffViewer
-              styles={newStyles}
-              oldValue={text}
-              newValue={recordtext}
-              splitView={true}
-              compareMethod={DiffMethod.WORDS}
-            />
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>대본</h1>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>음성인식결과</h1>
+              </div>
+              <hr />
+              <hr />
+
+              <ReactDiffViewer
+                styles={{
+                  marker: {
+                    display: 'none',
+                  },
+                  lineNumber: {
+                    display: 'none',
+                  },
+                }}
+                oldValue={text}
+                newValue={recordtext}
+                splitView={true}
+                compareMethod={DiffMethod.WORDS}
+              />
+            </div>
           </div>
 
           <Button
@@ -564,16 +588,7 @@ const FaceDetect = (props) => {
               }}
               ref={canvasRef}></canvas>
           )}
-          <Settings></Settings>
-          <Button
-            variant="contained"
-            onClick={() => {
-              click();
-            }}
-            color="error">
-            녹화종료
-            <FontAwesomeIcon icon="fa-solid fa-stop" />
-          </Button>
+          <Settings endrecord={click}></Settings>
         </>
       )}
     </div>
