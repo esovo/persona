@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import style from './PostWriteModal.module.scss';
 import { useRecoilState } from 'recoil';
+import { communityApis } from '../../apis/communityApis';
 import { postWriteModal, videoModal } from '../../states/communityState';
 import QuillEditor from './QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +20,8 @@ export default function Modal() {
   const openVideoModal = () => {
     setShowVideoModal(true);
   };
+
+  const writePost = () => {};
 
   return (
     <>
@@ -38,7 +41,9 @@ export default function Modal() {
               <button className={style.close} onClick={closeModal}>
                 취소
               </button>
-              <button className={style.write}>게시</button>
+              <button className={style.write} onClick={writePost}>
+                게시
+              </button>
             </div>
           </div>
         </div>

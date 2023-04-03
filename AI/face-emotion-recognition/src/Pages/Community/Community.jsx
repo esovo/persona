@@ -34,11 +34,12 @@ export default function List() {
       setPosts(res.data.value.content);
     });
   }, []);
+
   useEffect(() => {
-    console.log(communityApis.BOARD_TOP_LIST_GET_API());
-    axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API()).then((res) => {
-      console.log(res.data.value.content);
-      setPoposts(res.data.value.content);
+    console.log(communityApis.BOARD_TOP_LIST_GET_API);
+    axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API).then((res) => {
+      console.log(res.data.value);
+      setPoposts(res.data.value);
     });
   }, []);
 
