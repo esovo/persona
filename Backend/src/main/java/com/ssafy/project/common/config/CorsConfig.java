@@ -22,7 +22,9 @@ public class CorsConfig {
         // cors로 인해 몇몇 기본헤더를 제외하고는 접근에 제한이있다. JWT인증을 위해 해당 헤더를 추가시킨다.
         config.addExposedHeader("Authorization");
         config.setAllowCredentials(true);
-        Arrays.stream(allowedOrigins).forEach(config::addAllowedOriginPattern);
+        config.addAllowedOriginPattern("http://j8b301.p.ssafy.io:3000");
+        config.addAllowedOriginPattern("http://localhost:3000");
+        config.addAllowedOriginPattern("https://j8b301.p.ssafy.io");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
