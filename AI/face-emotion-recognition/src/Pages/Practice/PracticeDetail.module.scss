@@ -2,19 +2,20 @@
     margin-top: 75px;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
+    justify-content: center;
     // align-items: center;
 
     .info {
-        // display: flex;
-
-        // height: 10vh;
+        
 
     }
     .subinfo {
 
     }
     .script {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .detail {
 
         }

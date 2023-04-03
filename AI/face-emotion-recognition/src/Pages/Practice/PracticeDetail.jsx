@@ -17,6 +17,9 @@ export default function PracticeDetail() {
     const [data, setData] = useState([]);
     // {
     //     actor: '',
+
+
+
     //     author: '',
     //     bookmarkCnt: 0,
     //     content: '',
@@ -63,6 +66,15 @@ export default function PracticeDetail() {
                 <div className={style.script}>
                     <div className={style.detail}>
 
+
+                        <div className={style.title}>{data.title}</div>
+                        <div className={style.actor}>{data.actor}</div>
+
+
+
+
+
+
                     </div>
                     <div className={style.edit}><QuillEditor /></div>
                 </div>
@@ -70,7 +82,6 @@ export default function PracticeDetail() {
                     <div className={style.button}>목록</div>
                     <div className={style.button}>연습</div>
                 </div>
-
             </div>
         </>
     );
