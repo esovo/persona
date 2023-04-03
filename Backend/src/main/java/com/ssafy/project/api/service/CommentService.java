@@ -15,7 +15,7 @@ public interface CommentService {
     //내 댓글 조회
     public Page<CommentDTO> findMyComment(int page);
     //등록
-    public Comment addComment(CommentAddReqDTO commentAddReqDTO);
+    public void addComment(CommentAddReqDTO commentAddReqDTO);
     //수정
     public void modifyComment(CommentModReqDTO commentModReqDTO);
     //삭제
