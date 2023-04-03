@@ -30,7 +30,7 @@ function App() {
           <Route path='/Practice/Detail' element={<PracticeDetail />} />
           {/* <Route path='/Storage' element={<Storage/>} /> */}
           <Route path='/oauth2/token' element={<Token />} />
-            <Route path='/dashboard' element={
+            <Route path='/dashboard/:scriptId' element={
               <React.Suspense fallback={<>Loading Fallback ...</>}>
                 <Dashboard />
               </React.Suspense>
