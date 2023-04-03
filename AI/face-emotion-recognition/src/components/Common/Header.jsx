@@ -14,7 +14,7 @@ export default function Header() {
   const [showModal, setShowModal] = useRecoilState(modal);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [isDropdown, setIsDropdown] = useState(false);
-  const token = useRecoilValue(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
 
   const navigate = useNavigate();
 
@@ -24,6 +24,7 @@ export default function Header() {
 
   const logoutHandler = () => {
     setLoginUser(null);
+    setToken('');
     setIsLogin(false);
     navigate('/');
   };

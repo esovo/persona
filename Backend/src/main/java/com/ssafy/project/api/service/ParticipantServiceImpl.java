@@ -7,6 +7,8 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.ScriptRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +26,13 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public void addParticipant(ParticipantAddReqDTO participantAddReqDTO) {
-        Script script = scriptRepository.findById(participantAddReqDTO.getScriptId()).get();
-        User user = userRepository.findById(authProvider.getUserIdFromPrincipal()).get();
+        Script script = scriptRepository.findById(participantAddReqDTO.getScriptId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
 
         Participant participant = Participant.builder()
                 .script(script)
-                .user(user)
                 .participateDate(LocalDateTime.now())
                 .build();
-        user.getParticipants().add(participant);
-        userRepository.save(user);
+
+        script.getParticipants().add(participant);
     }
 }

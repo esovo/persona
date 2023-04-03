@@ -7,10 +7,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Builder
-@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class BoardAllResDTO {
     @Schema(description = "게시글 아이디")
     private Long id;
