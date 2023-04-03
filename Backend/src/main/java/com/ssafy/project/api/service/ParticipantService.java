@@ -4,7 +4,7 @@ import com.ssafy.project.common.db.dto.request.ParticipantAddReqDTO;
 
 public interface ParticipantService {
 
-    void addParticipant(ParticipantAddReqDTO participantAddReqDTO);
+    Long addParticipant(ParticipantAddReqDTO participantAddReqDTO);
 
 
 }
