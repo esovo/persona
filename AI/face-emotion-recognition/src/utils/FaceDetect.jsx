@@ -496,12 +496,12 @@ const FaceDetect = (props) => {
         highlightBackground: '#fefed5',
         highlightGutterBackground: '#ffcd3c',
       },
-    },
-    line: {
-      padding: '10px 2px',
-      '&:hover': {
-        background: '#a26ea1',
-      },
+      marker: {
+        // keep + / - markers from getting too wide, also center
+        width: "300px",
+        minWidth: "250px",
+        textAlign: "center",
+      }
     },
   };
 
@@ -592,7 +592,14 @@ const FaceDetect = (props) => {
           {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
           <ReactDiffViewer
-            styles={newStyles}
+            styles={{
+              marker: {
+                display:"none"
+              },
+              line: {
+                // display:"none"
+              }}
+            }
             oldValue={text} 
             newValue={recordtext} 
             splitView={true} 
