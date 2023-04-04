@@ -17,17 +17,19 @@ export default function List() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showWriteModal, setShowWriteModal] = useRecoilState(postWriteModal);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
-  // const posts = useRecoilValue(postsState); // Recoil atom에서 게시물 목록을 가져옵니다.
-  // const poposts = useRecoilValue(popostsState);
   const [posts, setPosts] = useState([]);
   const [poposts, setPoposts] = useState([]);
-  const page = 0;
-  const sort = '';
-  const keyword = '';
+  const [page, setPage] = useState(0);
+  const [sort, setSort] = useState('최신순');
+  const [keyword, setKeyword] = useState('');
+  const [openDropDown, setOpenDropDown] = useState(false);
+
+  const clickDropDown = () => {
+    setOpenDropDown(!openDropDown);
+  };
 
   const BASE_URL = 'https://j8b301.p.ssafy.io';
   useEffect(() => {
-    console.log(communityApis.BOARD_LIST_GET_API(page, sort, keyword));
     axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
       console.log(res.data.value.content);
       setPosts(res.data.value.content);
@@ -35,16 +37,26 @@ export default function List() {
   }, []);
 
   useEffect(() => {
-    console.log(communityApis.BOARD_TOP_LIST_GET_API);
     axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API).then((res) => {
       console.log(res.data.value);
       setPoposts(res.data.value);
     });
   }, []);
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
+      console.log(res.data.value);
+      setPosts(res.data.value.content);
+    });
+  }, [sort]);
+
+  const searchPostHandler = (event) => {
     event.preventDefault();
-    // 여기에 검색어를 사용하는 로직을 추가하세요.
+    setKeyword(`${searchQuery}`);
+    axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
+      console.log(res.data.value.content);
+      setPosts(res.data.value.content);
+    });
     console.log(`Searching for: ${searchQuery}`);
   };
 
@@ -63,7 +75,7 @@ export default function List() {
       </div>
       <div className={style.container}>
         <div className={style.left}>
-          <form className={style.searchForm} onSubmit={handleSubmit} autoComplete="off">
+          <form className={style.searchForm} autoComplete="off">
             <div className={style.searchInput}>
               <input
                 className={style.searchText}
@@ -71,11 +83,11 @@ export default function List() {
                 id="input_search"
                 placeholder="글 제목, 글 내용, 작성자 검색"
                 maxLength={200}
-                autoComplete="off"
+                // autoComplete="off"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
-              <button type="submit" className={style.search}>
+              <button type="submit" className={style.search} onClick={searchPostHandler}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: '#5e5e5e' }} />
               </button>
             </div>
@@ -86,8 +98,46 @@ export default function List() {
             </button>
           </div>
           <div className={style.posts}>
-            <div className={style.sort}>최신순</div>
-            {posts?.map((post) => (
+            <div className={style.sort}>
+              <div className={style.dropdown}>
+                <div className={style.dropdownHeader} onClick={clickDropDown}>
+                  {sort}
+                </div>
+                {openDropDown && (
+                  <div className={style.dropdownOptions}>
+                    <div
+                      onClick={() => {
+                        setSort('최신순');
+                        clickDropDown();
+                      }}>
+                      최신순
+                    </div>
+                    <div
+                      onClick={() => {
+                        setSort('좋아요순');
+                        clickDropDown();
+                      }}>
+                      좋아요순
+                    </div>
+                    <div
+                      onClick={() => {
+                        setSort('조회순');
+                        clickDropDown();
+                      }}>
+                      조회순
+                    </div>
+                    <div
+                      onClick={() => {
+                        setSort('댓글수순');
+                        clickDropDown();
+                      }}>
+                      댓글수순
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {posts.map((post) => (
               <div key={post.id}>
                 <Post key={post.id} {...post} />
               </div>

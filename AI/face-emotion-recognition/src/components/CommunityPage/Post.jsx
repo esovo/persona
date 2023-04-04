@@ -10,7 +10,6 @@ const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   const [isClicked, setIsClicked] = useState(false);
-
   const openModal = () => {
     setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, commentCnt });
     setShowDetailModal(true);

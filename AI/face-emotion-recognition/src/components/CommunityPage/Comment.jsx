@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 import style from './Comment.module.scss';
 
-const Comment = ({ id, nickname, createDate, content }) => {
+const Comment = ({ id, nickname, createdDate, content }) => {
   return (
     <div className={style.comment}>
       <div className={style.info}>
@@ -11,7 +11,7 @@ const Comment = ({ id, nickname, createDate, content }) => {
         <div className={style.items}>
           <div className={style.nickname}>{nickname}</div>
           <div className={style.content}>{content}</div>
-          <div className={style.date}>{createDate}</div>
+          <div className={style.date}>{createdDate}</div>
         </div>
       </div>
     </div>

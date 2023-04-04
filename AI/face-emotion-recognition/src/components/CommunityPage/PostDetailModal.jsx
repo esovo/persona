@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { commentsState } from '../../states/communityState';
+import React, { useState, useEffect } from 'react';
+import { tokenState } from '../../states/loginState';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { postDetailModal, selectedPostState } from '../../states/communityState';
+import { communityApis } from '../../apis/communityApis';
+import { postDetailModal, selectedPostState, isHeartState } from '../../states/communityState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faEye, faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faXmark, faEllipsisVertical, faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
@@ -12,15 +13,75 @@ import axios from 'axios';
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(postDetailModal);
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
-  const [isClicked, setIsClicked] = useState(false);
-  const comments = useRecoilValue(commentsState); // Recoil atom에서 게시물 목록을 가져옵니다.
+  const [comments, setComments] = useState([]);
+  const BASE_URL = 'https://j8b301.p.ssafy.io';
+  const token = useRecoilValue(tokenState);
+  const [isHeart, setIsHeart] = useRecoilState(isHeartState);
+  const boardId = selectedPost.id;
 
   const shutModal = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    const page = 0;
+    axios.get(BASE_URL + communityApis.COMMENT_LIST_GET_API(boardId, page)).then((res) => {
+      setComments(res.data.value.content);
+    });
+  }, [comments]);
+
+  useEffect(() => {
+    axios
+      .get(BASE_URL + communityApis.BOARD_LIKE_GET_API(boardId), {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setIsHeart(res.data.value);
+      });
+  });
+
   const heartClickHandler = () => {
-    setIsClicked(!isClicked);
+    if (isHeart) {
+      // 좋아요가 이미 되어있는 경우 취소
+      axios
+        .delete(BASE_URL + communityApis.BOARD_LIKE_DELETE_API(boardId), {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          setIsHeart(false);
+        });
+    } else {
+      // 좋아요가 되어있지 않은 경우
+      axios
+        .post(BASE_URL + communityApis.BOARD_LIKE_POST_API(boardId), null, {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((res) => {
+          setIsHeart(true);
+        });
+    }
   };
+
+  const commentPostHandler = () => {
+    const content = document.querySelector(`.${style.commentInput}`).value;
+    const data = {
+      boardId: boardId,
+      content: content,
+    };
+    axios.post(BASE_URL + communityApis.COMMENT_POST_API, data, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    document.querySelector(`.${style.commentInput}`).value = '';
+  };
+
   return (
     <>
       {showModal && (
@@ -42,7 +103,7 @@ export default function Modal() {
                 </div>
                 <div className={style.btn}>
                   <button className={style.likebtn} onClick={heartClickHandler}>
-                    <FontAwesomeIcon icon={isClicked ? solidHeart : regularHeart} style={{ color: '#ce4040' }} />
+                    <FontAwesomeIcon icon={isHeart ? solidHeart : regularHeart} style={{ color: '#ce4040' }} />
                   </button>
                   <button className={style.menubtn}>
                     <FontAwesomeIcon icon={faEllipsisVertical} style={{ color: '#5d5d5d' }} />
@@ -69,9 +130,10 @@ export default function Modal() {
             <div className={style.bottom}>
               <div className={style.input}>
                 <input className={style.commentInput} type="text" placeholder="댓글을 입력하세요." />
-                <button className={style.push}>보내기</button>
+                <button className={style.push} onClick={commentPostHandler}>
+                  보내기
+                </button>
               </div>
-
               {comments.map((comment) => (
                 <div className={style.commentItem} key={comment.id}>
                   <Comment key={comment.id} {...comment} />
