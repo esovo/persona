@@ -79,6 +79,45 @@
         padding: 15px 20px;
         border-bottom: solid 1px #d5d5d5;
         font-size: 18px;
+        .container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 80%;
+          margin: 0 auto;
+          padding-top: 20px;
+        }
+
+        .sort {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          margin-bottom: 20px;
+          .dropdown {
+            position: relative;
+            display: inline-block;
+            .dropdownHeader {
+              cursor: pointer;
+              padding: 10px;
+              background-color: white;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+            }
+            .dropdownOptions {
+              position: absolute;
+              top: 100%;
+              left: 0;
+              width: 100%;
+              max-height: 200px;
+              overflow-y: auto;
+              background-color: white;
+              border: 1px solid #ddd;
+              border-top: none;
+              border-radius: 0 0 4px 4px;
+              z-index: 1; /* Add a z-index value */
+            }
+          }
+        }
       }
       .post {
         background-color: white;

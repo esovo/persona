@@ -117,6 +117,7 @@
     .bottom {
       border-top: solid 1px #d5d5d5;
       background-color: #f3f3f3;
+      height: inherit;
       .input {
         // padding: 5px 20px;
         display: flex;
@@ -148,6 +149,7 @@
       .commentItem {
         padding: 20px 40px;
         border-bottom: solid 1px #d5d5d5;
+        background-color: #f3f3f3;
       }
     }
   }
