@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../states/loginState';
 
-const BASE_URL = 'http://j8b301.p.ssafy.io:8080/';
+const BASE_URL = 'https://j8b301.p.ssafy.io';
 export const instance = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -31,6 +31,14 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+// headers에 토큰을 추가하는 대신 직접 토큰을 사용할 수 있습니다.
+// 예시:
+// instance.get('/api/some_endpoint', {
+// headers: {
+//   Authorization: 'Bearer ' + token,
+// },
+// });
 
 // export const fetchData = {
 //   get: async (url, option) => await instance.get(url, option),
