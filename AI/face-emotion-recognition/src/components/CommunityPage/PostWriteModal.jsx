@@ -1,16 +1,20 @@
-// import axios from 'axios';
-import React, { useState } from 'react';
+import axios from 'axios';
+import React from 'react';
 import style from './PostWriteModal.module.scss';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { communityApis } from '../../apis/communityApis';
+// import { instance } from '../../apis/api';
 import { postWriteModal, videoModal } from '../../states/communityState';
 import QuillEditor from './QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import VideoModal from './VideoModal';
+import { tokenState } from '../../states/loginState';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(postWriteModal);
   const [showVideoModal, setShowVideoModal] = useRecoilState(videoModal);
+  const token = useRecoilValue(tokenState);
 
   const closeModal = () => {
     setShowModal(false);
@@ -18,6 +22,28 @@ export default function Modal() {
 
   const openVideoModal = () => {
     setShowVideoModal(true);
+  };
+
+  const BASE_URL = 'http://j8b301.p.ssafy.io:8080';
+  const writePost = () => {
+    const title = document.querySelector(`.${style.input}`).value; // 제목
+    const content = document.querySelector(`.ql-editor`).innerHTML; // 내용
+    // const videoId = null;
+    const data = {
+      title: title,
+      content: content,
+      // videoId: videoId,
+    };
+    axios
+      .post('http://j8b301.p.ssafy.io:8080/app/board', {
+        headers: {
+          Authorization: token,
+        },
+        data,
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   return (
@@ -38,7 +64,9 @@ export default function Modal() {
               <button className={style.close} onClick={closeModal}>
                 취소
               </button>
-              <button className={style.write}>게시</button>
+              <button className={style.write} onClick={writePost}>
+                게시
+              </button>
             </div>
           </div>
         </div>
