@@ -24,59 +24,62 @@
         }
 
     }
-
-    .date {
-
-    }
-
-    .title {
-
-    }
-
-    .actor {
-
-    }
-
-    .category {
-
-        display: flex;
-        flex-direction: row;
+    .gogo {
+            .date {
         
-
-        .round {
-
-            margin-right: 5px;
-            padding: 3px 10px;
-            border: 1px solid #6F6F6F;
-            display: flex;
-            align-items: center;
-            text-align: center;
-
-            color: #6F6F6F;
-            font-style: normal;
-
-            border-radius: 40px;
-            background-color: transparent;
-
-        }
+            }
+        
+            .title {
+        
+            }
+        
+            .actor {
+        
+            }
+        
+            .category {
+        
+                display: flex;
+                flex-direction: row;
+                
+        
+                .round {
+        
+                    margin-right: 5px;
+                    padding: 3px 10px;
+                    border: 1px solid #6F6F6F;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+        
+                    color: #6F6F6F;
+                    font-style: normal;
+        
+                    border-radius: 40px;
+                    background-color: transparent;
+        
+                }
+        
+            }
+        
+            .line {
+                width: 240px;
+                height: 0px;
+                left: 439px;
+                top: 918px;
+        
+                border: 1px solid #000000;
+                transform: rotate(0.23deg);
+        
+            }
+        
+            .subinfo {
+                display: flex;
+                flex-direction: row;
+                // justify-content: space-around;
+        
+            }
 
     }
 
-    .line {
-        width: 240px;
-        height: 0px;
-        left: 439px;
-        top: 918px;
-
-        border: 1px solid #000000;
-        transform: rotate(0.23deg);
-
-    }
-
-    .subinfo {
-        display: flex;
-        flex-direction: row;
-        // justify-content: space-around;
-
-    }
 }

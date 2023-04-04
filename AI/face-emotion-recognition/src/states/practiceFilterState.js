@@ -45,3 +45,8 @@ export const detailState = atom({
   key: 'detailState',
   default: '',
 });
+
+export const writeState = atom({
+  key: 'writeState',
+  default: '',
+});
