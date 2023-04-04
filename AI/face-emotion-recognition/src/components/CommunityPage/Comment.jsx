@@ -1,12 +1,48 @@
-import { useRecoilState } from 'recoil';
+import React, { useState, useEffect } from 'react';
 import style from './Comment.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { communityApis } from '../../apis/communityApis';
+import { tokenState } from '../../states/loginState';
+import { useRecoilValue } from 'recoil';
 
 const Comment = ({ id, nickname, createdDate, content }) => {
+  const [open, setOpen] = useState(false);
+  const BASE_URL = 'https://j8b301.p.ssafy.io';
+  const token = useRecoilValue(tokenState);
+
+  const clickDropDown = () => {
+    setOpen(!open);
+  };
+
+  const deleteCommentHandler = () => {
+    clickDropDown();
+    axios.delete(BASE_URL + communityApis.COMMENT_DELETE_API(id), {
+      headers: {
+        Authorization: token,
+      },
+    });
+  };
+
   return (
     <div className={style.comment}>
       <div className={style.info}>
         <div className={style.profile}>
           <img src="user.png" alt="user" width="32" />
+          <button className={style.menubtn} onClick={clickDropDown}>
+            <FontAwesomeIcon icon={faEllipsisVertical} style={{ color: '#5d5d5d' }} />
+            {open && (
+              <div className={style.dropdownOptions}>
+                <div className={style.modify} onClick={clickDropDown}>
+                  수정
+                </div>
+                <div className={style.delete} onClick={deleteCommentHandler}>
+                  삭제
+                </div>
+              </div>
+            )}
+          </button>
         </div>
         <div className={style.items}>
           <div className={style.nickname}>{nickname}</div>
