@@ -22,8 +22,8 @@ public class BoardLikeController {
 
     @PostMapping
     @ApiOperation(value = "게시글 좋아요")
-    public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long board_id){
-        boardLikeService.addBoardLike(board_id);
+    public ResponseEntity<ResponseDTO> boardLikeAdd(@RequestParam Long boardId){
+        boardLikeService.addBoardLike(boardId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 

@@ -29,5 +29,4 @@ public class TestController {
         log.info(request.getHeader("Authorization"));
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "ok"));
     }
-
 }
