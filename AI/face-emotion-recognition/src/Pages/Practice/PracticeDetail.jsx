@@ -18,6 +18,7 @@ export default function PracticeDetail() {
     const getId = useRecoilValue(detailState);
     const token = useRecoilValue(tokenState);
 
+    const [date, setDate] = useState('');
     const [data, setData] = useState([]);
 
     const navigate = useNavigate();
@@ -56,7 +57,11 @@ export default function PracticeDetail() {
         .then((res) => {
             receivedData = res.data.value;
             setData(receivedData);
-            // console.log(receivedData);
+            // setDate(receivedData.createdDate.subString(0, 10))
+            console.log(typeof(receivedData.createdDate))
+            let text =receivedData.createdDate.substring(0,10);
+            console.log(text);
+            setDate(text)
         });
 
         return () => {
@@ -79,7 +84,7 @@ export default function PracticeDetail() {
 
                         <div className={style.title}>{data.title}</div>
                         <div className={style.actor}>{data.actor} 역</div>
-                        <div className={style.data}>작성일 | {data.createdDate}</div>
+                        <div className={style.data}>작성일 | {date}</div>
                         
                         <div className={style.info}>
                             <div className={style.author}>극본 | {data.author}</div>
