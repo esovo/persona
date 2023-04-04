@@ -6,9 +6,12 @@ import com.ssafy.project.common.provider.S3Provider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -29,4 +32,20 @@ public class TestController {
         log.info(request.getHeader("Authorization"));
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "ok"));
     }
+
+    private final ResourceLoader resourceLoader;
+
+
+    @PostMapping("/file")
+    public void getFile(@RequestPart MultipartFile file) throws IOException {
+
+        log.info(file.getBytes());
+        log.info(file.getResource());
+        log.info(file.getInputStream());
+        log.info(file.getSize());
+        log.info(file.getOriginalFilename());
+        log.info(file.getName());
+        log.info(file.getContentType());
+    }
+
 }

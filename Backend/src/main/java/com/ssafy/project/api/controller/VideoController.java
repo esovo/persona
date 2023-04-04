@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 @Log4j2
@@ -25,7 +26,13 @@ public class VideoController {
 
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     @ApiOperation(value = "비디오 저장")
-    public ResponseEntity<ResponseDTO> videoSave(@ModelAttribute VideoCreateReqDTO videoCreateReqDTO) throws IOException {
+    public ResponseEntity<ResponseDTO> videoSave(@ModelAttribute VideoCreateReqDTO videoCreateReqDTO) throws FileNotFoundException {
+
+        if(!videoCreateReqDTO.getVideoFile().getContentType().startsWith("video")) {
+
+            return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "hi"));
+        }
+
         videoService.saveVideo(videoCreateReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, "hi"));
     }
