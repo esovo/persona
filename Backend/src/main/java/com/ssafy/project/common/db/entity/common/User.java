@@ -61,9 +61,12 @@ public class User extends BaseTime {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Bookmark> videos = new ArrayList<>();
+    List<Video> videos = new ArrayList<>();
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

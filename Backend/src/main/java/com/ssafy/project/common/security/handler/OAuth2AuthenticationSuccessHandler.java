@@ -40,8 +40,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        log.info("onAuthenticationSuccess 실행");
-
 //        Enumeration<String> parameterNames = request.getParameterNames();
 //        while (parameterNames.hasMoreElements()) {
 //            String paramName = parameterNames.nextElement();
@@ -55,25 +53,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         // response가 이미 커밋되면, 추가적인 응답 불가능
-        if (response.isCommitted()) {
-            log.info("해당 Url은 이미 커밋되었습니다. " + targetUrl);
-            return;
-        }
+        if (response.isCommitted()) { return; }
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
-    /*
-     * Front에서 Param으로 넘긴 Uri를 검증
-     * 클라이언트 Uri와 서버의 Uri의 주소, Host, Port를 비교하여
-     * - Uri가 존재하고, 유효하면 해당 Uri로 error param이 빈 채로 리디렉션
-     * - Uri가 존재하고, 유효하지 않으면 BadRequestException
-     * - Uri가 존재하지 않으면, "/"로 error param이 빈 채로 해당 Uri로 리디렉션
-     */
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
-        log.info("determineTargetUrl 실행");
         Optional<String> redirectUri = cookieProvider.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get()))
@@ -81,18 +67,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // 리디렉션 uri가 있으면 그 값으로, 없으면 defaultUri ("/")
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
-        String accessToken = tokenProvider.createToken(authentication);
-        log.info(accessToken);
 
         return UriComponentsBuilder.fromUriString(targetUri)
                 .queryParam("error", "")
-                .queryParam("token", accessToken)
+                .queryParam("token", tokenProvider.createToken(authentication))
                 .build().toUriString();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
-
-        log.info("clearAuthenticationAttributes 실행");
         // 발생했던 exception들을 삭제
         super.clearAuthenticationAttributes(request);
 
@@ -102,7 +84,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
 
-        log.info("isAuthorizedRedirectUri 실행");
         URI clientRedirectUri = URI.create(uri);
 
 //        log.info("==========================");
