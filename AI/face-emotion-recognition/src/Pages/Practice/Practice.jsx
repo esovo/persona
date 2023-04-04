@@ -21,7 +21,7 @@ import Script from '../../components/PracticePage/Script';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import style from './Practice.module.scss';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faAnglesDown } from '@fortawesome/free-solid-svg-icons';
 
 const List = () => {
   const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
@@ -37,11 +37,11 @@ const List = () => {
   const [scripts, setScripts] = useRecoilState(scriptState);
 
   
-  // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
-  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+  // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   
 
-  const searchHandler = (event) => {
+  const optionHandler = (event) => {
     setClickedOption(event.target.value);
   };
 
@@ -49,8 +49,13 @@ const List = () => {
     setClickedKeyword(event.target.value);
   };
 
-  const sortingHandler = () => {
-    
+  const moreHandler = () => {
+    setPage((size) => size + 1);
+    setTimeout(() => {
+      loadingNext(); 
+    },'100')
+    console.log(scripts);
+       
   }
 
   const loading = async () => {
@@ -73,11 +78,9 @@ const List = () => {
 
   };
 
-  const loadingNext = () => {
+  const loadingNext = async () => {
 
-    setPage(page + 1);  //로직 확인
-
-    axios.post(`${API_BASE_URL}/sciprt/all`,{
+    await axios.post(`${API_BASE_URL}/sciprt/all`,{
       headers: {
         'Authorization': token
       },
@@ -92,15 +95,11 @@ const List = () => {
     })
   };
 
-  // const selectHandler = () => {
-  //   console.log('센서 함수 정상 동작')
-  // }
-
   useEffect(() => {
     loading();
     console.log(scripts);
 
-  }, [clickedEmotion, clickedGenre, clickedSorting])
+  }, [clickedEmotion, clickedGenre, clickedSorting, clickedKeyword])
 
   return (
     <>
@@ -117,7 +116,7 @@ const List = () => {
           <div className={style.search}>
 
             
-            <select className={style.selectbox} name="findby" onChange={searchHandler}>
+            <select className={style.selectbox} name="findby" onChange={optionHandler}>
               <option value="title">제목</option>
               <option value="content">내용</option>
               <option value="author">작가</option>
@@ -163,7 +162,10 @@ const List = () => {
             <div className={style.text} onClick={() => {setClickedSorting('참여순')}}>참여순</div> | <div className={style.text} onClick={() => {setClickedSorting('조회순')}}>조회순</div>
           </div>
           <div className={style.scripts}>
-            {scripts.map((info) => (<Script data={info} />))}
+            {scripts.map((info) => (<Script key={info.id} data={info} />))}
+          </div>
+          <div className={style.more} onClick={moreHandler}>
+            <FontAwesomeIcon icon={faAnglesDown} />
           </div>
         </div>
       </div>
