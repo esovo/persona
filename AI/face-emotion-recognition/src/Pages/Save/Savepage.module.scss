@@ -1,0 +1,18 @@
+.savepage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  img{
+    display: flex;
+    margin-left: 150px;
+    margin-top: 100px;
+    justify-content: center;
+    width: 1200px;
+  }
+  .scriptComponent{
+    margin-left: 250px;
+    margin-top: 100px;
+    width: 1000px;
+  }
+  margin-bottom: 100px;
+}
