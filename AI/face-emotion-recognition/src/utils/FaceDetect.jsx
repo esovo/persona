@@ -503,6 +503,9 @@ const FaceDetect = (props) => {
         textAlign: "center",
       }
     },
+    marker: {
+      display: 'none',
+    },
   };
 
  function emotionAnalyze(text){
@@ -575,86 +578,75 @@ const FaceDetect = (props) => {
   }  
 
   return (
-
     <div>
-      
-      {webcamOff?
-      <div>
-        <video 
-          className="recordvideo" 
-          src={mediaBlobUrl} 
-          autoPlay
-          controls
-        />
-        <RecordedExpressionsModal ref={chartRef} />
+      {webcamOff ? (
+        <div>
+          <video
+            style={{ width: '1000px', height: '650px', objectFit: 'cover' }}
+            className="recordvideo"
+            src={mediaBlobUrl}
+            autoPlay
+            controls
+          />
+          <RecordedExpressionsModal />
 
-        <div className="scriptComponent">
-          {/* <ScriptText text={text}></ScriptText>
+   <div className="scriptComponent">
+            {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
-          <ReactDiffViewer
-            styles={{
-              marker: {
-                display:"none"
-              },
-              line: {
-                // display:"none"
-              }}
-            }
-            oldValue={text} 
-            newValue={recordtext} 
-            splitView={true} 
-            compareMethod={DiffMethod.WORDS}
-           />
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>대본</h1>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>음성인식결과</h1>
+              </div>
+              <hr />
+              <hr />
 
+              <ReactDiffViewer
+                styles={{
+                  marker: {
+                    display: 'none',
+                  },
+                  lineNumber: {
+                    display: 'none',
+                  },
+                }}
+                oldValue={text}
+                newValue={recordtext}
+                splitView={true}
+                compareMethod={DiffMethod.WORDS}
+              />
+            </div>
+          </div>
+          <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                save();
+              }}
+              color="error">
+              저장하기
+            </Button>
+          </div>
         </div>
-        
-        <Button 
-          variant="contained" 
-          onClick={()=>{emotionAnalyze(recordtext)}}
-          color="error"
-        >감정분석</Button>
-
-        <Button 
-          variant="contained" 
-          onClick={()=>{save()}}
-          color="error"
-        >저장하기</Button>
-      </div>
-      :
-      <>
-        <Webcam
-          className="onvideo"
-          audio={true}
-          mirrored={true}
-          ref={webcamRef}
-        />
-        {overlayOn?
-            <canvas 
+      ) : (
+        <>
+          <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />
+          {overlayOn ? (
+            <canvas className="overvideo" ref={canvasRef}></canvas>
+          ) : (
+            <canvas
               className="overvideo"
-              ref={canvasRef}>  
-            </canvas>
-
-             :
-            <canvas 
-              className="overvideo"  
               style={{
-                display:"none"
+                display: 'none',
               }}
-              ref={canvasRef}>
-            </canvas>
-        }
-        <Settings endrecord={click}></Settings>
-        {/* <Button
-          className="endrecord"
-          variant="contained" 
-          onClick={()=>{click()}}
-          color="error"
-          >녹화종료
-        </Button> */}
-      </>
-    }
+              ref={canvasRef}></canvas>
+          )}
+          <Settings endrecord={click}></Settings>
+        </>
+      )}
     </div>
   );
 };
+
 
 export default FaceDetect;

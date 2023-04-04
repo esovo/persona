@@ -26,6 +26,20 @@ const RealTimeEmotion = () => {
 
   return currentExpression !== null && currentExpression !== undefined ? (
     <ResponsiveBar
+      theme={{
+        axis: {
+          ticks: {
+            text: {
+              fill: '#FDFEFE',
+            },
+          },
+          legend: {
+            text: {
+              fill: '#FDFEFE',
+            },
+          },
+        },
+      }}
       data={currentExpression}
       keys={['percent']}
       indexBy={'expression'}
@@ -36,7 +50,7 @@ const RealTimeEmotion = () => {
       maxValue={100}
       minValue={0}
       valueScale={{ type: 'linear' }}
-      colors="#FE8F8F"
+      colors="#FAF2FF"
       animate={true}
       enableLabel={false}
       axisTop={null}

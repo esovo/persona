@@ -13,7 +13,7 @@ import PracticeDetail from './Pages/Practice/PracticeDetail';
 import Storage from './Pages/Storage/Storage';
 import Token from './Pages/Token';
 import Mypage from './Pages/Mypage/Mypage';
-
+import Savepage from './Pages/Save/Savepage';
 function App() {
   return (
     <div className="App">
@@ -38,6 +38,7 @@ function App() {
                     </React.Suspense>
                   }
                 />
+                <Route path="/savepage" element={<Savepage />} />
               </Routes>
             </SettingsContextProvider>
           </DashboardContextProvider>
