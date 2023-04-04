@@ -27,7 +27,7 @@ export default function Script({ data }) {
                 <div className={style.new}>NEW</div>
                 <div className={style.bookmark}>{bookmark}</div>
             </div>
-            <div className={style.date}>작성일 | {data.createdDate.substring(0, 10)}</div>
+            <div className={style.date}>작성일 | {data.createdDate}</div>
             <div className={style.title}>{data.title}</div>
             <div className={style.actor}>{data.actor}</div>
             <div className={style.category}>

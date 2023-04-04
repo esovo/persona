@@ -37,8 +37,8 @@ const List = () => {
   const [scripts, setScripts] = useRecoilState(scriptState);
 
   
-  const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
-  // const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   
 
   const optionHandler = (event) => {
@@ -50,17 +50,39 @@ const List = () => {
   };
 
   const moreHandler = () => {
-    setPage((size) => size + 1);
+    
     setTimeout(() => {
-      loadingNext(); 
-    },'100')
-    console.log(scripts);
+      setPage((size) => size + 1);
+      
+    },'100');
+    loadingNext(); 
        
   }
 
   const loading = async () => {
 
     setPage(0);
+    setScripts([]);
+
+    await axios.post(`${API_BASE_URL}/script/all`,{
+      
+      option: clickedOption,
+      keyword: clickedKeyword,
+      emotions: clickedEmotion,
+      genres: clickedGenre,
+      page: page,
+      sort: clickedSorting,
+    }, {
+      headers: {
+        'Authorization': token
+      },
+    }).then((res) => {
+      setScripts(res.data.value.content);
+    })
+
+  };
+
+  const loadingNext = async () => {
 
     await axios.post(`${API_BASE_URL}/script/all`,{
       headers: {
@@ -73,31 +95,21 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      setScripts(res.data.value.content);
-    })
+      
+      let newData = res.data.value.content;
+      let nowData = [...scripts,...newData];
+      // console.log(scripts);
+      // console.log(nowData);
 
-  };
-
-  const loadingNext = async () => {
-
-    await axios.post(`${API_BASE_URL}/sciprt/all`,{
-      headers: {
-        'Authorization': token
-      },
-      option: clickedOption,
-      keyword: clickedKeyword,
-      emotions: clickedEmotion,
-      genres: clickedGenre,
-      page: page,
-      sort: clickedSorting,
-    }).then((res) => {
-      setScripts([...scripts, res.data.value.content]); //대본 정보 담기
+      
+      setScripts(nowData);
+      // setScripts([...scripts, res.data.value.content]); //대본 정보 담기
     })
   };
 
   useEffect(() => {
     loading();
-    console.log(scripts);
+    // console.log(scripts);
 
   }, [clickedEmotion, clickedGenre, clickedSorting, clickedKeyword])
 
@@ -152,7 +164,7 @@ const List = () => {
             <FilterBtn id={8} label="#중립" value="중립" />
             <FilterBtn id={9} label="#영화" value="영화" />
             <FilterBtn id={10} label="#연극" value="연극" />
-            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬 " />
+            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬" />
             <FilterBtn id={12} label="#드라마" value="드라마" />
           </div>
         </div>
