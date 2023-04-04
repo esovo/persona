@@ -9,12 +9,41 @@ import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 
+import { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../states/loginState';
+import MyInfo from './MyInfo';
+import MyPost from './MyPost';
+
 export default function BasicList() {
+
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+  const token = useRecoilValue(tokenState);
+  const [ state, setState ] = useState(1);
+  
+  // const loading = () => {
+  //   axios.get('/board/my', {
+  //     params: {
+  //       page: 0
+  //     }
+  //   }, {
+  //     headers: {
+  //       'Authorization': token
+  //     }
+  //   }).then((res) => {
+  //     console.log(res);
+  //   })
+  // }
+  
+  // useEffect(() => {
+
+  // })
+
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '30%', maxWidth: 360 }}>
       <nav aria-label="main mailbox folders">
         <List>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => setState(1)}>
             <ListItemButton>
               <ListItemIcon>
                 <InboxIcon />
@@ -22,7 +51,7 @@ export default function BasicList() {
               <ListItemText primary="내정보" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => setState(2)}>
             <ListItemButton>
               <ListItemIcon>
                 <DraftsIcon />
@@ -30,7 +59,7 @@ export default function BasicList() {
               <ListItemText primary="내가쓴글" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => setState(3)}>
             <ListItemButton>
               <ListItemIcon>
                 <DraftsIcon />
@@ -40,6 +69,7 @@ export default function BasicList() {
           </ListItem>
         </List>
       </nav>
+      {state === 1 ? <MyInfo /> : state == 2 ? <MyPost /> : <div>something</div>}
       <Divider />
     </Box>
   );

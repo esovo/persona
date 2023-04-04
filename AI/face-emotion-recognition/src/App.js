@@ -25,13 +25,13 @@ function App() {
                 <Route path="/" element={<Main></Main>} />
                 {/* <Route path='/Bookmark' element={<Bookmark/>} /> */}
                 <Route path="/Community" element={<Community />} />
-                {/* <Route path='/Mypage' element={<Mypage/>} /> */}
+                <Route path='/Mypage' element={<Mypage/>} />
                 <Route path="/Practice" element={<Practice />} />
                 <Route path="/Practice/Detail" element={<PracticeDetail />} />
                 <Route path="/Storage" element={<Storage />} />
                 <Route path="/oauth2/token" element={<Token />} />
                 <Route
-                  path="/dashboard"
+                  path="/dashboard/:scriptid"
                   element={
                     <React.Suspense fallback={<>Loading Fallback ...</>}>
                       <Dashboard />

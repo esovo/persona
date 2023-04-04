@@ -95,5 +95,9 @@
     "postcss": "^8.4.7",
     "prettier": "^2.8.4",
     "tailwindcss": "^3.0.23"
-  }
+  },
+  "description": "<h1 align=\"center\">\r     <img src=\"./src/logo.svg\" valign=\"middle\" width=\"58\" height=\"58\" alt=\"logo\" />\r     <a href=\"https://face-emotion-recognition.netlify.app\">\r         <span valign=\"middle\">\r                 Face Emotion Recognition\r         </span>\r     </a>\r </h1>",
+  "main": "postcss.config.js",
+  "author": "",
+  "license": "ISC"
 }

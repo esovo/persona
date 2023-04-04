@@ -29,8 +29,6 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
 
         // 해당 이름으로 설정된 쿠키를 역직렬화하여, request 리턴
-        log.info("loadAuthorizationRequest 실행");
-
         OAuth2AuthorizationRequest oAuth2AuthorizationRequest =  cookieProvider.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> cookieProvider.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
@@ -41,20 +39,15 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     @Override
     public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
 
-        //
-        log.info("saveAuthorizationRequest 실행");
         if (authorizationRequest == null) {
-
             removeAuthorizationRequest(request, response);
             return;
         }
-        log.info("AuthorizationRequest Is Not Null");
 
         // request 직렬화하여 쿠키에 저장
         cookieProvider.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, cookieProvider.serialize(authorizationRequest), COOKIE_EXPIRE_SECONDS);
 
         // 로그인 이후 리디렉션 될 uri
-        log.info("request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME) : {}", request.getParameter("redirect_uri"));
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
 
         if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
@@ -64,14 +57,10 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
 
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
-
-        log.info("removeAuthorizationRequest 실행");
         return this.loadAuthorizationRequest(request);
     }
 
     public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
-
-        log.info("removeAuthorizationRequestCookies 실행");
         cookieProvider.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
         cookieProvider.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
     }
