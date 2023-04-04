@@ -25,10 +25,9 @@ public class ParticipantController {
     private final ParticipantService participantService;
 
     //참여자 등록
-    @PostMapping("/regist")
+    @PostMapping
     @ApiOperation(value = "참여자 정보 등록")
     public ResponseEntity<ResponseDTO> participantAdd(@RequestBody ParticipantAddReqDTO participantAddReqDTO){
-        participantService.addParticipant(participantAddReqDTO);
-        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE, participantService.addParticipant(participantAddReqDTO)));
     }
 }

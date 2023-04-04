@@ -496,12 +496,15 @@ const FaceDetect = (props) => {
         highlightBackground: '#fefed5',
         highlightGutterBackground: '#ffcd3c',
       },
+      marker: {
+        // keep + / - markers from getting too wide, also center
+        width: "300px",
+        minWidth: "250px",
+        textAlign: "center",
+      }
     },
-    line: {
-      padding: '10px 2px',
-      '&:hover': {
-        background: '#a26ea1',
-      },
+    marker: {
+      display: 'none',
     },
   };
 
@@ -575,79 +578,75 @@ const FaceDetect = (props) => {
   }  
 
   return (
-
     <div>
-      
-      {webcamOff?
-      <div>
-        <video 
-          className="recordvideo" 
-          src={mediaBlobUrl} 
-          autoPlay
-          controls
-        />
-        <RecordedExpressionsModal ref={chartRef} />
+      {webcamOff ? (
+        <div>
+          <video
+            style={{ width: '1000px', height: '650px', objectFit: 'cover' }}
+            className="recordvideo"
+            src={mediaBlobUrl}
+            autoPlay
+            controls
+          />
+          <RecordedExpressionsModal />
 
-        <div className="scriptComponent">
-          {/* <ScriptText text={text}></ScriptText>
+   <div className="scriptComponent">
+            {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
-          <ReactDiffViewer
-            styles={newStyles}
-            oldValue={text} 
-            newValue={recordtext} 
-            splitView={true} 
-            compareMethod={DiffMethod.WORDS}
-           />
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>대본</h1>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>음성인식결과</h1>
+              </div>
+              <hr />
+              <hr />
 
-        </div>
-        
-        <Button 
-          variant="contained" 
-          onClick={()=>{emotionAnalyze(recordtext)}}
-          color="error"
-        >감정분석</Button>
-
-        <Button 
-          variant="contained" 
-          onClick={()=>{save()}}
-          color="error"
-        >저장하기</Button>
-      </div>
-      :
-      <>
-        <Webcam
-          className="onvideo"
-          audio={true}
-          mirrored={true}
-          ref={webcamRef}
-        />
-        {overlayOn?
-            <canvas 
-              className="overvideo"
-              ref={canvasRef}>  
-            </canvas>
-
-             :
-            <canvas 
-              className="overvideo"  
-              style={{
-                display:"none"
+              <ReactDiffViewer
+                styles={{
+                  marker: {
+                    display: 'none',
+                  },
+                  lineNumber: {
+                    display: 'none',
+                  },
+                }}
+                oldValue={text}
+                newValue={recordtext}
+                splitView={true}
+                compareMethod={DiffMethod.WORDS}
+              />
+            </div>
+          </div>
+          <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                save();
               }}
-              ref={canvasRef}>
-            </canvas>
-        }
-        <Settings endrecord={click}></Settings>
-        {/* <Button
-          className="endrecord"
-          variant="contained" 
-          onClick={()=>{click()}}
-          color="error"
-          >녹화종료
-        </Button> */}
-      </>
-    }
+              color="error">
+              저장하기
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />
+          {overlayOn ? (
+            <canvas className="overvideo" ref={canvasRef}></canvas>
+          ) : (
+            <canvas
+              className="overvideo"
+              style={{
+                display: 'none',
+              }}
+              ref={canvasRef}></canvas>
+          )}
+          <Settings endrecord={click}></Settings>
+        </>
+      )}
     </div>
   );
 };
+
 
 export default FaceDetect;

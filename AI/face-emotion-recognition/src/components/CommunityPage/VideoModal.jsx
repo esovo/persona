@@ -37,7 +37,7 @@ export default function Modal() {
                 취소
               </button>
               <button className={style.write} onClick={handleWrite}>
-                게시
+                확인
               </button>
             </div>
           </div>

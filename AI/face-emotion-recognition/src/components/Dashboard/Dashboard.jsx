@@ -33,17 +33,15 @@ const Dashboard = (props) => {
   return (
     // loadedModels?
     <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
-      <div className="textfield">
-        {webcamOff ? (
-          <></>
-        ) : (
-          <>
-            <div>
-              <ScriptText text={text}></ScriptText>
-            </div>
-          </>
-        )}
-      </div>
+      {webcamOff ? (
+        <></>
+      ) : (
+        <>
+          <div className="textfield">
+            <ScriptText text={text}></ScriptText>
+          </div>
+        </>
+      )}
       <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
         <div className="flex flex-col w-fit relative">
           <VideoComponent text={text} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dashboard } from './components/Dashboard';
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from 'recoil';
 // import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -10,15 +10,16 @@ import Main from './Pages/Main/Main';
 import Community from './Pages/Community/Community';
 import Practice from './Pages/Practice/Practice';
 import PracticeDetail from './Pages/Practice/PracticeDetail';
+import Storage from './Pages/Storage/Storage';
 import Token from './Pages/Token';
 import Mypage from './Pages/Mypage/Mypage';
-
+import Savepage from './Pages/Save/Savepage';
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <RecoilRoot>
-      <DashboardContextProvider>
+          <DashboardContextProvider>
             <SettingsContextProvider>
               <Routes>
                 <Route path="/" element={<Main></Main>} />
@@ -27,25 +28,24 @@ function App() {
                 <Route path='/Mypage' element={<Mypage/>} />
                 <Route path="/Practice" element={<Practice />} />
                 <Route path="/Practice/Detail" element={<PracticeDetail />} />
-                {/* <Route path='/Storage' element={<Storage/>} /> */}
+                <Route path="/Storage" element={<Storage />} />
                 <Route path="/oauth2/token" element={<Token />} />
                 <Route
-                  path="/dashboard/:scriptId"
+                  path="/dashboard"
                   element={
                     <React.Suspense fallback={<>Loading Fallback ...</>}>
                       <Dashboard />
                     </React.Suspense>
                   }
                 />
+                <Route path="/savepage" element={<Savepage />} />
               </Routes>
             </SettingsContextProvider>
           </DashboardContextProvider>
-          </RecoilRoot>
+        </RecoilRoot>
       </header>
     </div>
   );
 }
 
 export default App;
-
-
