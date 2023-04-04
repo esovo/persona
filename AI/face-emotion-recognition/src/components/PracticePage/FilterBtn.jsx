@@ -19,13 +19,13 @@ const FilterBtn= ({ id, label, value }) => {
 
   const clickHandler = () => {
 
-    if (id !== 1 && id < 8) {
+    if (id !== 1 && id < 9) {
       if (clickedEmotion.includes(value)) {
         setClickedEmotion(clickedEmotion.filter((target) => target !== value));
       } else {
         setClickedEmotion([...clickedEmotion, value]);
       }
-    } else if (id > 7) {
+    } else if (id > 8) {
       if (clickedGenre.includes(value)) {
         setClickedGenre(clickedGenre.filter((target) => target !== value));
       } else {

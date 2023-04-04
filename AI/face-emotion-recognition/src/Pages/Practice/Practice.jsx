@@ -21,7 +21,7 @@ import Script from '../../components/PracticePage/Script';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import style from './Practice.module.scss';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faAnglesDown } from '@fortawesome/free-solid-svg-icons';
 
 const List = () => {
   const [clickedEmotion, setClickedEmotion] = useRecoilState(clickedEmotionState);
@@ -41,7 +41,7 @@ const List = () => {
   const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
   
 
-  const searchHandler = (event) => {
+  const optionHandler = (event) => {
     setClickedOption(event.target.value);
   };
 
@@ -49,13 +49,40 @@ const List = () => {
     setClickedKeyword(event.target.value);
   };
 
-  const sortingHandler = () => {
+  const moreHandler = () => {
     
+    setTimeout(() => {
+      setPage((size) => size + 1);
+      
+    },'100');
+    loadingNext(); 
+       
   }
 
   const loading = async () => {
 
     setPage(0);
+    setScripts([]);
+
+    await axios.post(`${API_BASE_URL}/script/all`,{
+      
+      option: clickedOption,
+      keyword: clickedKeyword,
+      emotions: clickedEmotion,
+      genres: clickedGenre,
+      page: page,
+      sort: clickedSorting,
+    }, {
+      headers: {
+        'Authorization': token
+      },
+    }).then((res) => {
+      setScripts(res.data.value.content);
+    })
+
+  };
+
+  const loadingNext = async () => {
 
     await axios.post(`${API_BASE_URL}/script/all`,{
       headers: {
@@ -68,39 +95,23 @@ const List = () => {
       page: page,
       sort: clickedSorting,
     }).then((res) => {
-      setScripts(res.data.value.content);
-    })
+      
+      let newData = res.data.value.content;
+      let nowData = [...scripts,...newData];
+      // console.log(scripts);
+      // console.log(nowData);
 
-  };
-
-  const loadingNext = () => {
-
-    setPage(page + 1);  //로직 확인
-
-    axios.post(`${API_BASE_URL}/sciprt/all`,{
-      headers: {
-        'Authorization': token
-      },
-      option: clickedOption,
-      keyword: clickedKeyword,
-      emotions: clickedEmotion,
-      genres: clickedGenre,
-      page: page,
-      sort: clickedSorting,
-    }).then((res) => {
-      setScripts([...scripts, res.data.value.content]); //대본 정보 담기
+      
+      setScripts(nowData);
+      // setScripts([...scripts, res.data.value.content]); //대본 정보 담기
     })
   };
-
-  // const selectHandler = () => {
-  //   console.log('센서 함수 정상 동작')
-  // }
 
   useEffect(() => {
     loading();
-    console.log(scripts);
+    // console.log(scripts);
 
-  }, [clickedEmotion, clickedGenre, clickedSorting])
+  }, [clickedEmotion, clickedGenre, clickedSorting, clickedKeyword])
 
   return (
     <>
@@ -117,7 +128,7 @@ const List = () => {
           <div className={style.search}>
 
             
-            <select className={style.selectbox} name="findby" onChange={searchHandler}>
+            <select className={style.selectbox} name="findby" onChange={optionHandler}>
               <option value="title">제목</option>
               <option value="content">내용</option>
               <option value="author">작가</option>
@@ -153,7 +164,7 @@ const List = () => {
             <FilterBtn id={8} label="#중립" value="중립" />
             <FilterBtn id={9} label="#영화" value="영화" />
             <FilterBtn id={10} label="#연극" value="연극" />
-            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬 " />
+            <FilterBtn id={11} label="#뮤지컬" value="뮤지컬" />
             <FilterBtn id={12} label="#드라마" value="드라마" />
           </div>
         </div>
@@ -163,7 +174,10 @@ const List = () => {
             <div className={style.text} onClick={() => {setClickedSorting('참여순')}}>참여순</div> | <div className={style.text} onClick={() => {setClickedSorting('조회순')}}>조회순</div>
           </div>
           <div className={style.scripts}>
-            {scripts.map((info) => (<Script data={info} />))}
+            {scripts.map((info) => (<Script key={info.id} data={info} />))}
+          </div>
+          <div className={style.more} onClick={moreHandler}>
+            <FontAwesomeIcon icon={faAnglesDown} />
           </div>
         </div>
       </div>
