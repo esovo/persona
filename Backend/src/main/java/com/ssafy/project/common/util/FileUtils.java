@@ -34,10 +34,12 @@ public class FileUtils {
     public File makeThumbnail(MultipartFile videoFile, String videoUri, String thumbnailUri) {
 
         try {
-            File thumbnailFile = new File(EC2_DIR_PATH + thumbnailUri);
+            File thumbnailFile = new File(EC2_DIR_PATH + videoFile.getName());
             File newVideoFile = new File(EC2_DIR_PATH + videoUri);
-            log.info(thumbnailFile.getAbsolutePath());
-            log.info(newVideoFile.getAbsolutePath());
+
+            log.info(EC2_DIR_PATH + videoFile.getName());
+            log.info(EC2_DIR_PATH + videoUri);
+
             newVideoFile.createNewFile();
             videoFile.transferTo(newVideoFile);
             int frameNumber = 0;
@@ -49,7 +51,6 @@ public class FileUtils {
             return thumbnailFile;
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new CommonApiException(CommonErrorCode.FILE_NOT_VALID);
         }
 
