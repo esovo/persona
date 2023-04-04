@@ -35,11 +35,10 @@ export default function Modal() {
       // videoId: videoId,
     };
     axios
-      .post('http://j8b301.p.ssafy.io:8080/app/board', {
+      .post('http://j8b301.p.ssafy.io:8080/app/board', data, {
         headers: {
           Authorization: token,
         },
-        data,
       })
       .then((res) => {
         console.log(res);
