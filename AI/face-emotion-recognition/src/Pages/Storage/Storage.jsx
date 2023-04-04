@@ -13,7 +13,8 @@ import axios from 'axios';
 export default function List() {
   const videos = useRecoilValue(videosState);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [token, setToken] = useRecoilState(tokenState)
+  const [token, setToken] = useRecoilState(tokenState);
+  // const [myVideos, setMyVideos] = useState([])
 
   useEffect(() => {
     axios.get('https://j8b301.p.ssafy.io/app/video', { 

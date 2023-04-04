@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './Script.module.scss';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,9 +15,10 @@ export default function Script({ data }) {
 
     const [detail, setDetail] = useRecoilState(detailState);
     const [token, setToken] = useRecoilState(tokenState);
+    const [heart, setHeart] = useState(false);
     const navigate = useNavigate();
 
-    const bookmark = false ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={empty} />
+    const bookmark = heart ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={empty} />
 
     const move = () => {
         setDetail(data.id);
@@ -26,43 +27,40 @@ export default function Script({ data }) {
 
 
     const check = () => {
-        axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
+      axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
           headers: {
-            'Authorization': token
-          },
+              Authorization: token
+          },      
           params: {
-            scriptId: data.id
-          }
-        }).then((res) => {
+              scriptId: data.id
+          } 
+      }).then((res) => {
           let result = res.data.value;
+          console.log(result);
           if (result) {
-            axios.delete(`https://j8b301.p.ssafy.io/app/bookmark`, {
-              headers: {
-                'Authorization': token
-              },
-              params: {
-                'scriptId': data.id
-              }
-            }).then((res) => {
-              bookmark = false;
-            })
-      
+              axios.delete(`https://j8b301.p.ssafy.io/app/bookmark?scriptId=${data.id}`, {
+                  headers: {
+                      Authorization: token
+                  }
+              }).then((res) => {
+                  setHeart(false);
+              })         
+              
           } else {
-            axios.post('https://your-server-url/bookmark', null, {
-                headers: {
-                    'Authorization': token
-                },
-                params: {
-                    scriptId: data.id
-                }
-                }).then((response) => {
-                console.log(response);
-                }).catch((error) => {
-                console.error(error);
-                });
+              axios.post(`https://j8b301.p.ssafy.io/app/bookmark?scriptId=${data.id}`, null, {
+                  headers: {
+                      'Authorization': token
+                  }
+              }).then((res) => {
+                  setHeart(true);
+              }) 
           }
-        })
-      }
+      })
+    }
+
+    useEffect(() => {
+
+    }, [bookmark])
       
 
     
