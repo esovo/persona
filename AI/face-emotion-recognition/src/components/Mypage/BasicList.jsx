@@ -40,7 +40,7 @@ export default function BasicList() {
   // })
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ width: '30%', maxWidth: 360 }}>
       <nav aria-label="main mailbox folders">
         <List>
           <ListItem disablePadding onClick={() => setState(1)}>

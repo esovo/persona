@@ -26,11 +26,9 @@ repositories {
 
 dependencies {
 
-    // Thumbnailator => 썸네일
-    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.14'
-
-    //timeleaf 추가
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // 썸네일 라이브러리
+    implementation 'org.jcodec:jcodec:0.2.3'
+    implementation 'org.jcodec:jcodec-javase:0.2.3'
 
     // AWS S3 추가
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'

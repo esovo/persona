@@ -1,13 +1,18 @@
 package com.ssafy.project.common.util;
 
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CommonErrorCode;
 import lombok.extern.log4j.Log4j2;
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Position;
-import net.coobird.thumbnailator.geometry.Positions;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.common.model.Picture;
+import org.jcodec.scale.AWTUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,29 +20,57 @@ import java.util.UUID;
 @Service
 public class FileUtils {
 
-    public final String IMAGE_DIR_PATH = "img/";
-    public final String IMAGE_PREFIX = "s_";
-    public final String VIDEO_DIR_PATH = "video/";
+    private final String IMAGE_PREFIX = "s_";
+    private final String GRAPH_PREFIX = "g_";
+    private final String IMAGE_DIR_PATH = "img/";
+    private final String GRAPH_DIR_PATH = "graph/";
+    private final String VIDEO_DIR_PATH = "video/";
 
-    public File makeThumbnail(MultipartFile videoFile, String thumbnailUri) throws IOException {
+    public final String IMAGE_PNG_FORMAT = ".PNG";
 
-        File thumbnailFile = new File(thumbnailUri);
-        OutputStream os = new FileOutputStream(thumbnailFile);
+    @Value("${spring.servlet.multipart.location}")
+    private String EC2_DIR_PATH;
 
-        Thumbnails.of(videoFile.getInputStream())
-                .sourceRegion(Positions.CENTER, 100, 200)
-                .size(100, 200)
-                .toOutputStream(os);
+    public File makeThumbnail(MultipartFile videoFile, String videoUri, String thumbnailUri) {
 
-        os.flush();
-        os.close();
-        return thumbnailFile;
+        try {
+            File thumbnailFile = new File(EC2_DIR_PATH + videoFile.getName());
+            File newVideoFile = new File(EC2_DIR_PATH + videoUri);
+
+            log.info(EC2_DIR_PATH + videoFile.getName());
+            log.info(EC2_DIR_PATH + videoUri);
+
+            newVideoFile.createNewFile();
+            videoFile.transferTo(newVideoFile);
+            int frameNumber = 0;
+
+            Picture picture = FrameGrab.getFrameFromFile(newVideoFile, frameNumber);
+
+            BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
+            ImageIO.write(bufferedImage, IMAGE_PNG_FORMAT, thumbnailFile);
+            return thumbnailFile;
+        }
+        catch (Exception e) {
+            throw new CommonApiException(CommonErrorCode.FILE_NOT_VALID);
+        }
+
+//        log.info(LOCAL_DIR_PATH + IMAGE_DIR_PATH + videoFile.getOriginalFilename());
+//        log.info(LOCAL_DIR_PATH + thumbnailUri);
+//        String[] cmd = new String[]{"ffmpeg\", \"-i\", \"C:/Users/SSAFY/Desktop/KakaoTalk_20230330_105915882.mp4", "-ss", "00:00:01.000", "-vframes", "1", LOCAL_DIR_PATH + thumbnailUri};
+//        Process p = Runtime.getRuntime().exec(cmd);
+//
+//        return new File(thumbnailUri);
+
+
+//        Thumbnails.of(videoFile.getInputStream())
+//                .sourceRegion(Positions.CENTER, 300, 300)
+//                .size(300, 300)
+//                .toFile(new File (LOCAL_DIR_PATH + thumbnailUri));
     }
 
     public String makeUri(MultipartFile file) {
         StringBuilder sb = new StringBuilder();
 
-        // S3에 특수문자 인코딩 이슈가 생길 수 있어 정규식으로 _로 변환
         sb.append(UUID.randomUUID())
           .append("_")
           .append(Objects.requireNonNull(file.getOriginalFilename())
@@ -49,6 +82,8 @@ public class FileUtils {
     public String getVideoUri(String uri) { return VIDEO_DIR_PATH + uri; };
 
     public String getThumbnailUri(String uri) { return IMAGE_DIR_PATH + IMAGE_PREFIX + uri; };
+
+    public String getGraphUri(String uri) { return GRAPH_DIR_PATH + GRAPH_PREFIX + uri; };
 
     public int getThumbnailRemoveStartIdx() {return IMAGE_DIR_PATH.length() + IMAGE_PREFIX.length(); };
 

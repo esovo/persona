@@ -22,16 +22,11 @@ public class SocialAuth {
     private String name;
     private String imageUrl;
 
-//    private String attributes;
-
-//    public void update(String name, String imageUrl, Map<String, Object> attributes) {
-//        this.name = name;
-//        this.imageUrl = imageUrl;
-//        this.attributes = attributes.toString();
-//    }
-    public void update(String name, String imageUrl) {
+    public void update(String providerId, String name, String imageUrl, String email) {
         this.name = name;
         this.imageUrl = imageUrl;
+        this.providerId = providerId;
+        this.email = email;
     }
 
 

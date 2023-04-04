@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class VideoCreateReqDTO {
 
-    MultipartFile file;
+    MultipartFile videoFile;
+
+    MultipartFile graphFile;
 
     String title;
 

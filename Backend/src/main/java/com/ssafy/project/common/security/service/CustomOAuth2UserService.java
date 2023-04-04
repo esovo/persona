@@ -6,6 +6,7 @@ import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.authentication.UserPrincipal;
+import com.ssafy.project.common.security.exception.CustomAuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -43,22 +44,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 
-        Map<String, Object> mapForLog = oAuth2User.getAttributes();
-        mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
+//        Map<String, Object> mapForLog = oAuth2User.getAttributes();
+//        mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
 
-        log.info("processOAuth2User 호출");
         OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(),
                 oAuth2User.getAttributes()
         );
 
-        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()))
+        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null"))
             throw new OAuth2AuthenticationException("이메일을 제공받지 못했습니다.");
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+
         User user;
         if (userOptional.isPresent()) {
             if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())))
-                throw new OAuth2AuthenticationException("이미 다른 소셜로 가입되어 있습니다.");
+                throw new OAuth2AuthenticationException("해당 이메일은 다른 소셜로 가입되어 있습니다.");
             user = updateUser(userOptional.get(), oAuth2UserInfo);
         } else {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -68,16 +69,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
-        
-        log.info("getOAuth2UserInfo 호출");
+
         if (registrationId.equalsIgnoreCase(SocialEnum.google.toString())) {
-            log.info("is google");
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(SocialEnum.naver.toString())) {
-            log.info("is naver");
             return new NaverOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(SocialEnum.kakao.toString())) {
-            log.info("is kakao");
             return new KakaoOAuth2UserInfo(attributes);
         } else {
             throw new OAuth2AuthenticationException("지원하지 않는 소셜 타입 : " + registrationId);
@@ -85,8 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-        
-        log.info("registerUser 실행");
+
         return userRepository.save(User.builder()
                 .email(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getName())
@@ -101,9 +97,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
-        
-        log.info("updateUser 실행");
-        user.getSocialAuth().update(oAuth2UserInfo.getName(), oAuth2UserInfo.getImageUrl());
+
+        String nickname = oAuth2UserInfo.getName();
+        String email = oAuth2UserInfo.getEmail();
+
+        user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname,
+                oAuth2UserInfo.getImageUrl(), email);
+        user.setNickname(nickname);
+        user.setEmail(email);
+
         return user;
     }
 

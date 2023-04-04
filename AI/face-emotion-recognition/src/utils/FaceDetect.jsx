@@ -34,6 +34,7 @@ import {jsPDF} from "jspdf";
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
   const chartRef = useRef(null);
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
 
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
@@ -69,7 +70,7 @@ const FaceDetect = (props) => {
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
   const [text,setText] =useState(props.text);
   const [recordtext,setRecordtext] =useState("아주");
-
+  const [partnum,setpartnum] =useState(0);
   
   const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
   const SECRET_ACCESS_KEY = "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";
@@ -87,7 +88,14 @@ const FaceDetect = (props) => {
   });
   useEffect(() => {
 
-    
+    axios.post(API_BASE_URL+"/participant",
+      {
+        "scriptId": 1
+      }
+    ).then((res)=>{
+      console.log(res)
+      setpartnum(res.data.value)
+    })
 
     if(!webcamOn){
       setendcam(true)
@@ -486,39 +494,18 @@ const FaceDetect = (props) => {
     }
   });
 
-  const newStyles = {
-    variables: {
-      light: {
-        highlightBackground: '#fffbdd',
-        highlightGutterBackground: '#fff5b1',
-      },
-      dark: {
-        highlightBackground: '#fefed5',
-        highlightGutterBackground: '#ffcd3c',
-      },
-      marker: {
-        // keep + / - markers from getting too wide, also center
-        width: "300px",
-        minWidth: "250px",
-        textAlign: "center",
-      }
-    },
-    marker: {
-      display: 'none',
-    },
-  };
 
- function emotionAnalyze(text){
-  // const config = { headers: {'Content-Type': 'application/json'} }
+//  function emotionAnalyze(text){
+//   // const config = { headers: {'Content-Type': 'application/json'} }
 
-  // axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
-  // // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
-  //       .then((response) => {
-  //         console.log(response);
+//   // axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
+//   // // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+//   //       .then((response) => {
+//   //         console.log(response);
           
-  //         // console.log(response.data.filename);
-  //       });
- }
+//   //         // console.log(response.data.filename);
+//   //       });
+//  }
 
  function save(){
   const userid="user"

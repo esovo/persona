@@ -31,7 +31,7 @@ function App() {
                 <Route path="/Storage" element={<Storage />} />
                 <Route path="/oauth2/token" element={<Token />} />
                 <Route
-                  path="/dashboard/:scriptId"
+                  path="/dashboard/:scriptid"
                   element={
                     <React.Suspense fallback={<>Loading Fallback ...</>}>
                       <Dashboard />
