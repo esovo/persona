@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 /**
  * @typedef SettingsContextType
@@ -20,7 +20,7 @@ import { createContext, useContext, useState } from "react";
  */
 const SettingsContext = createContext({});
 
-const SettingsContextProvider = ({children}) => {
+const SettingsContextProvider = ({ children }) => {
   const [webcamOn, setWebcamOn] = useState(false);
   const [webcamOff, setWebcamOff] = useState(false);
   const [overlayOn, setOverlayOn] = useState(true);
@@ -28,27 +28,28 @@ const SettingsContextProvider = ({children}) => {
   const [settingsVisible, setSettingsVisible] = useState(false);
 
   const contextValue = {
-    webcamOn, setWebcamOn,
-    overlayOn, setOverlayOn,
+    webcamOn,
+    setWebcamOn,
+    overlayOn,
+    setOverlayOn,
 
-    emojiOn, setEmojiOn,
-    settingsVisible, setSettingsVisible,
-    webcamOff,setWebcamOff
+    emojiOn,
+    setEmojiOn,
+    settingsVisible,
+    setSettingsVisible,
+    webcamOff,
+    setWebcamOff,
   };
 
-  return(
-    <SettingsContext.Provider value={contextValue}>
-      {children}
-    </SettingsContext.Provider>
-  );
+  return <SettingsContext.Provider value={contextValue}>{children}</SettingsContext.Provider>;
 };
 
-const SettingsContextConsumer = ({children}) => {
-  return(
+const SettingsContextConsumer = ({ children }) => {
+  return (
     <SettingsContext.Consumer>
       {(context) => {
         if (context === undefined || context === null) {
-          throw new Error("Error: useSettingsContext() can only be used inside of SettingsContext");
+          throw new Error('Error: useSettingsContext() can only be used inside of SettingsContext');
         }
         return children(context);
       }}
@@ -63,13 +64,9 @@ const SettingsContextConsumer = ({children}) => {
 const useSettingsContext = () => {
   const context = useContext(SettingsContext);
   if (context === undefined || context === null) {
-    throw new Error("Error: useSettingsContext() can only be used inside of SettingsContext");
+    throw new Error('Error: useSettingsContext() can only be used inside of SettingsContext');
   }
   return context;
 };
 
-export {
-  SettingsContextProvider,
-  SettingsContextConsumer,
-  useSettingsContext
-};
+export { SettingsContextProvider, SettingsContextConsumer, useSettingsContext };

@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
-import { postsState, postWriteModal, postDetailModal, popostsState } from '../../states/communityState';
+import { communityApis } from '../../apis/communityApis';
+import { postWriteModal, postDetailModal, popostsState } from '../../states/communityState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Header from '../../components/Common/Header';
@@ -11,13 +12,36 @@ import DetailModal from '../../components/CommunityPage/PostDetailModal';
 import Post from '../../components/CommunityPage/Post';
 // import Footer from "../../components/Common/Footer";
 import style from './Community.module.scss';
+import axios from 'axios';
 
 export default function List() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showWriteModal, setShowWriteModal] = useRecoilState(postWriteModal);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
-  const posts = useRecoilValue(postsState); // Recoil atom에서 게시물 목록을 가져옵니다.
-  const poposts = useRecoilValue(popostsState);
+  // const posts = useRecoilValue(postsState); // Recoil atom에서 게시물 목록을 가져옵니다.
+  // const poposts = useRecoilValue(popostsState);
+  const [posts, setPosts] = useState([]);
+  const [poposts, setPoposts] = useState([]);
+  const page = 0;
+  const sort = '';
+  const keyword = '';
+
+  const BASE_URL = 'https://j8b301.p.ssafy.io';
+  useEffect(() => {
+    console.log(communityApis.BOARD_LIST_GET_API(page, sort, keyword));
+    axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
+      console.log(res.data.value.content);
+      setPosts(res.data.value.content);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(communityApis.BOARD_TOP_LIST_GET_API);
+    axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API).then((res) => {
+      console.log(res.data.value);
+      setPoposts(res.data.value);
+    });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,7 +88,7 @@ export default function List() {
           </div>
           <div className={style.posts}>
             <div className={style.sort}>최신순</div>
-            {posts.map((post) => (
+            {posts?.map((post) => (
               <div key={post.id}>
                 <Post key={post.id} {...post} />
               </div>

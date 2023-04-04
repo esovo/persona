@@ -21,14 +21,13 @@ import java.time.LocalDateTime;
 @Transactional
 public class ParticipantServiceImpl implements ParticipantService {
 
-    private final UserRepository userRepository;
     private final ScriptRepository scriptRepository;
-    private final AuthProvider authProvider;
+    private final ParticipantRepository participantRepository;
 
     private final ParticipantRepository participantRepository;
 
     @Override
-    public void addParticipant(ParticipantAddReqDTO participantAddReqDTO) {
+    public Long addParticipant(ParticipantAddReqDTO participantAddReqDTO) {
         Script script = scriptRepository.findById(participantAddReqDTO.getScriptId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
 
         Participant participant = Participant.builder()
@@ -36,6 +35,7 @@ public class ParticipantServiceImpl implements ParticipantService {
                 .participateDate(LocalDateTime.now())
                 .build();
 
-        script.getParticipants().add(participant);
+        participantRepository.save(participant);
+        return participant.getId();
     }
 }

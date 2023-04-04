@@ -37,8 +37,8 @@ export default function Modal() {
                   <img src="user.png" alt="user" width="50" />
                 </div>
                 <div className={style.userdate}>
-                  <div className={style.nickname}>{selectedPost.user}</div>
-                  <div className={style.date}>{selectedPost.date}</div>
+                  <div className={style.nickname}>{selectedPost.nickName}</div>
+                  <div className={style.date}>{selectedPost.createdDate}</div>
                 </div>
                 <div className={style.btn}>
                   <button className={style.likebtn} onClick={heartClickHandler}>
@@ -50,11 +50,11 @@ export default function Modal() {
                 </div>
               </div>
               <div className={style.title}>{selectedPost.title}</div>
-              <div className={style.content}>{selectedPost.content}</div>
+              <div className={style.content} dangerouslySetInnerHTML={{ __html: selectedPost.content }}></div>
               <div className={style.items}>
                 <div className={style.like}>
                   <FontAwesomeIcon icon={regularHeart} style={{ color: '#ce4040' }} />
-                  <div className={style.num}>{selectedPost.like}</div>
+                  <div className={style.num}>{selectedPost.likeCnt}</div>
                 </div>
                 <div className={style.visited}>
                   <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} />
@@ -62,7 +62,7 @@ export default function Modal() {
                 </div>
                 <div className={style.comment}>
                   <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />
-                  <div className={style.num}>{selectedPost.comment}</div>
+                  <div className={style.num}>{selectedPost.commentCnt}</div>
                 </div>
               </div>
             </div>
