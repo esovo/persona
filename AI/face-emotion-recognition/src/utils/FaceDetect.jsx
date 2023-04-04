@@ -590,20 +590,8 @@ const FaceDetect = (props) => {
           />
           <RecordedExpressionsModal />
 
-    <div>
-      
-      {webcamOff?
-      <div>
-        <video 
-          className="recordvideo" 
-          src={mediaBlobUrl} 
-          autoPlay
-          controls
-        />
-        <RecordedExpressionsModal ref={chartRef} />
-
-        <div className="scriptComponent">
-          {/* <ScriptText text={text}></ScriptText>
+   <div className="scriptComponent">
+            {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -640,38 +628,16 @@ const FaceDetect = (props) => {
             </Button>
           </div>
         </div>
-        
-        <Button 
-          variant="contained" 
-          onClick={()=>{emotionAnalyze(recordtext)}}
-          color="error"
-        >감정분석</Button>
-
-        <Button 
-          variant="contained" 
-          onClick={()=>{save()}}
-          color="error"
-        >저장하기</Button>
-      </div>
-      :
-      <>
-        <Webcam
-          className="onvideo"
-          audio={true}
-          mirrored={true}
-          ref={webcamRef}
-        />
-        {overlayOn?
-            <canvas 
+      ) : (
+        <>
+          <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />
+          {overlayOn ? (
+            <canvas className="overvideo" ref={canvasRef}></canvas>
+          ) : (
+            <canvas
               className="overvideo"
-              ref={canvasRef}>  
-            </canvas>
-
-             :
-            <canvas 
-              className="overvideo"  
               style={{
-                display:"none"
+                display: 'none',
               }}
               ref={canvasRef}></canvas>
           )}
@@ -681,5 +647,6 @@ const FaceDetect = (props) => {
     </div>
   );
 };
+
 
 export default FaceDetect;
