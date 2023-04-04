@@ -11,15 +11,24 @@ import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
 import axios from 'axios';
 import '../../index.css';
+
+import { useRecoilState } from 'recoil';
+import { writeState } from '../../states/practiceFilterState';
+
 const Dashboard = (props) => {
   const { pathname } = useLocation();
   const [text, setText] = useState();
   const { loadedModels, setLoadedModels, recordedExpressionsVisible } = useDashboardContext();
   const { settingsVisible, webcamOff } = useSettingsContext();
 
+  const [write, setWrite] = useRecoilState(writeState);
+
   // Loads the essential models required for face detection, face landmarks detection
   // when the component is just mounted
   useEffect(() => {
+    console.log("이 아래가 진짜 테스팅 값");
+    console.log(write);
+    console.log("이 위가 진짜 테스팅 값");
     const name = pathname.substring(11);
     axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);

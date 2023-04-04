@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { detailState } from '../../states/practiceFilterState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { detailState, writeState } from '../../states/practiceFilterState';
 import { tokenState } from "../../states/loginState";
 import axios from 'axios';
 import style from './PracticeDetail.module.scss';
@@ -11,15 +11,20 @@ import { faEye, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
 
+
 export default function PracticeDetail() {
 
     const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
     // const API_BASE_URL = 'http://j8b301.p.ssafy.io:8080/app';
     const getId = useRecoilValue(detailState);
     const token = useRecoilValue(tokenState);
-
+    
     const [date, setDate] = useState('');
     const [data, setData] = useState([]);
+
+    const [write, setWrite] = useRecoilState(writeState);
+
+    
 
     const navigate = useNavigate();
 
@@ -28,8 +33,20 @@ export default function PracticeDetail() {
     }
 
     const go = () => {
+        const content = document.querySelector(`.ql-editor`).innerHTML;
+        setWrite(content);
+        console.log(write);
         navigate(`/dashboard/${getId}`);
     }
+
+    
+
+    // useEffect(() => {
+
+    //     const userWrite = document.querySelector(`.ql-editor`)?.innerHTML;
+    //     setWrite(userWrite);
+
+    // }, [write])
 
     // {
     //     actor: '',
@@ -102,12 +119,6 @@ export default function PracticeDetail() {
                         <div className={style.script}>
                             {data.content}
                         </div>
-
-
-
-
-
-
 
                     </div>
                     <div className={style.edit}><QuillEditor /></div>
