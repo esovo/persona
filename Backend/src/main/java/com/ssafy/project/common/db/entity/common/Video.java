@@ -22,15 +22,17 @@ public class Video extends BaseTime {
 
     private String videoUrl;
 
+    private String graphUrl;
+
     private String thumbnailUrl;
 
     private String analysis;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
     private Participant participant;
 }

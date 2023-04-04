@@ -4,6 +4,7 @@ import com.ssafy.project.common.db.dto.request.ParticipantAddReqDTO;
 import com.ssafy.project.common.db.entity.common.Participant;
 import com.ssafy.project.common.db.entity.common.Script;
 import com.ssafy.project.common.db.entity.common.User;
+import com.ssafy.project.common.db.repository.ParticipantRepository;
 import com.ssafy.project.common.db.repository.ScriptRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
@@ -23,6 +24,8 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final UserRepository userRepository;
     private final ScriptRepository scriptRepository;
     private final AuthProvider authProvider;
+
+    private final ParticipantRepository participantRepository;
 
     @Override
     public void addParticipant(ParticipantAddReqDTO participantAddReqDTO) {

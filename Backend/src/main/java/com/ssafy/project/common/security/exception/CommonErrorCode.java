@@ -23,6 +23,7 @@ public enum CommonErrorCode implements ErrorCode {
     //대본
     SCRIPT_NOT_FOUND(HttpStatus.NOT_FOUND,"대본이 존재하지 않습니다."),
 
+    FILE_NOT_VALID(HttpStatus.BAD_REQUEST,"유효하지 않은 파일 형식입니다."),
     ;
 
     private final HttpStatus httpStatus;
