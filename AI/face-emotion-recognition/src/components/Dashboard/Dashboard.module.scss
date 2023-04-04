@@ -5,14 +5,18 @@
 }
 
 .textfield{
-  margin-left: 70px;
-  margin-top: 50px;
 }
 
-.emotiongraph{
-  margin-top: 150px;
+// .emotiongraph{
+//   margin-top: 150px;
   
+// }
+
+.flexBox{
+  display: flex;
+  flex-direction: column;
 }
+
 /* 
 .dashboard{
   justify-content: center;
