@@ -50,7 +50,7 @@ export default function Modal() {
                 </div>
               </div>
               <div className={style.title}>{selectedPost.title}</div>
-              <div className={style.content}>{selectedPost.content}</div>
+              <div className={style.content} dangerouslySetInnerHTML={{ __html: selectedPost.content }}></div>
               <div className={style.items}>
                 <div className={style.like}>
                   <FontAwesomeIcon icon={regularHeart} style={{ color: '#ce4040' }} />
