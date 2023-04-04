@@ -13,14 +13,14 @@ export const communityApis = {
   },
   BOARD_TOP_LIST_GET_API: '/app/board/top',
 
-  BOARD_LIKE_POST_API: (board_id) => {
-    return `/app/board_like/like?board_id=${board_id}`;
-  },
   BOARD_LIKE_GET_API: (scriptId) => {
-    return `/app/board_like/check?scriptId=${scriptId}`;
+    return `/app/boardlike/check?scriptId=${scriptId}`;
   },
-  BOARD_LIKE_DELETE_API: (board_id) => {
-    return `/app/board_like?board_id=${board_id}`;
+  BOARD_LIKE_POST_API: (boardId) => {
+    return `/app/boardlike?boardId=${boardId}`;
+  },
+  BOARD_LIKE_DELETE_API: (boardId) => {
+    return `/app/boardlike?boardId=${boardId}`;
   },
 
   COMMENT_PUT_API: '/app/comment',
