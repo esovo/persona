@@ -1,11 +1,11 @@
-.recordvideo{
+.recordvideo {
   position: relative;
   width: 600px;
   margin: auto;
   margin-top: 100px;
 }
 
-.onvideo{
+.onvideo {
   position: relative;
   margin: auto;
   left: 16px;
@@ -14,15 +14,14 @@
   height: 480;
 }
 
-.overvideo{
-  position: absolute; 
+.overvideo {
+  position: absolute;
   left: 0;
-  top:0; 
+  top: 0;
   margin: 1rem;
 }
 
-.scriptComponent{
-  display: flex;
+.scriptComponent {
   flex-direction: row;
   justify-content: space-around;
   margin-left: 20px;
@@ -30,7 +29,6 @@
   margin-bottom: 100px;
 }
 
-.blank{
+.blank {
   margin-top: 10px;
 }
-
