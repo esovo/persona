@@ -30,8 +30,7 @@ const Dashboard = (props) => {
     // console.log("이 아래가 진짜 테스팅 값");
     // console.log(write);
     console.log("이 위가 진짜 테스팅 값");
-
-    axios.get('https://j8b301.p.ssafy.io/app/script?scriptId=' + name, {}).then((response) => {
+    axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);
     });
 
@@ -49,7 +48,6 @@ const Dashboard = (props) => {
           <VideoComponent text={text} />
         </div>
       </div>
-
 
       <div className={style.flexBox}>
         <div className={style.emotiongraph}>
@@ -86,7 +84,7 @@ const Dashboard = (props) => {
         ) : (
           <>
             <div className={style.textfield}>
-              <ScriptText text={text} ></ScriptText>
+              <ScriptText text={text}></ScriptText>
             </div>
           </>
         )}
