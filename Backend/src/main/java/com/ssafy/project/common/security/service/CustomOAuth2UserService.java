@@ -66,8 +66,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user;
         if (userOptional.isPresent()) {
             log.info("유저존재");
-            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
-            
+//            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
+
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
          else {
