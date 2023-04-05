@@ -75,8 +75,10 @@ public class VideoServiceImpl implements VideoService {
             throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
-        s3Provider.delete(video.getVideoUrl(), s3Utils.getVideoRemoveStartIdx());
-        s3Provider.delete(video.getThumbnailUrl(), s3Utils.getThumbnailRemoveStartIdx());
+        s3Provider.delete(video.getVideoUrl());
+        s3Provider.delete(video.getThumbnailUrl());
+        s3Provider.delete(video.getGraphUrl());
+
         videoRepository.delete(video);
     }
 
