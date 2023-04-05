@@ -7,7 +7,8 @@ import style from './PracticeDetail.module.scss';
 import Header from '../../components/Common/Header';
 import QuillEditor from '../../components/CommunityPage/QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faEye, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as empty } from '@fortawesome/free-regular-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +25,7 @@ export default function PracticeDetail() {
 
     const [write, setWrite] = useRecoilState(writeState);
 
-    
+    const [heart, setHeart] = useState(false);
 
     const navigate = useNavigate();
 
@@ -64,38 +65,79 @@ export default function PracticeDetail() {
 
     }, []);
 
+    const check = () => {
+        axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
+            headers: {
+                Authorization: token
+            },      
+            params: {
+                scriptId: data.id
+            } 
+        }).then((res) => {
+            let result = res.data.value;
+            console.log(result);
+            if (result) {
+                axios.delete(`https://j8b301.p.ssafy.io/app/bookmark?scriptId=${data.id}`, {
+                    headers: {
+                        Authorization: token
+                    }
+                }).then((res) => {
+                    setHeart(false);
+                })         
+                
+            } else {
+                axios.post(`https://j8b301.p.ssafy.io/app/bookmark?scriptId=${data.id}`, null, {
+                    headers: {
+                        'Authorization': token
+                    }
+                }).then((res) => {
+                    setHeart(true);
+                }) 
+            }
+        })
+      }
+
     console.log(data);
+    const bookmark = heart ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={empty} />
 
     return (
         <>
             <Header />
             <div className={style.container}>
-                <div className={style.maintext}>대본 분석</div>
-                <div className={style.subtext}>대본을 자유롭게 분석해보세요.</div>
+                <h2 className={style.maintext}>대본 분석</h2>
+                <h3 className={style.subtext}>대본을 자유롭게 분석해보세요.</h3>
                 <div className={style.script}>
                     <div className={style.detail}>
-
-
-                        <div className={style.title}>{data.title}</div>
-                        <div className={style.actor}>{data.actor} 역</div>
-                        <div className={style.data}>작성일 | {date}</div>
-                        
-                        <div className={style.info}>
-                            <div className={style.author}>극본 | {data.author}</div>
-
-                            <div className={style.cnt}>
-                                <FontAwesomeIcon icon={faEye} />
-                                {data.bookmarkCnt}
-                                <FontAwesomeIcon icon={faUsers} />
-                                {data.participantCnt}
+                        <div className={style.wrap}>
+                            <div className={style.newandbookmark}>
+                                <div className={style.new}>NEW</div>
+                                <div className={style.bookmark} onClick={check}>{bookmark}</div>
                             </div>
+                            <h2 className={style.title}>{data.title}</h2>
+                            <h2 className={style.actor}>{data.actor} 역</h2>
+                            
+                            
+                            <div className={style.info}>
+                                <div className={style.author}>극본 | {data.author}</div>
+                                <div className={style.data}>작성일 | {date}</div>
+
+                                <div className={style.cnt}>
+                                    <FontAwesomeIcon icon={faEye} />
+                                    {data.bookmarkCnt}
+                                    <FontAwesomeIcon icon={faUsers} />
+                                    {data.participantCnt}
+                                </div>
+                            </div>
+
+                            <div className={style.line} />
+
+                            <h3 className={style.content}>
+                                {data.content}
+                            </h3>
                         </div>
 
-                        <div className={style.line} />
 
-                        <div className={style.script}>
-                            {data.content}
-                        </div>
+                        
 
                     </div>
                     <div className={style.edit}><QuillEditor /></div>

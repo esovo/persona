@@ -85,16 +85,17 @@ const List = () => {
   const loadingNext = async () => {
 
     await axios.post(`${API_BASE_URL}/script/all`,{
-      headers: {
-        'Authorization': token
-      },
+      
       option: clickedOption,
       keyword: clickedKeyword,
       emotions: clickedEmotion,
       genres: clickedGenre,
       page: page,
       sort: clickedSorting,
-    }).then((res) => {
+    }, {
+    headers: {
+        'Authorization': token
+      }}).then((res) => {
       
       let newData = res.data.value.content;
       let nowData = [...scripts,...newData];
