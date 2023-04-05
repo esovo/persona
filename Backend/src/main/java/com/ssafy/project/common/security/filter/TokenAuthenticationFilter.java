@@ -35,6 +35,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String token = tokenProvider.getTokenFromRequest(request);
 
             if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+                log.info("토큰 값 {}", token);
                 Long id = tokenProvider.getUserIdFromToken(token);
 
                     UserDetails userDetails = customUserDetailsService.loadUserById(id);
@@ -47,6 +48,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
+            log.info("에러 쓰로우 직전");
             throw new CustomAuthException(CommonErrorCode.NO_SET_AUTHENTICATION);
         }
 
