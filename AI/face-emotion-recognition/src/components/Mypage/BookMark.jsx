@@ -1,25 +1,20 @@
 import style from "./MyInfo.module.scss";
 import { useRecoilState } from "recoil";
 import { user } from "../../states/loginState"; 
+import BookScript from './BookScript';
 
-const MyInfo = () => {
+const BookMark = () => {
     const [userInfo, setUserInto] = useRecoilState(user);
     return(
         <div className={style.box}>
             <h1>내정보</h1>
             <hr/>
             <div className={style.userInfo}>
-                {/* <img src={userInfo.img}/> */}
                 <div className={style.flexBox}>
-                    <div>
-                        <div>닉네임</div>
-                        <div>이메일</div>
-                        <div>소셜로그인</div>
+                  <div>
+                      <BookScript></BookScript>
                     </div>
                     <div className={style.userText}>
-                        {/* <div>{userInfo.nickname}</div>
-                        <div>{userInfo.email} dumydumy@naver.com</div>
-                        <div>{userInfo.email} Naver</div> */}
                     </div>
                 </div>
             </div>
@@ -27,4 +22,4 @@ const MyInfo = () => {
     );
 } 
 
-export default MyInfo;
+export default BookMark;
