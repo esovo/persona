@@ -65,12 +65,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user;
         if (userOptional.isPresent()) {
             log.info("유저존재");
-            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())) {
+            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 log.info("익셉션발생");
                 throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
-            }
+                }
             user = updateUser(userOptional.get(), oAuth2UserInfo);
-        } else {
+            }
+         else {
             log.info("유저없음");
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
