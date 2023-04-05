@@ -83,7 +83,6 @@ export default function List() {
                 id="input_search"
                 placeholder="글 제목, 글 내용, 작성자 검색"
                 maxLength={200}
-                // autoComplete="off"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
               />
