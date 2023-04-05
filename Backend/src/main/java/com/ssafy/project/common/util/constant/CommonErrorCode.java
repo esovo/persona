@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 public enum CommonErrorCode implements ErrorCode {
     //게시글
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다."),
-
+    BOARD_NOT_ALLOWED(HttpStatus.NOT_ACCEPTABLE, "다른 유저의 게시글입니다."),
     //댓글
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않습니다."),
-
+    COMMENT_NOT_ALLOWED(HttpStatus.NOT_ACCEPTABLE, "다른 유저의 댓글입니다."),
     //유저
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
     UNLOGINED_USER(HttpStatus.FORBIDDEN, "로그인되지 않은 유저입니다."),
@@ -24,7 +24,7 @@ public enum CommonErrorCode implements ErrorCode {
 
     //비디오
     VIDEO_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 영상입니다."),
-    OTHER_USER_VIDEO(HttpStatus.BAD_REQUEST, "다른 유저의 동영상입니다."),
+    VIDEO_NOT_ALLOWED(HttpStatus.NOT_ACCEPTABLE, "다른 유저의 동영상입니다."),
 
     //참여자
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "대본 연습에 참가한 이력이 없습니다."),
