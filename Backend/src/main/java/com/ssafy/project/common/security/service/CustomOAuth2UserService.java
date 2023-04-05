@@ -37,6 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } catch (AuthenticationException e) {
             throw e;
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw new InternalAuthenticationServiceException(e.getMessage(), e.getCause());
         }
     }
@@ -57,8 +58,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
 
         User user;
+
         if (userOptional.isPresent()) {
-                
             // 참조 자체로도 에러발생 코드
 //            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
             user = updateUser(userOptional.get(), oAuth2UserInfo);
