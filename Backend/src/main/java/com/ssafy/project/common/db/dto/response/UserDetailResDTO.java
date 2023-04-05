@@ -11,10 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 public class UserDetailResDTO {
 
-
     private String email;
     private String nickname;
     private String imageUrl;
     private String socialType;
-    private LocalDateTime createdDate;
+    private String createdDate;
 }

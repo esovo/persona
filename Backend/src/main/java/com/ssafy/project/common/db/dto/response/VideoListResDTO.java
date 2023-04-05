@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @Getter
 public class VideoListResDTO {
 
-    Long id;
+    String id;
     String title;
     String thumbnailUrl;
     String analysis;
-    LocalDateTime createdDate;
+    String createdDate;
 
 }

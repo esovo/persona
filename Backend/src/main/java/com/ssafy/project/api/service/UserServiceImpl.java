@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService{
                 .imageUrl(user.getSocialAuth().getImageUrl())
                 .nickname(user.getNickname())
                 .socialType(String.valueOf(user.getSocialAuth().getSocialType()))
-                .createdDate(user.getCreatedDate()).build();
+                .createdDate(user.getCreatedDate().toString()).build();
     }
 
     @Transactional
