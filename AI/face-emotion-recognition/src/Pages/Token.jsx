@@ -12,5 +12,9 @@ export default function Token() {
     setToken(`Bearer ${param}`);
     navigate('/');
 
-    return <div>Now Loading...</div>
+    return <div>Now Loading...
+        <div onClick={() => {
+            navigate('/error');
+        }}>에러페이지</div>
+    </div>
 };
