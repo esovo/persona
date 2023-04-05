@@ -66,10 +66,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user;
         if (userOptional.isPresent()) {
             log.info("유저존재");
-            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-                log.info("익셉션발생");
-//                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
-                }
+            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
+            
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
          else {
@@ -110,14 +108,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
         log.info("updateUser 실행");
-        String nickname = oAuth2UserInfo.getName();
-        String email = oAuth2UserInfo.getEmail();
+        try {
+            String nickname = oAuth2UserInfo.getName();
+            String email = oAuth2UserInfo.getEmail();
 
-        user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname,
-                oAuth2UserInfo.getImageUrl(), email);
-        user.setNickname(nickname);
-        user.setEmail(email);
-        log.info("updateUser 실행끝");
+            user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname,
+                    oAuth2UserInfo.getImageUrl(), email);
+            user.setNickname(nickname);
+            user.setEmail(email);
+            log.info("updateUser 실행끝");
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.printStackTrace();
+            e.printStackTrace();
+            e.printStackTrace();
+
+        }
         return user;
     }
 
