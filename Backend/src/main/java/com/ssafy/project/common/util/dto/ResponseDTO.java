@@ -1,4 +1,4 @@
-package com.ssafy.project.common.db.dto.common;
+package com.ssafy.project.common.util.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

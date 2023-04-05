@@ -1,7 +1,6 @@
 package com.ssafy.project.common.db.repository.querydsl;
 
 import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
-import com.ssafy.project.common.db.entity.common.Board;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

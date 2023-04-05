@@ -1,10 +1,11 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
-import com.ssafy.project.common.security.properties.AppProperties;
 import com.ssafy.project.common.provider.CookieProvider;
 import com.ssafy.project.common.provider.TokenProvider;
+import com.ssafy.project.common.security.exception.CustomOAuth2Exception;
+import com.ssafy.project.common.security.properties.AppProperties;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -63,7 +64,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Optional<String> redirectUri = cookieProvider.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue);
 
         if (redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get()))
-            throw new CustomOAuth2AuthenticationException("등록되지 않은 Uri입니다.");
+            throw new CustomOAuth2Exception(CommonErrorCode.UNAUTHORIZED_URI);
 
         // 리디렉션 uri가 있으면 그 값으로, 없으면 defaultUri ("/")
         String targetUri = redirectUri.orElse(getDefaultTargetUrl());
@@ -98,7 +99,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     URI authorizedURI = URI.create(authorizedRedirectUri);
                     if (authorizedRedirectUri.equalsIgnoreCase(uri) && authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost()) && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        log.info("유효한 Uri 입니다.");
                         return true;
                     }
                     return false;

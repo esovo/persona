@@ -1,4 +1,4 @@
-package com.ssafy.project.common.security.exception;
+package com.ssafy.project.common.util.constant;
 
 import org.springframework.http.HttpStatus;
 

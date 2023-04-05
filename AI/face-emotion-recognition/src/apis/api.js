@@ -1,16 +1,18 @@
 import axios from 'axios';
+
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../states/loginState';
 
-const BASE_URL = 'https://j8b301.p.ssafy.io';
-export const instance = axios.create({
+const BASE_URL = 'https://j8b301.p.ssafy.io/app';
+
+const api = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-instance.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const token = useRecoilValue(tokenState);
     if (token) {
@@ -23,7 +25,7 @@ instance.interceptors.request.use(
   },
 );
 
-instance.interceptors.response.use(
+api.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -34,15 +36,17 @@ instance.interceptors.response.use(
 
 // headers에 토큰을 추가하는 대신 직접 토큰을 사용할 수 있습니다.
 // 예시:
-// instance.get('/api/some_endpoint', {
+// api.get('/api/some_endpoint', {
 // headers: {
 //   Authorization: 'Bearer ' + token,
 // },
 // });
 
 // export const fetchData = {
-//   get: async (url, option) => await instance.get(url, option),
-//   post: async (url, body, option) => await instance.post(url, body, option),
-//   put: async (url, body, option) => await instance.put(url, body, option),
-//   delete: async (url, body, option) => await instance.delete(url, body, option),
+//   get: async (url, option) => await api.get(url, option),
+//   post: async (url, body, option) => await api.post(url, body, option),
+//   put: async (url, body, option) => await api.put(url, body, option),
+//   delete: async (url, body, option) => await api.delete(url, body, option),
 // };
+
+export default api;

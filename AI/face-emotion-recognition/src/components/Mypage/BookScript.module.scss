@@ -3,67 +3,112 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   border: 1px solid #939393;
   border-radius: 30px;
-  min-width: 300px;
-  width: 40%;
-  height: 40vh;
-  margin: 20px;
-  padding: 10px;
+  background-color: white;
+
+  width: 18em;
+  height: 20em;
+  margin: 30px;
   cursor: pointer;
-
-  .newandbookmark {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .bookmark {
-    }
-  }
-
-  .scriptContent {
-    .date {
-    }
-
-    .title {
-    }
-
-    .actor {
-    }
-
-    .category {
-      display: flex;
-      flex-direction: row;
-
-      .round {
-        margin-right: 5px;
-        padding: 3px 10px;
-        border: 1px solid #6f6f6f;
-        display: flex;
-        align-items: center;
-        text-align: center;
-
-        color: #6f6f6f;
-        font-style: normal;
-
-        border-radius: 40px;
-        background-color: transparent;
+  
+  .wrap {
+      .dateandbookmark {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          margin-bottom: 5%;
+          .date {
+              color: gray;  
+              margin-right: ;
+          }
+          .bookmark {
+              color: red;              
+          }
+  
       }
-    }
+      .gogo {
+              .date {
+                  color: gray;
+                  margin-bottom: 3%;
+          
+              }
+          
+              .title {
+                  margin-bottom: 3%;
+          
+              }
+          
+              .actor {
+                  margin-bottom: 20%;
+          
+              }
+          
+              .category {
+          
+                  display: flex;
+                  flex-direction: row;
+                  
+          
+                  .round {
+          
+                      margin-right: 5%;
+                      margin-bottom: 5%;
+                      padding: 2% 5%;
+                      border: 1px solid #6F6F6F;
+                      display: flex;
+                      align-items: center;
+                      text-align: center;
+          
+                      color: #6F6F6F;
+                      font-style: normal;
+          
+                      border-radius: 40px;
+                      background-color: transparent;
+          
+                  }
+          
+              }
+          
+              .line {
+                  width: 240px;
+                  height: 0px;
+                  left: 439px;
+                  top: 918px;
+          
+                  border: 1px solid #000000;
+                  transform: rotate(0.23deg);
 
-    .line {
-      width: 240px;
-      height: 0px;
-      left: 439px;
-      top: 918px;
+                  margin-bottom: 3%;
+          
+              }
+          
+              .subinfo {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  
+                  .author {
 
-      border: 1px solid #000000;
-      transform: rotate(0.23deg);
-    }
+                  }
+                  .cntinfo {
+                      display: flex;
+                      flex-direction: row;
 
-    .subinfo {
-      display: flex;
-      flex-direction: row;
-      // justify-content: space-around;
-    }
+                      .section {
+                          margin-left: 3%;
+
+                      }
+
+                  }
+          
+              }
+  
+      }
+
   }
+
+  
+
 }

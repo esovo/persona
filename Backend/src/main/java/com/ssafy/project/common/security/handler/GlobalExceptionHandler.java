@@ -1,16 +1,15 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.exception.*;
-import com.ssafy.project.common.db.dto.common.ResponseDTO;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.security.exception.CustomAuthException;
+import com.ssafy.project.common.security.exception.CustomOAuth2Exception;
+import com.ssafy.project.common.util.constant.ErrorCode;
+import com.ssafy.project.common.util.dto.ErrorResponseDTO;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
-
-import java.net.BindException;
-import java.util.stream.Collectors;
 
 @Log4j2
 @RestControllerAdvice
@@ -29,20 +28,17 @@ public class GlobalExceptionHandler extends ResponseStatusExceptionHandler {
 
     @ExceptionHandler(CommonApiException.class)
     public ResponseEntity<Object> handlerCommonApiException(CommonApiException e){
-        ErrorCode errorCode = e.getErrorCode();
-        return handleExceptionInternal(errorCode);
+        return handleExceptionInternal(e.getErrorCode());
     }
 
     @ExceptionHandler(CustomAuthException.class)
-    public ResponseEntity<ResponseDTO> handleCustomAuthException(CustomAuthException e) {
-        log.info("handleCustomAuthException 실행");
-        return ResponseEntity.badRequest().body(ResponseDTO.of(HttpStatus.BAD_REQUEST, e.getMessage()));
+    public ResponseEntity<Object> handleCustomAuthException(CustomAuthException e) {
+        return handleExceptionInternal(e.getErrorCode());
     }
 
-    @ExceptionHandler(CustomOAuth2AuthenticationException.class)
-    public ResponseEntity<ResponseDTO> handleCustomOAuth2AuthenticationException(CustomOAuth2AuthenticationException e) {
-        log.info("handleCustomOAuth2AuthenticationException 실행");
-        return ResponseEntity.badRequest().body(ResponseDTO.of(HttpStatus.BAD_REQUEST, e.getMessage()));
+    @ExceptionHandler(CustomOAuth2Exception.class)
+    public ResponseEntity<Object> handleCustomOAuth2Exception(CustomOAuth2Exception e) {
+        return handleExceptionInternal(e.getErrorCode());
     }
 
     private ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
@@ -50,8 +46,8 @@ public class GlobalExceptionHandler extends ResponseStatusExceptionHandler {
                 .body(makeErrorResponse(errorCode));
     }
 
-    private ErrorResponse makeErrorResponse(ErrorCode e) {
-        return ErrorResponse.of(e.name(), e.getMessage());
+    private ErrorResponseDTO makeErrorResponse(ErrorCode e) {
+        return ErrorResponseDTO.of(e.name(), e.getMessage());
     }
 }
 

@@ -14,9 +14,8 @@ import com.ssafy.project.common.db.repository.VideoRepository;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.provider.S3Provider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
-import com.ssafy.project.common.security.exception.CustomAuthException;
-import com.ssafy.project.common.util.S3Utils;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
+import com.ssafy.project.common.util.utils.S3Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -25,8 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Log4j2
@@ -47,12 +44,12 @@ public class VideoServiceImpl implements VideoService {
     public void saveVideo(VideoCreateReqDTO videoCreateReqDTO) {
 
         Participant participant = participantRepository.findById(videoCreateReqDTO.getParticipantId())
-                .orElseThrow(() -> new CustomAuthException("존재하지 않는 참여자 입니다."));
+                .orElseThrow(() -> new CommonApiException(CommonErrorCode.PARTICIPANT_NOT_FOUND));
 
         User user = userRepository.findById(authProvider.getUserIdFromPrincipal())
-                .orElseThrow(() -> new CustomAuthException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
 
-        List<String> uris = new ArrayList<>();
+        List<String> uris;
         
         uris = s3Utils.upload(videoCreateReqDTO.getVideoFile(), videoCreateReqDTO.getGraphFile());
 
@@ -72,10 +69,10 @@ public class VideoServiceImpl implements VideoService {
     public void deleteVideo(Long videoId) {
 
         Video video = videoRepository.findById(videoId)
-                .orElseThrow(() -> new CustomAuthException("존재하지 않는 영상입니다."));
+                .orElseThrow(() -> new CommonApiException(CommonErrorCode.VIDEO_NOT_FOUND));
 
         if (!(video.getUser().getId() == authProvider.getUserIdFromPrincipal())) {
-            throw new CustomAuthException("다른 유저의 동영상입니다.");
+            throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
         s3Provider.delete(video.getVideoUrl(), s3Utils.getVideoRemoveStartIdx());
@@ -110,7 +107,7 @@ public class VideoServiceImpl implements VideoService {
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.VIDEO_NOT_FOUND));
 
         if (!(video.getUser().getId() == authProvider.getUserIdFromPrincipal())) {
-            throw new CustomAuthException("다른 유저의 동영상입니다.");
+            throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
         Script script = scriptRepository.findByParticipantsId(video.getParticipant().getId())
