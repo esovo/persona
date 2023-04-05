@@ -281,7 +281,7 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  var socket = new WebSocket('wss://j8b301.p.ssafy.io/api/socket');
+  var socket = new WebSocket('ws://j8b301.p.ssafy.io:8000/api/socket')
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -294,7 +294,7 @@ const FaceDetect = (props) => {
   socket.onopen = () => socket.send(JSON.stringify(apiCall))
 
   socket.onmessage = function(event) {
-    console.log("websocket 보내는중")
+
     var pred_log = JSON.parse(event.data)
     // console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
@@ -473,15 +473,12 @@ const FaceDetect = (props) => {
 
     try {
       console.log("axios 시작");
-      const protocol = window.location.protocol;
-      const host = 'j8b301.p.ssafy.io';
-      const port = protocol === 'http:' ? ':8000' : '';
-
-      axios.post(protocol + '//' + host + port + '/api/audio/', formData, {
-        headers: {
-          "Content-Type": "audio/mpeg",
-        },
-      })
+      axios
+        .post("http://j8b301.p.ssafy.io:8000/api/audio/", formData, {
+          headers: {
+            "Content-Type": "audio/mpeg",
+          },
+        })
         .then((response) => {
           console.log(response.data[1]);
           setRecordtext(response.data[0].message[0])
@@ -582,7 +579,7 @@ const FaceDetect = (props) => {
       {webcamOff ? (
         <div>
           <video
-            style={{ width: '200%', height: '80%', objectFit: 'cover' }}
+            style={{ width: '50%', height: '50%', objectFit: 'cover' }}
             className="recordvideo"
             src={mediaBlobUrl}
             autoPlay
