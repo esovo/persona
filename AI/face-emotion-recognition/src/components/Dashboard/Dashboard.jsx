@@ -30,9 +30,14 @@ const Dashboard = (props) => {
     console.log(write);
     console.log("이 위가 진짜 테스팅 값");
     const name = pathname.substring(11);
-    axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
+    const protocol = window.location.protocol;
+    const host = 'j8b301.p.ssafy.io';
+    const port = protocol === 'http:' ? ':8080' : '';
+
+    axios.get(protocol + '//' + host + port + '/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);
     });
+    
 
     setLoadedModels(true);
     // loadEssentialModels()
