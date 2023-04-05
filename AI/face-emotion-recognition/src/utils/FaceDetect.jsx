@@ -297,7 +297,7 @@ const FaceDetect = (props) => {
   socket.onopen = () => socket.send(JSON.stringify(apiCall))
 
   socket.onmessage = function(event) {
-
+    console.log("websocket 보내는중")
     var pred_log = JSON.parse(event.data)
     // console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
