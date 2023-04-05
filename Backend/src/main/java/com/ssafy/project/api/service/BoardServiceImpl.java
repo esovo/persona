@@ -11,15 +11,13 @@ import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
-import com.ssafy.project.common.security.exception.CustomAuthException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

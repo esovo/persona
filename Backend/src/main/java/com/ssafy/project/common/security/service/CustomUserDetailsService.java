@@ -17,7 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Secured("hasRole")
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email)

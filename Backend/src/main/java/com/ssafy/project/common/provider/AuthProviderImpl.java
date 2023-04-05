@@ -1,7 +1,8 @@
 package com.ssafy.project.common.provider;
 
 import com.ssafy.project.common.security.authentication.UserPrincipal;
-import com.ssafy.project.common.security.exception.CustomOAuth2AuthenticationException;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +25,7 @@ public class AuthProviderImpl implements AuthProvider {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(String.valueOf(principal).equals("anonymousUser")) {
-            throw new CustomOAuth2AuthenticationException("로그인되지 않은 유저입니다.");
+            throw new CommonApiException(CommonErrorCode.UNLOGINED_USER);
         }
 
         // UserPrincipal로의 형변환도 가능하나, Principal에 Userdetails를 set하므로, 굳이 필요가 없는 듯 함

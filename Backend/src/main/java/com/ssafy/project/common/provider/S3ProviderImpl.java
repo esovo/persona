@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -88,6 +88,5 @@ public class S3ProviderImpl implements S3Provider {
 
     @Override
     public void delete(String uri, int start) {
-        log.info("삭제 비교 UUID : {}", uri.substring(start, 54));
         s3Client.deleteObject(bucket, uri.substring(start, 54)); }
 }

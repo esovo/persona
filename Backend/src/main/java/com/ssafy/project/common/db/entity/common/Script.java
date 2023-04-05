@@ -6,7 +6,6 @@ import com.ssafy.project.common.db.entity.base.GenreEnum;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
