@@ -40,6 +40,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
      */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+
         log.info("=========================");
         log.info("onAuthenticationSuccess ");
         log.info("=========================");
