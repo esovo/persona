@@ -8,6 +8,7 @@ import { faHeart as empty } from '@fortawesome/free-regular-svg-icons';
 import { useRecoilState } from 'recoil';
 import { detailState } from '../../states/practiceFilterState';
 import { tokenState } from '../../states/loginState';
+import moment from 'moment';
 
 import axios from 'axios';
 
@@ -73,7 +74,7 @@ export default function Script({ data }) {
             </div>
             <div className={style.gogo} onClick={move}>
 
-                <div className={style.date}>작성일 | {data.createdDate}</div>
+                <div className={style.date}>작성일 | {moment(data.createdDate).format("YYYY-MM-DD")}</div>
                 <div className={style.title}>{data.title}</div>
                 <div className={style.actor}>{data.actor}</div>
                 <div className={style.category}>
