@@ -114,6 +114,7 @@ public class VideoServiceImpl implements VideoService {
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
 
         return VideoDetailResDTO.builder()
+                .id(String.valueOf(video.getId()))
                 .title(video.getTitle())
                 .emotion(script.getEmotion().name())
                 .genre(script.getGenre().name())
