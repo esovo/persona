@@ -54,7 +54,7 @@ spring:
               - profile_nickname
               - profile_image
             client-authentication-method: POST
-      provider:
+        provider:
           google:
             user-name-attribute: sub
           kakao:
