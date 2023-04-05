@@ -9,7 +9,7 @@ import com.ssafy.project.common.db.repository.ScriptRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

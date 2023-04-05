@@ -29,11 +29,9 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
 
         // 해당 이름으로 설정된 쿠키를 역직렬화하여, request 리턴
-        OAuth2AuthorizationRequest oAuth2AuthorizationRequest =  cookieProvider.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+        return cookieProvider.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> cookieProvider.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
-
-        return oAuth2AuthorizationRequest;
     }
 
     @Override

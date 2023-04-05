@@ -6,7 +6,8 @@ import com.ssafy.project.common.db.entity.base.SocialEnum;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.authentication.UserPrincipal;
-import com.ssafy.project.common.security.exception.CustomAuthException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
+import com.ssafy.project.common.security.exception.CustomOAuth2Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -30,8 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
-        log.info("loadUser 호출");
-
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -52,14 +51,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         );
 
         if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null"))
-            throw new OAuth2AuthenticationException("이메일을 제공받지 못했습니다.");
+            throw new CustomOAuth2Exception(CommonErrorCode.NO_EMAIL_PROVIDED);
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
 
         User user;
         if (userOptional.isPresent()) {
             if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())))
-                throw new OAuth2AuthenticationException("해당 이메일은 다른 소셜로 가입되어 있습니다.");
+                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
             user = updateUser(userOptional.get(), oAuth2UserInfo);
         } else {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
@@ -77,7 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else if (registrationId.equalsIgnoreCase(SocialEnum.kakao.toString())) {
             return new KakaoOAuth2UserInfo(attributes);
         } else {
-            throw new OAuth2AuthenticationException("지원하지 않는 소셜 타입 : " + registrationId);
+            throw new CustomOAuth2Exception(CommonErrorCode.BAD_SOCIAL_TYPE);
         }
     }
 

@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CommonApiException extends RuntimeException{
+public class CustomOAuth2Exception extends RuntimeException{
     private final ErrorCode errorCode;
 }
