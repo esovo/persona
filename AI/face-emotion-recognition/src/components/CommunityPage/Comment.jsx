@@ -32,21 +32,7 @@ const Comment = ({ id, nickname, createdDate, content, email }) => {
       <div className={style.info}>
         <div className={style.profile}>
           <img src="user.png" alt="user" width="32" />
-          {userinfo.mymail === email && (<div onClick={deleteCommentHandler}>삭제</div>)}
-          {/* <button className={style.menubtn} onClick={clickDropDown}>
-            <FontAwesomeIcon icon={faEllipsisVertical} style={{ color: '#5d5d5d' }} />
-            
-            {open && (
-              <div className={style.dropdownOptions}>
-                <div className={style.modify} onClick={clickDropDown}>
-                  수정
-                </div>
-                <div className={style.delete} onClick={deleteCommentHandler}>
-                  삭제
-                </div>
-              </div>
-            )}
-          </button> */}
+          {userinfo.mymail === email && <div onClick={deleteCommentHandler}>삭제</div>}
         </div>
         <div className={style.items}>
           <div className={style.nickname}>{nickname}</div>

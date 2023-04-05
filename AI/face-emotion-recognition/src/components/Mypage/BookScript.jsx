@@ -8,12 +8,12 @@ import { faHeart as empty } from '@fortawesome/free-regular-svg-icons';
 import { useRecoilState } from 'recoil';
 import { detailState } from '../../states/practiceFilterState';
 
-export default function Script({ data }) {
+export default function Script({ id, actor, author, createdDate, emotion, genre, title, bookmarkCnt, participantCnt }) {
   const [detail, setDetail] = useRecoilState(detailState);
   const navigate = useNavigate();
 
   const move = () => {
-    setDetail(data.id);
+    setDetail(id);
     navigate('/practice/detail');
   };
 
@@ -24,21 +24,23 @@ export default function Script({ data }) {
       <div className={style.newandbookmark}>
         <div className={style.bookmark}>{bookmark}</div>
       </div>
-      <div className={style.date}>작성일 | {data.createdDate}</div>
-      <div className={style.title}>{data.title}</div>
-      <div className={style.actor}>{data.actor}</div>
-      <div className={style.category}>
-        <div className={style.round}>#{data.emotion}</div>
-        <div className={style.round}>#{data.genre}</div>
-      </div>
-      <div className={style.line}></div>
-      <div className={style.subinfo}>
-        <div className={style.author}>{data.author}</div>
-        <div className={style.cntinfo}>
-          <FontAwesomeIcon icon={faEye} />
-          {data.bookmarkCnt}
-          <FontAwesomeIcon icon={faUsers} />
-          {data.participantCnt}
+      <div className={style.scriptContent}>
+        <div className={style.date}>작성일 | {createdDate}</div>
+        <div className={style.title}>{title}</div>
+        <div className={style.actor}>{actor}</div>
+        <div className={style.category}>
+          <div className={style.round}>#{emotion}</div>
+          <div className={style.round}>#{genre}</div>
+        </div>
+        <div className={style.line}></div>
+        <div className={style.subinfo}>
+          <div className={style.author}>{author}</div>
+          <div className={style.cntinfo}>
+            <FontAwesomeIcon icon={faEye} />
+            {bookmarkCnt}
+            <FontAwesomeIcon icon={faUsers} />
+            {participantCnt}
+          </div>
         </div>
       </div>
     </div>

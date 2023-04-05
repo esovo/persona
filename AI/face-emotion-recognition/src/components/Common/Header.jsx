@@ -1,13 +1,12 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { user, modal, tokenState, loginState } from '../../states/loginState';
+import { user, modal, tokenState, loginState, mypageState } from '../../states/loginState';
 import { useState, useEffect } from 'react';
 
-import style from "./Header.module.scss";
+import style from './Header.module.scss';
 // import User from '../models/user';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
@@ -15,6 +14,7 @@ export default function Header() {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [isDropdown, setIsDropdown] = useState(false);
   const [token, setToken] = useRecoilState(tokenState);
+  const [data, setData] = useRecoilState(mypageState);
 
   const navigate = useNavigate();
 
@@ -30,9 +30,16 @@ export default function Header() {
   };
 
   const itemClickHandler = (item) => {
-    if (item === "My Page") {
-      navigate("/mypage");
-    } else if (item === "Log Out") {
+    if (item === '내 정보') {
+      setData('1');
+      navigate('/mypage');
+    } else if (item === '내가 쓴 글') {
+      setData('2');
+      navigate('/mypage');
+    } else if (item === '북마크') {
+      setData('3');
+      navigate('/mypage');
+    } else if (item === '로그아웃') {
       logoutHandler();
     }
   };
@@ -82,7 +89,7 @@ export default function Header() {
             {/* <div className={style.left}>
             </div> */}
             <div className={style.right}>
-              <DropdownMenu items={["My Page", "Log Out"]} onItemClick={itemClickHandler} />
+              <DropdownMenu items={['내 정보', '내가 쓴 글', '북마크', '로그아웃']} onItemClick={itemClickHandler} />
             </div>
           </div>
         )}

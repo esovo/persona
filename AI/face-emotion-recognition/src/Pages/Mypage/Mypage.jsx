@@ -3,12 +3,14 @@ import style from './Mypage.module.scss';
 import BasicList from '../../components/Mypage/BasicList';
 import MyInfo from '../../components/Mypage/MyInfo';
 import { useState } from 'react';
-import Bookmark from '../../components/Mypage/BookMark';
+import { useRecoilState } from 'recoil';
+import {mypageState} from '../../states/loginState'
+import MyBookmark from '../../components/Mypage/MyBookmark';
 import MyPost from '../../components/Mypage/MyPost';
 import Header from '../../components/Common/Header';
 
 const Mypage = () => {
-  const [data, setData] = useState('1');
+  const [data, setData] = useRecoilState(mypageState);
 
   function Component() {
     switch (data) {
@@ -17,7 +19,7 @@ const Mypage = () => {
       case '2':
         return <MyPost />;
       case '3':
-        return <Bookmark />;
+        return <MyBookmark />;
     }
   }
 
