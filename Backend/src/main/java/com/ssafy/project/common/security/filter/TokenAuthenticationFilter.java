@@ -31,10 +31,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+            log.info("무조건오는토큰 : {}", String.valueOf(tokenProvider.getTokenFromRequest(request)));
+            log.info(tokenProvider.getTokenFromRequest(request).equals("Bearer "));
+
         try {
             String token = tokenProvider.getTokenFromRequest(request);
 
-            if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+            if (StringUtils.hasText(token) && token.length()> 10 && tokenProvider.validateToken(token)) {
                 log.info("토큰 값 {}", token);
                 Long id = tokenProvider.getUserIdFromToken(token);
 
@@ -48,8 +51,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            log.info("에러 쓰로우 직전");
-            throw new CustomAuthException(CommonErrorCode.NO_SET_AUTHENTICATION);
+            log.info("에러 쓰로우");
+
         }
 
         filterChain.doFilter(request, response);
