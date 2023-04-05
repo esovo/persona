@@ -2,7 +2,10 @@ package com.ssafy.project.common.db.dto.response;
 
 import com.ssafy.project.common.db.entity.base.EmotionEnum;
 import com.ssafy.project.common.db.entity.base.GenreEnum;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 

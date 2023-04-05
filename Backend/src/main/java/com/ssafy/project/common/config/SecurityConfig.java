@@ -1,11 +1,11 @@
 
 package com.ssafy.project.common.config;
 
-import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.security.entrypoint.CustomAuthenticationEntryPoint;
 import com.ssafy.project.common.security.filter.TokenAuthenticationFilter;
 import com.ssafy.project.common.security.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.project.common.security.handler.OAuth2AuthenticationSuccessHandler;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.security.service.CustomOAuth2UserService;
 import com.ssafy.project.common.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,19 +97,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/",
-                        "/error",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
+                        "/board/all", "/board/top", "oauth2/**")
                 .permitAll()
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()

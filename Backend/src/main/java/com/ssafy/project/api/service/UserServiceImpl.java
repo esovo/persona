@@ -9,7 +9,8 @@ import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.provider.RedisProvider;
 import com.ssafy.project.common.provider.TokenProvider;
-import com.ssafy.project.common.security.exception.CustomAuthException;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,10 +51,11 @@ public class UserServiceImpl implements UserService{
     public UserHomeResDTO homeUser() {
 
         long id = authProvider.getUserIdFromPrincipal();
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomAuthException("로그인 되어있지 않습니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.UNLOGINED_USER));
 
         return UserHomeResDTO.builder()
                 .nickname(user.getNickname())
+                .email(user.getEmail())
                 .imageUrl(user.getSocialAuth().getImageUrl()).build();
     }
 
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService{
     public UserDetailResDTO detailUserById() {
 
         long id = authProvider.getUserIdFromPrincipal();
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomAuthException("로그인 되어있지 않습니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.UNLOGINED_USER));
 
         return UserDetailResDTO.builder()
                 .email(user.getEmail())
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserSearchDTO detailUserByEmail(String email) {
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomAuthException("존재하지 않는 이메일입니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_EMAIL_NOT_FOUND));
 
         return UserSearchDTO.builder()
                 .email(user.getEmail())
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserService{
     public void deleteUser() {
 
         long id = authProvider.getUserIdFromPrincipal();
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomAuthException("존재하지 않는 회원입니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
         userRepository.deleteById(id);
     }
 
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService{
     public void modifyUser(UserModifyReqDTO userModifyReqDto) {
 
         long id = authProvider.getUserIdFromPrincipal();
-        User user = userRepository.findById(id).orElseThrow(() -> new CustomAuthException("존재하지 않는 회원입니다."));
+        User user = userRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
         user.setNickname(userModifyReqDto.getNickname());
         userRepository.save(user);
     }

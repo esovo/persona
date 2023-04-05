@@ -3,10 +3,9 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.EmotionAddReqDTO;
 import com.ssafy.project.common.db.entity.common.Emotion;
 import com.ssafy.project.common.db.entity.common.Participant;
-import com.ssafy.project.common.db.repository.EmotionRepository;
 import com.ssafy.project.common.db.repository.ParticipantRepository;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
-const BASE_URL = 'https://j8b301.p.ssafy.io';
+const BASE_URL = 'https://j8b301.p.ssafy.io/app';
 
 export const videoApis = {
     
     VIDEO_GET_API: (page) => {
-      return BASE_URL + `/app/video?page=${page}`;
+      return BASE_URL + `/video?page=${page}`;
     },
 };

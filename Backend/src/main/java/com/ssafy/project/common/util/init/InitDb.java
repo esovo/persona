@@ -1,4 +1,4 @@
-package com.ssafy.project.common.db.init;
+package com.ssafy.project.common.util.init;
 
 
 import com.ssafy.project.common.db.entity.base.EmotionEnum;

@@ -1,6 +1,11 @@
 package com.ssafy.project.common.security.exception;
 
-public class CustomAuthException extends RuntimeException{
+import com.ssafy.project.common.util.constant.ErrorCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-    public CustomAuthException(String msg) { super(msg); }
+@Getter
+@RequiredArgsConstructor
+public class CustomAuthException extends RuntimeException{
+    private final ErrorCode errorCode;
 }
