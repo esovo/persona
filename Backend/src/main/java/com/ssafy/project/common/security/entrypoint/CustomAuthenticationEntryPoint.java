@@ -18,6 +18,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException {
 
+        log.info("=========================");
+        log.info("commence ");
+        log.info("=========================");
         response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getLocalizedMessage());
     }
 }

@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class VideoDetailResDTO {
 
+    private String id;
     private String title;
     private String emotion;
     private String genre;

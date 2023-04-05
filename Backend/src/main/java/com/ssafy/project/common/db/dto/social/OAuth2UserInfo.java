@@ -8,7 +8,6 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 
-// 공통속성이 아니므로, interface보단 abstract가 용도에 맞음
 public abstract class OAuth2UserInfo {
 
     protected Map<String, Object> attributes;

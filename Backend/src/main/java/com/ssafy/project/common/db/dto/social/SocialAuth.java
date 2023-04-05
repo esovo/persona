@@ -22,11 +22,10 @@ public class SocialAuth {
     private String name;
     private String imageUrl;
 
-    public void update(String providerId, String name, String imageUrl, String email) {
+    public void update(String name, String imageUrl) {
         this.name = name;
         this.imageUrl = imageUrl;
-        this.providerId = providerId;
-        this.email = email;
+
     }
 
 
