@@ -72,7 +72,7 @@ public class VideoServiceImpl implements VideoService {
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.VIDEO_NOT_FOUND));
 
         if (!(video.getUser().getId() == authProvider.getUserIdFromPrincipal())) {
-            throw new CommonApiException(CommonErrorCode.OTHER_USER_VIDEO);
+            throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
         s3Provider.delete(video.getVideoUrl(), s3Utils.getVideoRemoveStartIdx());
@@ -107,7 +107,7 @@ public class VideoServiceImpl implements VideoService {
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.VIDEO_NOT_FOUND));
 
         if (!(video.getUser().getId() == authProvider.getUserIdFromPrincipal())) {
-            throw new CommonApiException(CommonErrorCode.OTHER_USER_VIDEO);
+            throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
         Script script = scriptRepository.findByParticipantsId(video.getParticipant().getId())
