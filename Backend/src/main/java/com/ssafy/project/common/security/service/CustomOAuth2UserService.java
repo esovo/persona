@@ -64,10 +64,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user;
         if (userOptional.isPresent()) {
-            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())))
+            log.info("유저존재");
+            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())) {
+                log.info("익셉션발생");
                 throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
+            }
             user = updateUser(userOptional.get(), oAuth2UserInfo);
         } else {
+            log.info("유저없음");
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
         log.info("리턴 직전");
@@ -75,7 +79,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
-
+        log.info("getOAuth2UserInfo 실행");
         if (registrationId.equalsIgnoreCase(SocialEnum.google.toString())) {
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(SocialEnum.naver.toString())) {
@@ -88,7 +92,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-
+        log.info("registerUser 실행");
         return userRepository.save(User.builder()
                 .email(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getName())
@@ -103,7 +107,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
-
+        log.info("updateUser 실행");
         String nickname = oAuth2UserInfo.getName();
         String email = oAuth2UserInfo.getEmail();
 
@@ -111,7 +115,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2UserInfo.getImageUrl(), email);
         user.setNickname(nickname);
         user.setEmail(email);
-
+        log.info("updateUser 실행끝");
         return user;
     }
 
