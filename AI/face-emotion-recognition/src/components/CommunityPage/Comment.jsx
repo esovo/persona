@@ -4,13 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { communityApis } from '../../apis/communityApis';
-import { tokenState } from '../../states/loginState';
+import { tokenState, user } from '../../states/loginState';
 import { useRecoilValue } from 'recoil';
+import moment from 'moment';
 
-const Comment = ({ id, nickname, createdDate, content }) => {
+const Comment = ({ id, nickname, createdDate, content, email }) => {
   const [open, setOpen] = useState(false);
   const BASE_URL = 'https://j8b301.p.ssafy.io';
   const token = useRecoilValue(tokenState);
+  const userinfo = useRecoilValue(user);
 
   const clickDropDown = () => {
     setOpen(!open);
@@ -30,8 +32,10 @@ const Comment = ({ id, nickname, createdDate, content }) => {
       <div className={style.info}>
         <div className={style.profile}>
           <img src="user.png" alt="user" width="32" />
-          <button className={style.menubtn} onClick={clickDropDown}>
+          {userinfo.mymail === email && (<div onClick={deleteCommentHandler}>삭제</div>)}
+          {/* <button className={style.menubtn} onClick={clickDropDown}>
             <FontAwesomeIcon icon={faEllipsisVertical} style={{ color: '#5d5d5d' }} />
+            
             {open && (
               <div className={style.dropdownOptions}>
                 <div className={style.modify} onClick={clickDropDown}>
@@ -42,12 +46,12 @@ const Comment = ({ id, nickname, createdDate, content }) => {
                 </div>
               </div>
             )}
-          </button>
+          </button> */}
         </div>
         <div className={style.items}>
           <div className={style.nickname}>{nickname}</div>
           <div className={style.content}>{content}</div>
-          <div className={style.date}>{createdDate}</div>
+          <div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
         </div>
       </div>
     </div>

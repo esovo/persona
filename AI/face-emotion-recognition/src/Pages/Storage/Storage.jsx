@@ -1,16 +1,33 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { videoModal, videosState } from '../../states/communityState';
+import { tokenState } from '../../states/loginState';
 import Header from '../../components/Common/Header';
 import Video from '../../components/Storage/Video';
 // import Footer from "../../components/Common/Footer";
 import style from './Storage.module.scss';
+import axios from 'axios';
 
 export default function List() {
   const videos = useRecoilValue(videosState);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [token, setToken] = useRecoilState(tokenState);
+  // const [myVideos, setMyVideos] = useState([])
+
+  useEffect(() => {
+    axios.get('https://j8b301.p.ssafy.io/app/video', { 
+      headers: {
+        'Authorization': token
+      },      
+      params: {
+        page: 0
+      }      
+    }).then((res) => {
+      console.log(res.data.value.content);
+    })
+  })
 
   return (
     <div className={style.wrapper}>
