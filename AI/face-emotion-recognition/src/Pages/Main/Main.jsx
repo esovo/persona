@@ -16,17 +16,14 @@ export default function Footer() {
   const [userinfo, setUserinfo] = useRecoilState(user);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+
+  const save = (data) => {
+    setUserinfo(data);
+  }
   
   
   useEffect(() => {
     console.log('메인페이지로 토큰이 잘 넘어왔다능 : ' + token);
-    // axios({
-    //   url: `${API_BASE_URL}/user`, // 통신할 웹문서
-    //   method: 'get', // 통신할 방식
-    //   headers: {
-    //     'Authorization': token
-    //   }
-    // })
     axios.get(`${API_BASE_URL}/user`, {
       headers: {
         'Authorization': token
@@ -34,14 +31,32 @@ export default function Footer() {
     })
     .then((res) => {
       if (token.length !== 0) {
-        console.log(res.data.value);
+        console.log(res);
         const data = res.data.value;
-        setUserinfo({
+        save({
           nickname: data.nickname,
-          email: data.email,
+          mymail: data.email,
           img: data.imageUrl,
         });
+        // setUserinfo({
+        //   nickname: data.nickname,
+        //   email: data.email,
+        //   img: data.imageUrl,
+        // });
         setIsLogin(true);
+        console.log(userinfo);
+
+        // return(() => {
+        //   setUserinfo({
+        //     nickname: data.nickname,
+        //     email: data.email,
+        //     img: data.imageUrl,
+        //   });
+        //   console.log(userinfo);
+
+        // })
+        
+        
       }
     })
     
@@ -51,7 +66,6 @@ export default function Footer() {
       .querySelectorAll("div")
       .forEach((img) => img.addEventListener("load", () => AOS.refresh()));
   }, []);
-
 
 
   return (

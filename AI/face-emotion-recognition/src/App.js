@@ -14,6 +14,7 @@ import Storage from './Pages/Storage/Storage';
 import Token from './Pages/Token';
 import Mypage from './Pages/Mypage/Mypage';
 import Savepage from './Pages/Save/Savepage';
+import Error from './Pages/Error';
 function App() {
   return (
     <div className="App">
@@ -39,6 +40,7 @@ function App() {
                   }
                 />
                 <Route path="/savepage" element={<Savepage />} />
+                <Route path="/error" element={<Error />} />
               </Routes>
             </SettingsContextProvider>
           </DashboardContextProvider>

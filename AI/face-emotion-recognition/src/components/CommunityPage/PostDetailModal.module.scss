@@ -78,6 +78,20 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
+            .dropdownOptions {
+              background-color: #d9d9d9;
+              width: 70px;
+              position: absolute;
+              top: 70px;
+              right: 0;
+              .modify {
+                padding: 5px;
+                border-bottom: 1px solid #a2a2a2;
+              }
+              .delete {
+                padding: 5px;
+              }
+            }
           }
         }
       }
@@ -117,6 +131,7 @@
     .bottom {
       border-top: solid 1px #d5d5d5;
       background-color: #f3f3f3;
+      height: inherit;
       .input {
         // padding: 5px 20px;
         display: flex;
@@ -148,6 +163,7 @@
       .commentItem {
         padding: 20px 40px;
         border-bottom: solid 1px #d5d5d5;
+        background-color: #f3f3f3;
       }
     }
   }

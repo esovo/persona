@@ -1,4 +1,3 @@
-
 package com.ssafy.project.common.config;
 
 import com.ssafy.project.common.security.entrypoint.CustomAuthenticationEntryPoint;
@@ -101,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/oauth2/**", "/board/all", "/board/top")
                 .permitAll()
                 .anyRequest()
-                .authenticated()
+                .permitAll()
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()

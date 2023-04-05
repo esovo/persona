@@ -35,30 +35,8 @@ export default function PracticeDetail() {
     const go = () => {
         const content = document.querySelector(`.ql-editor`).innerHTML;
         setWrite(content);
-        console.log(write);
         navigate(`/dashboard/${getId}`);
     }
-
-    
-
-    // useEffect(() => {
-
-    //     const userWrite = document.querySelector(`.ql-editor`)?.innerHTML;
-    //     setWrite(userWrite);
-
-    // }, [write])
-
-    // {
-    //     actor: '',
-    //     author: '',
-    //     bookmarkCnt: 0,
-    //     content: '',
-    //     createdDate: '',
-    //     emotion: '',
-    //     id: 0,
-    //     participantCnt: 0,
-    //     title: '',
-    // }    
 
     useEffect(() => {
         let receivedData;
@@ -74,7 +52,6 @@ export default function PracticeDetail() {
         .then((res) => {
             receivedData = res.data.value;
             setData(receivedData);
-            // setDate(receivedData.createdDate.subString(0, 10))
             console.log(typeof(receivedData.createdDate))
             let text =receivedData.createdDate.substring(0,10);
             console.log(text);

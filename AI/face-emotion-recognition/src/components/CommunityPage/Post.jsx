@@ -5,12 +5,12 @@ import style from './Post.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   const [isClicked, setIsClicked] = useState(false);
-
   const openModal = () => {
     setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, commentCnt });
     setShowDetailModal(true);
@@ -24,7 +24,7 @@ const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }
         <div className={style.title}>{title}</div>
         <div className={style.body}>{content}</div>
         <div className={style.info}>
-          <div className={style.nickname}>{nickName}</div>|<div className={style.date}>{createdDate}</div>
+          <div className={style.nickname}>{nickName}</div>|<div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
         </div>
       </div>
       <div className={style.itmes}>
