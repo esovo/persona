@@ -15,14 +15,14 @@ const RealTimeEmotion = () => {
    * @param {object} data - Data of the expression which was hovered.
    * @returns {HTMLSpanElement} - Reutrns a <span> with the name of the expression which was hovered.
    */
-  const getTooltip = (data) => {
-    // should only return HTML
-    return (
-      <span className="tooltip bg-bg-1 rounded-md text-xs p-1 border-solid border-gray-500 border-2">{`${
-        data.data.expression
-      }: ${Math.round(data.data.percent)}%`}</span>
-    );
-  };
+  // const getTooltip = (data) => {
+  //   // should only return HTML
+  //   return (
+  //     <span className="tooltip bg-bg-1 rounded-md text-xs p-1 border-solid border-gray-500 border-2">{`${
+  //       data.data.expression
+  //     }: ${Math.round(data.data.percent)}%`}</span>
+  //   );
+  // };
 
   return currentExpression !== null && currentExpression !== undefined ? (
     <ResponsiveBar
@@ -68,7 +68,7 @@ const RealTimeEmotion = () => {
         legendPosition: 'middle',
         legendOffset: 40,
       }}
-      tooltip={(data) => getTooltip(data)}
+      // tooltip={(data) => getTooltip(data)}
     />
   ) : (
     <Spinner text={'녹화를 시작하면 그래프가 나옵니다.'} />
