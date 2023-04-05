@@ -24,18 +24,18 @@ export default function Modal() {
     setShowVideoModal(true);
   };
 
-  const BASE_URL = 'http://j8b301.p.ssafy.io:8080';
+  const BASE_URL = 'https://j8b301.p.ssafy.io';
   const writePost = () => {
     const title = document.querySelector(`.${style.input}`).value; // 제목
     const content = document.querySelector(`.ql-editor`).innerHTML; // 내용
-    // const videoId = null;
+    const videoId = null;
     const data = {
       title: title,
       content: content,
-      // videoId: videoId,
+      videoId: videoId,
     };
     axios
-      .post('http://j8b301.p.ssafy.io:8080/app/board', data, {
+      .post(BASE_URL + communityApis.BOARD_POST_API, data, {
         headers: {
           Authorization: token,
         },
@@ -43,6 +43,8 @@ export default function Modal() {
       .then((res) => {
         console.log(res);
       });
+
+    closeModal();
   };
 
   return (
