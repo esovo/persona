@@ -9,7 +9,7 @@ const MyInfo = () => {
             <h1>내정보</h1>
             <hr/>
             <div className={style.userInfo}>
-                <img src={userInfo.img}></img>
+                {/* <img src={userInfo.img}/> */}
                 <div className={style.flexBox}>
                     <div>
                         <div>닉네임</div>
@@ -17,9 +17,9 @@ const MyInfo = () => {
                         <div>소셜로그인</div>
                     </div>
                     <div className={style.userText}>
-                        <div>{userInfo.nickname}</div>
+                        {/* <div>{userInfo.nickname}</div>
                         <div>{userInfo.email} dumydumy@naver.com</div>
-                        <div>{userInfo.email} Naver</div>
+                        <div>{userInfo.email} Naver</div> */}
                     </div>
                 </div>
             </div>

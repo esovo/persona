@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { useRecoilValue } from 'recoil';
 import { communityApis } from '../../apis/communityApis';
 import { postWriteModal, postDetailModal, popostsState } from '../../states/communityState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

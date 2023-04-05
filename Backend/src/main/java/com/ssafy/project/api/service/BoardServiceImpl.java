@@ -55,6 +55,7 @@ public class BoardServiceImpl implements BoardService {
                 .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .viewCnt(board.getViewCnt())
                 .likeCnt(board.getBoardLikes().size())
                 .commentCnt(board.getComments().size())
                 .build());
@@ -98,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
         Board board = boardRepository.findById(boardModifyReqDTO.getBoardId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
-
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         board.setContent(boardModifyReqDTO.getContent());
         board.setTitle(boardModifyReqDTO.getTitle());
     }
@@ -106,6 +107,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void removeBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         boardRepository.deleteById(id);
     }
 }

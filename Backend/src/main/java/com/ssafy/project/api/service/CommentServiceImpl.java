@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentService{
                    .id(comment.getId())
                    .userProfile(comment.getUser().getSocialAuth().getImageUrl())
                    .nickname(comment.getUser().getNickname())
+                   .email(comment.getUser().getEmail())
                    .content(comment.getContent())
                    .createdDate(comment.getCreatedDate())
                    .build());
@@ -58,11 +59,11 @@ public class CommentServiceImpl implements CommentService{
                         .id(comment.getId())
                         .userProfile(comment.getUser().getSocialAuth().getImageUrl())
                         .nickname(comment.getUser().getNickname())
+                        .email(comment.getUser().getEmail())
                         .content(comment.getContent())
                         .title(comment.getBoard().getTitle())
                         .createdDate(comment.getCreatedDate())
                         .build());
-
         return commentDTOS;
     }
 
@@ -83,13 +84,14 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public void modifyComment(CommentModReqDTO commentModReqDTO) {
         Comment comment = commentRepository.findById(commentModReqDTO.getCommentId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
-
+        if(authProvider.getUserIdFromPrincipal() != comment.getUser().getId()) throw new CommonApiException(CommonErrorCode.COMMENT_NOT_ALLOWED);
         comment.setContent(commentModReqDTO.getContent());
     }
 
     @Override
     public void removeComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommonApiException(CommonErrorCode.COMMENT_NOT_FOUND));
+        if(authProvider.getUserIdFromPrincipal() != comment.getUser().getId()) throw new CommonApiException(CommonErrorCode.COMMENT_NOT_ALLOWED);
         commentRepository.deleteById(commentId);
     }
 }

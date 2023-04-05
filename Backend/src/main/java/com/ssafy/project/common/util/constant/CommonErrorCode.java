@@ -34,8 +34,8 @@ public enum CommonErrorCode implements ErrorCode {
 
     //파일
     FILE_NOT_VALID(HttpStatus.BAD_REQUEST,"유효하지 않은 파일 형식입니다."),
-    
-    //인증    
+
+    //인증
     NO_SET_AUTHENTICATION(HttpStatus.FORBIDDEN, "권한 인증에 실패했습니다."),
 
     //소셜인증

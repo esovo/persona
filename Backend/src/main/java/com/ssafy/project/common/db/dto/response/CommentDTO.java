@@ -18,6 +18,8 @@ public class CommentDTO {
     private String userProfile;
     @Schema(description = "닉네임")
     private String nickname;
+    @Schema(description = "유저 이메일")
+    private String email;
     @Schema(description = "내용")
     private String content;
     @Schema(description = "글 제목")

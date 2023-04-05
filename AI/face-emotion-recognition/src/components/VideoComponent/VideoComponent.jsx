@@ -2,7 +2,7 @@
 import EmojiWidget from "../EmojiWidget";
 import WebcamTurnedOff from "../WebcamTurnedOff";
 import { useSettingsContext } from "../Settings";
-import "./VideoComponent.css";
+import style from "./VideoComponent.module.scss";
 import FaceDetect from "../../utils/FaceDetect";
 import FaceOverlay from "../../utils/FaceOverlay";
 import { useReactMediaRecorder } from "react-media-recorder";
@@ -12,8 +12,6 @@ const VideoComponent = (props) => {
     webcamOn, overlayOn,webcamOff,
     emojiOn
   } = useSettingsContext();
-
-
 
   return(
     <>
