@@ -34,7 +34,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         log.info("=========================");
         log.info("loadUser ");
         log.info("=========================");
-        
+
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -70,7 +70,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
-
+        log.info("리턴 직전");
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
