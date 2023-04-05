@@ -27,7 +27,9 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws  IOException {
-
+        log.info("=========================");
+        log.info("onAuthenticationFailure ");
+        log.info("=========================");
         // 리디렉션 uri값이 담긴 쿠키의 값을 할당, 없을 시 "/"로 할당
         String targetUrl = cookieProvider.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
