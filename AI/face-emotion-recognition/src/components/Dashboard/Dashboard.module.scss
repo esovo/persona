@@ -4,15 +4,22 @@
   }
 }
 
-// .emotiongraph{
-//   margin-top: 150px;
-  
-// }
+.emotiongraph{
+  width: 80%;
+  padding: 10% 0;
+}
+
+.textfield{
+  width: 80%;
+  padding: 10% 0;
+}
 
 .flexBox{
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 /* 
