@@ -136,7 +136,7 @@ async def ai_emtion(script: str):
 
 @api_router.websocket("/socket")
 async def websocket_endpoint(websocket: WebSocket):
-    # await asyncio.sleep(0.1)
+    await asyncio.sleep(0.2)
     await websocket.accept()
     # while True:
     try:
