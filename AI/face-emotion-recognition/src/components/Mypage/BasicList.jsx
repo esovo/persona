@@ -12,7 +12,7 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 export default function BasicList(props) {
 
   return (
-    <Box sx={{ width: '30%', maxWidth: 360 }}>
+    <Box sx={{ width: '30%', maxWidth: 300 }}>
       <nav aria-label="main mailbox folders">
         <List sx={{ bgcolor: 'background.paper'}}>
           <ListItem disablePadding onClick={() => props.setData("1")}>

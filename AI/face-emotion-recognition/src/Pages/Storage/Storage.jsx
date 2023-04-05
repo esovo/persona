@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { videoModal, videosState } from '../../states/communityState';
+import { tokenState } from '../../states/loginState';
 import Header from '../../components/Common/Header';
 import Video from '../../components/Storage/Video';
 // import Footer from "../../components/Common/Footer";

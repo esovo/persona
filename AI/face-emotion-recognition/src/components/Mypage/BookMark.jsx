@@ -35,5 +35,3 @@ const BookMark = () => {
         </div>
     );
 } 
-
-export default BookMark;

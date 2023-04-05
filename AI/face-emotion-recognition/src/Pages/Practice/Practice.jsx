@@ -98,12 +98,8 @@ const List = () => {
       
       let newData = res.data.value.content;
       let nowData = [...scripts,...newData];
-      // console.log(scripts);
-      // console.log(nowData);
-
       
       setScripts(nowData);
-      // setScripts([...scripts, res.data.value.content]); //대본 정보 담기
     })
   };
 

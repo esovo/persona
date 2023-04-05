@@ -1,4 +1,5 @@
 export const communityApis = {
+  /* 게시글 CRUD API */
   BOARD_POST_API: '/app/board',
   BOARD_GET_API: (boardId) => {
     return `/app/board/detail?boardId=${boardId}`;
@@ -8,21 +9,26 @@ export const communityApis = {
     return `/app/board?boardId=${boardId}`;
   },
 
+  /* 게시글 목록 API */
   BOARD_LIST_GET_API: (page, sort, keyword) => {
     return `/app/board/all?page=${page}&sort=${sort}&keyword=${keyword}`;
   },
+
+  /* 인기 게시글 목록 API */
   BOARD_TOP_LIST_GET_API: '/app/board/top',
 
-  BOARD_LIKE_POST_API: (board_id) => {
-    return `/app/board_like/like?board_id=${board_id}`;
-  },
+  /* 게시글 좋아요 API */
   BOARD_LIKE_GET_API: (scriptId) => {
-    return `/app/board_like/check?scriptId=${scriptId}`;
+    return `/app/boardlike/check?scriptId=${scriptId}`;
   },
-  BOARD_LIKE_DELETE_API: (board_id) => {
-    return `/app/board_like?board_id=${board_id}`;
+  BOARD_LIKE_POST_API: (boardId) => {
+    return `/app/boardlike?boardId=${boardId}`;
+  },
+  BOARD_LIKE_DELETE_API: (boardId) => {
+    return `/app/boardlike?boardId=${boardId}`;
   },
 
+  /* 댓글 API */
   COMMENT_PUT_API: '/app/comment',
   COMMENT_POST_API: '/app/comment',
   COMMENT_DELETE_API: (commentId) => {
