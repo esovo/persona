@@ -10,9 +10,7 @@ import lombok.Setter;
 @Getter
 public class UserSearchDTO {
 
-
     private String email;
     private String nickname;
-
     private String imageUrl;
 }
