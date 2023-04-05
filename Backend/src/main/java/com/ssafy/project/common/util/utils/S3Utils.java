@@ -10,6 +10,7 @@ import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -25,18 +26,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3Utils {
 
-    private final String IMAGE_PREFIX = "s_";
-    private final String GRAPH_PREFIX = "g_";
     private final String IMAGE_DIR_PATH = "img/";
     private final String GRAPH_DIR_PATH = "graph/";
     private final String VIDEO_DIR_PATH = "video/";
-    private final String IMAGE_PNG_FORMAT = ".PNG";
+    private final String IMAGE_PREFIX = "s_";
+    private final String GRAPH_PREFIX = "g_";
+    private final String PNG_FORMAT = ".PNG";
+    private final String MP4_FORMAT = ".mp4";
 
     @Value("${spring.servlet.multipart.location}")
     private String EC2_DIR_PATH;
 
     private final S3Provider s3Provider;
 
+    @Transactional
     public List<String> upload(MultipartFile multipartVideoFile, MultipartFile multipartGraphFile) {
 
         try {
@@ -58,7 +61,7 @@ public class S3Utils {
             int frameNumber = 0;
             Picture picture = FrameGrab.getFrameFromFile(videoFile, frameNumber);
             BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
-            ImageIO.write(bufferedImage, IMAGE_PNG_FORMAT, thumbnailFile);
+            ImageIO.write(bufferedImage, PNG_FORMAT, thumbnailFile);
 
             List<String> Uris = new ArrayList<>();
 
@@ -78,23 +81,21 @@ public class S3Utils {
     public String makeUri(MultipartFile file) {
         StringBuilder sb = new StringBuilder();
 
+        String fileName = String.valueOf(file.getOriginalFilename());
+        int lastIndex = fileName.lastIndexOf('.');
+
         sb.append(UUID.randomUUID())
           .append("_")
-          .append(Objects.requireNonNull(file.getOriginalFilename())
-          .replaceAll("[~!@#$%^&*()_+ ]", "_"));
+          .append(lastIndex == -1? fileName : fileName.substring(0, lastIndex)
+                  .replaceAll("[~!@#$%^&*()_+ ]", "_"));
 
         return sb.toString();
     }
 
-    public String getVideoUri(String uri) { return VIDEO_DIR_PATH + uri; };
+    public String getVideoUri(String uri) { return VIDEO_DIR_PATH + uri + MP4_FORMAT; };
 
-    public String getThumbnailUri(String uri) { return IMAGE_DIR_PATH + IMAGE_PREFIX + uri; };
+    public String getThumbnailUri(String uri) { return IMAGE_DIR_PATH + IMAGE_PREFIX + uri + PNG_FORMAT; };
 
-    public String getGraphUri(String uri) { return GRAPH_DIR_PATH + GRAPH_PREFIX + uri; };
+    public String getGraphUri(String uri) { return GRAPH_DIR_PATH + GRAPH_PREFIX + uri + PNG_FORMAT; };
 
-    public String getEC2DirPath() { return EC2_DIR_PATH; };
-
-    public int getThumbnailRemoveStartIdx() {return IMAGE_DIR_PATH.length() + IMAGE_PREFIX.length(); };
-
-    public int getVideoRemoveStartIdx() {return VIDEO_DIR_PATH.length(); };
 }

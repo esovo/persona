@@ -87,6 +87,6 @@ public class S3ProviderImpl implements S3Provider {
     }
 
     @Override
-    public void delete(String uri, int start) {
-        s3Client.deleteObject(bucket, uri.substring(start, 54)); }
+    public void delete(String uri) {
+        s3Client.deleteObject(bucket, uri); }
 }
