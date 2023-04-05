@@ -29,9 +29,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .select(Projections.constructor(BoardAllResDTO.class
                         , board.id
                         , board.user.nickname
+                        , board.user.email
                         , board.createdDate
                         , board.title
                         , board.content
+                        , board.viewCnt
                         , board.boardLikes.size()
                         , board.comments.size()
                         ))
@@ -65,9 +67,11 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .select(Projections.constructor(BoardAllResDTO.class
                         , board.id
                         , board.user.nickname
+                        , board.user.email
                         , board.createdDate
                         , board.title
                         , board.content
+                        , board.viewCnt
                         , board.boardLikes.size()
                         , board.comments.size()
                 ))

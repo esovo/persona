@@ -52,7 +52,7 @@ public class VideoServiceImpl implements VideoService {
         User user = userRepository.findById(authProvider.getUserIdFromPrincipal())
                 .orElseThrow(() -> new CustomAuthException("존재하지 않는 회원입니다."));
 
-        List<String> uris = new ArrayList<>();
+        List<String> uris;
         
         uris = s3Utils.upload(videoCreateReqDTO.getVideoFile(), videoCreateReqDTO.getGraphFile());
 
