@@ -54,7 +54,6 @@ public class UserServiceImpl implements UserService{
 
         return UserHomeResDTO.builder()
                 .nickname(user.getNickname())
-                .email(user.getEmail())
                 .imageUrl(user.getSocialAuth().getImageUrl()).build();
     }
 

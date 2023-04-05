@@ -4,7 +4,6 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.security.authentication.UserPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    @Secured("hasRole")
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email)
