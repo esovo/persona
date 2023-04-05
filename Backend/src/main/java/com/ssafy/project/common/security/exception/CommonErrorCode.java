@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum CommonErrorCode implements ErrorCode {
     //게시글
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다."),
-    //댓글
+    BOARD_NOT_ALLOWED(HttpStatus.NOT_ACCEPTABLE, "다른 유저의 게시글입니다."),
+    //댓글,
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글이 존재하지 않습니다."),
     COMMENT_NOT_ALLOWED(HttpStatus.NOT_ACCEPTABLE, "다른 유저의 댓글입니다."),
     //유저

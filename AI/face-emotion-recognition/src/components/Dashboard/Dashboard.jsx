@@ -42,21 +42,14 @@ const Dashboard = (props) => {
 
   return (
     // loadedModels?
-<<<<<<< HEAD
-    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex md:flex-row">
-   
-      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center">
-        <div className="flex flex-col w-100 relative ">
-=======
     <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
       
       <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
         <div className="flex flex-col w-fit relative">
->>>>>>> 11994e889bcd6484cebaba2d5a6859e577ddd65d
           <VideoComponent text={text} />
         </div>
       </div>
-    
+
 
       <div className={style.flexBox}>
         <div className={style.emotiongraph}>
@@ -86,31 +79,19 @@ const Dashboard = (props) => {
               </AnimatePresence>
             </>
           )}
-          </div>
+        </div>
 
-          {webcamOff ? (
-            <></>
-          ) : (
-            <>
-              <div className={style.textfield}>
-                <ScriptText text={text} ></ScriptText>
-              </div>
-            </>
-          )}
-
-<<<<<<< HEAD
-=======
         {webcamOff ? (
           <></>
         ) : (
           <>
             <div className={style.textfield}>
-              <ScriptText text={text}></ScriptText>
+              <ScriptText text={text} ></ScriptText>
             </div>
           </>
         )}
->>>>>>> 11994e889bcd6484cebaba2d5a6859e577ddd65d
       </div>
+
     </div>
     // : <span className="min-h-screen flex flex-col items-center justify-center bg-bg-1">
     //     <Spinner text={"Loading ML Models"} />
