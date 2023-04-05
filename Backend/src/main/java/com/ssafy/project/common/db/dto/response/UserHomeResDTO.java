@@ -10,5 +10,6 @@ import lombok.Setter;
 public class UserHomeResDTO {
 
     private String nickname;
+    private String email;
     private String imageUrl;
 }
