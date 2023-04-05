@@ -1,8 +1,8 @@
-package com.ssafy.project.common.util;
+package com.ssafy.project.common.util.utils;
 
 import com.ssafy.project.common.provider.S3Provider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jcodec.api.FrameGrab;

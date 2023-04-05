@@ -11,15 +11,13 @@ import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
 import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
-import com.ssafy.project.common.security.exception.CustomAuthException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +55,7 @@ public class BoardServiceImpl implements BoardService {
                 .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .viewCnt(board.getViewCnt())
                 .likeCnt(board.getBoardLikes().size())
                 .commentCnt(board.getComments().size())
                 .build());
@@ -100,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
         Board board = boardRepository.findById(boardModifyReqDTO.getBoardId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
-
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         board.setContent(boardModifyReqDTO.getContent());
         board.setTitle(boardModifyReqDTO.getTitle());
     }
@@ -108,6 +107,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void removeBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         boardRepository.deleteById(id);
     }
 }

@@ -1,7 +1,7 @@
 package com.ssafy.project.common.security.handler;
 
-import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.ssafy.project.common.provider.CookieProvider;
+import com.ssafy.project.common.security.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.AuthenticationException;
@@ -28,7 +28,6 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws  IOException {
 
-        log.info("onAuthenticationFailure 실행");
         // 리디렉션 uri값이 담긴 쿠키의 값을 할당, 없을 시 "/"로 할당
         String targetUrl = cookieProvider.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)

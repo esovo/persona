@@ -1,4 +1,4 @@
-package com.ssafy.project.common.constant;
+package com.ssafy.project.common.util.constant;
 
 public interface Msg {
     //CRUD

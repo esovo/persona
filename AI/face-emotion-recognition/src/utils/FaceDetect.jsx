@@ -69,7 +69,7 @@ const FaceDetect = (props) => {
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
   const [text,setText] =useState(props.text);
-  const [recordtext,setRecordtext] =useState("아주");
+  const [recordtext,setRecordtext] =useState("");
   const [partnum,setpartnum] =useState(0);
   
   const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
@@ -87,13 +87,12 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-
+    console.log(1)
     axios.post(API_BASE_URL+"/participant",
       {
         "scriptId": 1
       }
     ).then((res)=>{
-      console.log(res)
       setpartnum(res.data.value)
     })
 
@@ -262,9 +261,7 @@ const FaceDetect = (props) => {
   
 
   const onResults = async (results) => {
-  if(overlayOn){
 
-  }
   const videoWidth = webcamRef.current.video.videoWidth;
   const videoHeight = webcamRef.current.video.videoHeight;
   canvasRef.current.width = videoWidth;
@@ -284,8 +281,7 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-  const socket = new WebSocket(protocol + "j8b301.p.ssafy.io/ws");
+  var socket = new WebSocket('wss://j8b301.p.ssafy.io/api/socket')
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -369,7 +365,6 @@ const FaceDetect = (props) => {
   }
         
     canvasCtx.restore();
-
   };
 
 
@@ -395,7 +390,7 @@ const FaceDetect = (props) => {
   }
 
   const onRecAudio = () => {
-    // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+    // 음원보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
     const analyser = audioCtx.createScriptProcessor(0, 1, 1);
@@ -479,7 +474,7 @@ const FaceDetect = (props) => {
     try {
       console.log("axios 시작");
       axios
-        .post("http://j8b301.p.ssafy.io:8000/api/audio/", formData, {
+        .post("https://j8b301.p.ssafy.io/api/audio/", formData, {
           headers: {
             "Content-Type": "audio/mpeg",
           },
@@ -514,20 +509,34 @@ const FaceDetect = (props) => {
   axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
      console.log(response.data);
-     const video = new File([response.data], userid+"video.mp4", {
+     let video = new File([response.data], userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
     });
-    uploadFile(video)
-  });
-  html2canvas(document.querySelector(".chart")).then((canvas) => {
+
+    const graph= html2canvas(document.querySelector(".chart")).then((canvas) => {
     // const imgData = canvas.toDataURL("image/jpeg");
-    canvas.toBlob((blob) => {
-      let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
-      uploadFile(file);
-    }, 'image/jpeg');
-    
+      canvas.toBlob((blob) => {
+        let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
+        return file;
+      }, 'image/jpeg');
+    });
+    console.log(graph)
   });
+
+  // const data={
+  //         analysis:gettext,
+  //         graphFile:file,
+  //         participantId:partnum,
+  //         title: "제목",
+  //         videoFile:video
+  // }
+  // console.log(data)
+
+  // axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data)
+  //     .then((response) => {
+  //       console.log(response)
+  // });
  }
 
  const uploadFile = (file) => {
@@ -570,7 +579,7 @@ const FaceDetect = (props) => {
       {webcamOff ? (
         <div>
           <video
-            style={{ width: '200%', height: '80%', objectFit: 'cover' }}
+            style={{ width: '50%', height: '50%', objectFit: 'cover' }}
             className="recordvideo"
             src={mediaBlobUrl}
             autoPlay

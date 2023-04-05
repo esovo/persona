@@ -1,14 +1,14 @@
 .script{
-  width: 100%;
-  height: 100%;
+  width: 400px;
+  height: 200px;
   background-color: white;
   border-radius: 12px;
   overflow:scroll;
 }
 
 .scripttext{
-  width: 100%;
-  padding: 5%;
+  margin-left: 20px;
+  margin-top: 20px;
   font-weight: bold;
 }
 

@@ -3,13 +3,10 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.ParticipantAddReqDTO;
 import com.ssafy.project.common.db.entity.common.Participant;
 import com.ssafy.project.common.db.entity.common.Script;
-import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.ParticipantRepository;
 import com.ssafy.project.common.db.repository.ScriptRepository;
-import com.ssafy.project.common.db.repository.UserRepository;
-import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.security.exception.CommonApiException;
-import com.ssafy.project.common.security.exception.CommonErrorCode;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

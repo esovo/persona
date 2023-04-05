@@ -5,7 +5,7 @@ import RealTimeEmotion from '../RealTimeEmotion';
 import { useDashboardContext } from './DashboardContext';
 import { Settings, SettingsModal, useSettingsContext } from '../Settings';
 import RecordedExpressionsModal from '../Recording';
-import '../Spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 import style from './Dashboard.module.scss';
 import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
@@ -22,38 +22,41 @@ const Dashboard = (props) => {
   const { settingsVisible, webcamOff } = useSettingsContext();
 
   const [write, setWrite] = useRecoilState(writeState);
+  const name = pathname.substring(11);
 
   // Loads the essential models required for face detection, face landmarks detection
   // when the component is just mounted
   useEffect(() => {
-    const name = pathname.substring(11);
-    axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
+    // console.log("이 아래가 진짜 테스팅 값");
+    // console.log(write);
+    console.log("이 위가 진짜 테스팅 값");
+    axios.get('https://j8b301.p.ssafy.io/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);
     });
 
-    setLoadedModels(true);
+    // setLoadedModels(true);
     // loadEssentialModels()
     // .then(() => setLoadedModels(true));
-  });
+  },[]);
 
   return (
     // loadedModels?
-    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex md:flex-row">
+    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
       
-      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center">
-        <div className="flex flex-col w-100 relative ">
+      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
+        <div className="flex flex-col w-fit relative">
           <VideoComponent text={text} />
         </div>
       </div>
 
-      <div className="flexBox">
-        <div className="emotiongraph">
+      <div className={style.flexBox}>
+        <div className={style.emotiongraph}>
           {webcamOff ? (
             <></>
           ) : (
             <>
               <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-16 md:my-0">
-                <div className="realtime-emotion flex flex-col items-center justify-center" style={{width:"100%"}}>
+                <div className="realtime-emotion flex flex-col items-center justify-center w-[400px] h-[300px] sm:w-[600px] sm:-h[400px] md:w-[700px] md:h-[450px] lg:w-[500px] lg:h-[400px]">
                   <RealTimeEmotion />
                 </div>
               </div>
@@ -80,8 +83,8 @@ const Dashboard = (props) => {
           <></>
         ) : (
           <>
-            <div className="textfield">
-              <ScriptText text={text} ></ScriptText>
+            <div className={style.textfield}>
+              <ScriptText text={text}></ScriptText>
             </div>
           </>
         )}
