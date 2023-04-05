@@ -41,7 +41,7 @@ public enum CommonErrorCode implements ErrorCode {
     //소셜인증
     UNAUTHORIZED_URI(HttpStatus.UNAUTHORIZED, "등록되지 않은 Uri입니다."),
     NO_EMAIL_PROVIDED(HttpStatus.UNAUTHORIZED, "이메일을 제공받지 못했습니다."),
-    EMAIL_ALREADY_EMAIL(HttpStatus.ALREADY_REPORTED, "이미 존재하는 이메일 입니다."),
+    EMAIL_ALREADY_EXITS(HttpStatus.ALREADY_REPORTED, "이미 존재하는 이메일 입니다."),
     BAD_SOCIAL_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 소셜 타입입니다.");
     ;
 

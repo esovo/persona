@@ -1,31 +1,37 @@
+/* eslint-disable default-case */
 import style from './Mypage.module.scss';
 import BasicList from '../../components/Mypage/BasicList';
 import MyInfo from '../../components/Mypage/MyInfo';
 import { useState } from 'react';
-import Bookmark from '../../components/Mypage/BookMark';
+import { useRecoilState } from 'recoil';
+import {mypageState} from '../../states/loginState'
+import MyBookmark from '../../components/Mypage/MyBookmark';
+import MyPost from '../../components/Mypage/MyPost';
+import Header from '../../components/Common/Header';
 
 const Mypage = () => {
-  const [data, setData] = useState("1");
-  
-  function Component2(){
-    switch (data){
-      case '1' :
-        return <MyInfo/>
-      case '2' :
-        return <Bookmark/>
-      case '3' : 
-        return <h4>그냥</h4>
+  const [data, setData] = useRecoilState(mypageState);
+
+  function Component() {
+    switch (data) {
+      case '1':
+        return <MyInfo />;
+      case '2':
+        return <MyPost />;
+      case '3':
+        return <MyBookmark />;
     }
   }
 
-  return(
-    <div className={style.flexBox}>    
-    <BasicList setData={setData}/>
-    <Component2></Component2>
+  return (
+    <div className={style.wrapper}>
+      <Header />
+      <div className={style.flexBox}>
+        <BasicList setData={setData} />
+        <Component></Component>
+      </div>
     </div>
   );
 };
 
 export default Mypage;
-
-

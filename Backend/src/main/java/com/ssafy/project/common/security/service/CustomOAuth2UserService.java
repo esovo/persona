@@ -37,6 +37,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } catch (AuthenticationException e) {
             throw e;
         } catch (Exception e) {
+            log.error(e.getMessage());
+            log.error(e.getLocalizedMessage());
+            e.printStackTrace();
             throw new InternalAuthenticationServiceException(e.getMessage(), e.getCause());
         }
     }
@@ -50,20 +53,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2User.getAttributes()
         );
 
-        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null"))
+        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null")) {
+            log.info("이메일");
             throw new CustomOAuth2Exception(CommonErrorCode.NO_EMAIL_PROVIDED);
+        }
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
 
         User user;
+
         if (userOptional.isPresent()) {
-            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())))
-                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
+            // 참조 자체로도 에러발생 코드
+//            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
             user = updateUser(userOptional.get(), oAuth2UserInfo);
-        } else {
+            }
+         else {
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
-
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
@@ -76,6 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else if (registrationId.equalsIgnoreCase(SocialEnum.kakao.toString())) {
             return new KakaoOAuth2UserInfo(attributes);
         } else {
+            log.info("다른소셜");
             throw new CustomOAuth2Exception(CommonErrorCode.BAD_SOCIAL_TYPE);
         }
     }
@@ -97,15 +104,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
 
-        String nickname = oAuth2UserInfo.getName();
-        String email = oAuth2UserInfo.getEmail();
-
-        user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname,
-                oAuth2UserInfo.getImageUrl(), email);
-        user.setNickname(nickname);
-        user.setEmail(email);
-
-        return user;
+    // protected된 User 객체에 각 속성을 set하여 exception 발생하였었음
+        user.getSocialAuth().update(oAuth2UserInfo.getName(), oAuth2UserInfo.getImageUrl());
+        return userRepository.save(user);
     }
 
 }

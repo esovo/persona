@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { useRecoilValue } from 'recoil';
 import { videosState } from '../../states/communityState';
 import Header from '../../components/Common/Header';

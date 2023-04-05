@@ -1,9 +1,7 @@
 package com.ssafy.project.common.security.filter;
 
 import com.ssafy.project.common.provider.TokenProvider;
-import com.ssafy.project.common.security.exception.CustomAuthException;
 import com.ssafy.project.common.security.service.CustomUserDetailsService;
-import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +33,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String token = tokenProvider.getTokenFromRequest(request);
 
             if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
+
                 Long id = tokenProvider.getUserIdFromToken(token);
 
                     UserDetails userDetails = customUserDetailsService.loadUserById(id);
@@ -47,7 +46,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            throw new CustomAuthException(CommonErrorCode.NO_SET_AUTHENTICATION);
+            log.error("권한을 설정하지 못했습니다.");
         }
 
         filterChain.doFilter(request, response);
