@@ -284,7 +284,8 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  var socket = new WebSocket('ws://j8b301.p.ssafy.io:8000/api/socket')
+  const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+  const socket = new WebSocket(protocol + "j8b301.p.ssafy.io/ws");
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
