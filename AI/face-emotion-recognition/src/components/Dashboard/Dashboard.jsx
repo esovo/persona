@@ -30,7 +30,7 @@ const Dashboard = (props) => {
     // console.log("이 아래가 진짜 테스팅 값");
     // console.log(write);
     console.log("이 위가 진짜 테스팅 값");
-    axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
+    axios.get('https://j8b301.p.ssafy.io/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);
     });
 
