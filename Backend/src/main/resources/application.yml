@@ -2,9 +2,9 @@ spring:
   profiles:
     include: app, connection
 
-logging:
-  config: classpath:log4j2.xml
-  level:
-    org:
-      springframework:
-        security: DEBUG
+#logging:
+#  config: classpath:log4j2.xml
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
