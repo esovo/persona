@@ -38,6 +38,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw e;
         } catch (Exception e) {
             log.error(e.getMessage());
+            log.error(e.getLocalizedMessage());
+            log.error(e.printStackTrace(););
             throw new InternalAuthenticationServiceException(e.getMessage(), e.getCause());
         }
     }
@@ -52,6 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         );
 
         if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null")) {
+            log.info(이메일);
             throw new CustomOAuth2Exception(CommonErrorCode.NO_EMAIL_PROVIDED);
         }
 
@@ -79,6 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else if (registrationId.equalsIgnoreCase(SocialEnum.kakao.toString())) {
             return new KakaoOAuth2UserInfo(attributes);
         } else {
+            log.info(다른소셜);
             throw new CustomOAuth2Exception(CommonErrorCode.BAD_SOCIAL_TYPE);
         }
     }
