@@ -8,26 +8,31 @@ import Header from '../../components/Common/Header';
 import Video from '../../components/Storage/Video';
 // import Footer from "../../components/Common/Footer";
 import style from './Storage.module.scss';
+import Pagenation from "@mui/material/Pagination";
+import { useEffect } from 'react';
+import { videoApis } from '../../apis/videoApis';
 import axios from 'axios';
+import { tokenState } from '../../states/loginState';
 
 export default function List() {
   const videos = useRecoilValue(videosState);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [token, setToken] = useRecoilState(tokenState);
-  // const [myVideos, setMyVideos] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const token = useRecoilValue(tokenState);
 
   useEffect(() => {
-    axios.get('https://j8b301.p.ssafy.io/app/video', { 
-      headers: {
-        'Authorization': token
-      },      
-      params: {
-        page: 0
-      }      
-    }).then((res) => {
-      console.log(res.data.value.content);
+    console.log(videos);
+    axios.get(videoApis.VIDEO_GET_API(currentPage), {
+      headers: {  Authorization: token }}).then((res) => {
+      videos = res;
+      console.log(videos);
     })
-  })
+  }, [])
+
+  const pagenationHandler = () => {
+    //axios 요청해서 videos 바꿔주기
+
+  }
 
   return (
     <div className={style.wrapper}>
@@ -43,6 +48,7 @@ export default function List() {
           ))}
         </div>
       </div>
+      <Pagenation count={1} onClick={pagenationHandler}/>
       {/* <Footer /> */}
     </div>
   );
