@@ -57,18 +57,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 oAuth2User.getAttributes()
         );
 
-        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null"))
+        if (StringUtils.isBlank(oAuth2UserInfo.getEmail()) || oAuth2UserInfo.getEmail().equals("null")) {
             throw new CustomOAuth2Exception(CommonErrorCode.NO_EMAIL_PROVIDED);
+        }
 
         Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
 
         User user;
         if (userOptional.isPresent()) {
             log.info("유저존재");
-            if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-                log.info("익셉션발생");
-                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
-                }
+
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
          else {
