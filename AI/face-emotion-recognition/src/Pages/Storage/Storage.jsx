@@ -9,7 +9,6 @@ import Video from '../../components/Storage/Video';
 // import Footer from "../../components/Common/Footer";
 import style from './Storage.module.scss';
 import Pagenation from "@mui/material/Pagination";
-import { useEffect } from 'react';
 import { videoApis } from '../../apis/videoApis';
 import axios from 'axios';
 import { tokenState } from '../../states/loginState';
