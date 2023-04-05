@@ -1,4 +1,3 @@
-
 package com.ssafy.project.common.config;
 
 import com.ssafy.project.common.security.entrypoint.CustomAuthenticationEntryPoint;
@@ -98,7 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
-                        "/board/all", "/board/top", "oauth2/**")
+                        "oauth2/**", "/", "/board/all", "/board/top")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
