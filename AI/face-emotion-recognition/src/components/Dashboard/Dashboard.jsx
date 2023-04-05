@@ -5,7 +5,7 @@ import RealTimeEmotion from '../RealTimeEmotion';
 import { useDashboardContext } from './DashboardContext';
 import { Settings, SettingsModal, useSettingsContext } from '../Settings';
 import RecordedExpressionsModal from '../Recording';
-import Spinner from '../Spinner/Spinner';
+import '../Spinner/Spinner';
 import style from './Dashboard.module.scss';
 import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
@@ -41,22 +41,22 @@ const Dashboard = (props) => {
 
   return (
     // loadedModels?
-    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
+    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex md:flex-row">
       
-      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
-        <div className="flex flex-col w-fit relative">
+      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center">
+        <div className="flex flex-col w-100 relative ">
           <VideoComponent text={text} />
         </div>
       </div>
 
-      <div className={style.flexBox}>
-        <div className={style.emotiongraph}>
+      <div className="flexBox">
+        <div className="emotiongraph">
           {webcamOff ? (
             <></>
           ) : (
             <>
               <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-16 md:my-0">
-                <div className="realtime-emotion flex flex-col items-center justify-center w-[400px] h-[300px] sm:w-[600px] sm:-h[400px] md:w-[700px] md:h-[450px] lg:w-[500px] lg:h-[400px]">
+                <div className="realtime-emotion flex flex-col items-center justify-center" style={{width:"100%"}}>
                   <RealTimeEmotion />
                 </div>
               </div>
@@ -83,8 +83,8 @@ const Dashboard = (props) => {
           <></>
         ) : (
           <>
-            <div className={style.textfield}>
-              <ScriptText text={text}></ScriptText>
+            <div className="textfield">
+              <ScriptText text={text} ></ScriptText>
             </div>
           </>
         )}
