@@ -5,7 +5,7 @@ import RealTimeEmotion from '../RealTimeEmotion';
 import { useDashboardContext } from './DashboardContext';
 import { Settings, SettingsModal, useSettingsContext } from '../Settings';
 import RecordedExpressionsModal from '../Recording';
-import '../Spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 import style from './Dashboard.module.scss';
 import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
@@ -33,15 +33,16 @@ const Dashboard = (props) => {
   return (
     // loadedModels?
     <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex md:flex-row">
-      
+   
       <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center">
         <div className="flex flex-col w-100 relative ">
           <VideoComponent text={text} />
         </div>
       </div>
+    
 
-      <div className="flexBox">
-        <div className="emotiongraph">
+      <div className={style.flexBox}>
+        <div className={style.emotiongraph}>
           {webcamOff ? (
             <></>
           ) : (
@@ -68,19 +69,19 @@ const Dashboard = (props) => {
               </AnimatePresence>
             </>
           )}
-        </div>
+          </div>
 
-        {webcamOff ? (
-          <></>
-        ) : (
-          <>
-            <div className="textfield">
-              <ScriptText text={text} ></ScriptText>
-            </div>
-          </>
-        )}
+          {webcamOff ? (
+            <></>
+          ) : (
+            <>
+              <div className={style.textfield}>
+                <ScriptText text={text} ></ScriptText>
+              </div>
+            </>
+          )}
+
       </div>
-
     </div>
     // : <span className="min-h-screen flex flex-col items-center justify-center bg-bg-1">
     //     <Spinner text={"Loading ML Models"} />

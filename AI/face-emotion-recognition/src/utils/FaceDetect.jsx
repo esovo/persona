@@ -569,7 +569,7 @@ const FaceDetect = (props) => {
       {webcamOff ? (
         <div>
           <video
-            style={{ width: '200%', height: '80%', objectFit: 'cover' }}
+            style={{ width: '100%', height: '80%', objectFit: 'cover' }}
             className="recordvideo"
             src={mediaBlobUrl}
             autoPlay
