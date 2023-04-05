@@ -3,7 +3,6 @@ package com.ssafy.project.common.db.entity.common;
 import com.ssafy.project.common.db.dto.social.SocialAuth;
 import com.ssafy.project.common.db.entity.base.BaseTime;
 import lombok.*;
-import org.hibernate.sql.Update;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @ToString(exclude = "socialAuth")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -65,4 +63,10 @@ public class User extends BaseTime {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Video> videos = new ArrayList<>();
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
