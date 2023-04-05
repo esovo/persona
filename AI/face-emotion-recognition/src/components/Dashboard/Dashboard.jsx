@@ -50,6 +50,7 @@ const Dashboard = (props) => {
         </div>
       </div>
 
+
       <div className={style.flexBox}>
         <div className={style.emotiongraph}>
           {webcamOff ? (
@@ -85,7 +86,7 @@ const Dashboard = (props) => {
         ) : (
           <>
             <div className={style.textfield}>
-              <ScriptText text={text}></ScriptText>
+              <ScriptText text={text} ></ScriptText>
             </div>
           </>
         )}
