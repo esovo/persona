@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } catch (Exception e) {
             log.error(e.getMessage());
             log.error(e.getLocalizedMessage());
-            log.error(e.printStackTrace(););
+            e.printStackTrace();
             throw new InternalAuthenticationServiceException(e.getMessage(), e.getCause());
         }
     }
