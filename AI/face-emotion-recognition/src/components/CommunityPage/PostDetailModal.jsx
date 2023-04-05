@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { tokenState } from '../../states/loginState';
+import { tokenState, user } from '../../states/loginState';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { communityApis } from '../../apis/communityApis';
 import { postDetailModal, selectedPostState, isHeartState } from '../../states/communityState';
@@ -9,6 +9,7 @@ import { faXmark, faEllipsisVertical, faHeart as solidHeart } from '@fortawesome
 import style from './PostDetailModal.module.scss';
 import Comment from './Comment';
 import axios from 'axios';
+import moment from 'moment';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(postDetailModal);
@@ -19,6 +20,7 @@ export default function Modal() {
   const [isHeart, setIsHeart] = useRecoilState(isHeartState);
   const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
+  const [myuser, setMyuser] = useRecoilState(user);  
 
   const shutModal = () => {
     setShowModal(false);
@@ -113,7 +115,7 @@ export default function Modal() {
                 </div>
                 <div className={style.userdate}>
                   <div className={style.nickname}>{selectedPost.nickName}</div>
-                  <div className={style.date}>{selectedPost.createdDate}</div>
+                  <div className={style.date}>{moment.utc(selectedPost.createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
                 </div>
                 <div className={style.btn}>
                   <button className={style.likebtn} onClick={heartClickHandler}>
