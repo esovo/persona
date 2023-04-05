@@ -22,22 +22,22 @@ const Dashboard = (props) => {
   const { settingsVisible, webcamOff } = useSettingsContext();
 
   const [write, setWrite] = useRecoilState(writeState);
+  const name = pathname.substring(11);
 
   // Loads the essential models required for face detection, face landmarks detection
   // when the component is just mounted
   useEffect(() => {
-    console.log("이 아래가 진짜 테스팅 값");
-    console.log(write);
+    // console.log("이 아래가 진짜 테스팅 값");
+    // console.log(write);
     console.log("이 위가 진짜 테스팅 값");
-    const name = pathname.substring(11);
     axios.get('http://j8b301.p.ssafy.io:8080/app/script?scriptId=' + name, {}).then((response) => {
       setText(response.data.value.content);
     });
 
-    setLoadedModels(true);
+    // setLoadedModels(true);
     // loadEssentialModels()
     // .then(() => setLoadedModels(true));
-  });
+  },[]);
 
   return (
     // loadedModels?
