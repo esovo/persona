@@ -38,7 +38,7 @@ public class BoardController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.findTopBoard()));
     }
 
-    @GetMapping("my")
+    @GetMapping("/my")
     @ApiOperation(value = "내 게시물 조회")
     public ResponseEntity<ResponseDTO> boardMyList(@RequestParam int page){
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, boardService.findMyBoard(page)));

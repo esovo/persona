@@ -3,29 +3,27 @@ server:
     context-path: /app
     port: 8080
 
-spring:
-  servlet:
-    multipart:
-      # default 0
-      file-size-threshold: 0MB
-#      location을 설정하지 않으면 System.getProperty("java.io.tmpdir"); 경로에 저장
-      location: /ubuntu/var/www/html/
-#      default 1MB
-      max-file-size: 100KB
-#      default 10MB
-      max-request-size: 100MB
-
----
 
 logging:
   config: classpath:log4j2.xml
 
-
 spring:
+
+  servlet:
+    multipart:
+      # default 0
+      file-size-threshold: 0MB
+      #      location을 설정하지 않으면 System.getProperty("java.io.tmpdir"); 경로에 저장
+      location: /ubuntu/var/www/html/
+      #      default 1MB
+      max-file-size: 100KB
+      #      default 10MB
+      max-request-size: 100MB
 
   security:
     oauth2:
       client:
+        registration:
           google:
             client-name: google
             client-id: ${oauth2.google.id}

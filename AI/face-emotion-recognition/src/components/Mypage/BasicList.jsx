@@ -9,12 +9,13 @@ import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 
-export default function BasicList() {
+export default function BasicList(props) {
+
   return (
     <Box sx={{ width: '30%', maxWidth: 360 }}>
       <nav aria-label="main mailbox folders">
         <List sx={{ bgcolor: 'background.paper'}}>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => props.setData("1")}>
             <ListItemButton>
               <ListItemIcon>
                 <InboxIcon />
@@ -22,7 +23,7 @@ export default function BasicList() {
               <ListItemText primary="내정보" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => props.setData("2")}>
             <ListItemButton>
               <ListItemIcon>
                 <DraftsIcon />
@@ -30,7 +31,7 @@ export default function BasicList() {
               <ListItemText primary="내가쓴글" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
+          <ListItem disablePadding onClick={() => props.setData("3")}>
             <ListItemButton>
               <ListItemIcon>
                 <DraftsIcon />

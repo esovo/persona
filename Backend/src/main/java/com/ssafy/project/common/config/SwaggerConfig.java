@@ -28,18 +28,6 @@ public class SwaggerConfig {
     @Bean
     public Docket api(TypeResolver typeResolver) {
 
-//        RequestParameterBuilder requestParameterBuilder = new RequestParameterBuilder();
-//
-//        RequestParameter requestParameter = requestParameterBuilder
-//                .name("Authorization")
-//                .description("Token")
-//                .in(ParameterType.HEADER)
-//                .required(false)
-//                .build();
-//
-//        List<RequestParameter> requestParameters = new ArrayList<>();
-//        requestParameters.add(requestParameter);
-
         return new Docket(DocumentationType.OAS_30)
 //                .additionalModels(typeResolver.resolve())
 //                .globalRequestParameters(requestParameters)

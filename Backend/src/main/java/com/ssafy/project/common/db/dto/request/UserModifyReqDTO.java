@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-@Builder
 @Setter
 @Getter
 public class UserModifyReqDTO {
 
-    @NonNull
     private String nickname;
 }

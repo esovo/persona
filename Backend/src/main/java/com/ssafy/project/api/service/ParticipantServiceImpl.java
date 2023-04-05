@@ -24,8 +24,6 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final ScriptRepository scriptRepository;
     private final ParticipantRepository participantRepository;
 
-    private final ParticipantRepository participantRepository;
-
     @Override
     public Long addParticipant(ParticipantAddReqDTO participantAddReqDTO) {
         Script script = scriptRepository.findById(participantAddReqDTO.getScriptId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
