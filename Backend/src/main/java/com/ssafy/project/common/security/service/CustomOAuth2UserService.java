@@ -68,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("유저존재");
             if (!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
                 log.info("익셉션발생");
-                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EMAIL);
+                throw new CustomOAuth2Exception(CommonErrorCode.EMAIL_ALREADY_EXITS);
                 }
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
