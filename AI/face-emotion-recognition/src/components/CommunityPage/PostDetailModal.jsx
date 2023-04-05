@@ -17,10 +17,15 @@ export default function Modal() {
   const BASE_URL = 'https://j8b301.p.ssafy.io';
   const token = useRecoilValue(tokenState);
   const [isHeart, setIsHeart] = useRecoilState(isHeartState);
+  const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
 
   const shutModal = () => {
     setShowModal(false);
+  };
+
+  const clickDropDown = () => {
+    setOpen(!open);
   };
 
   useEffect(() => {
@@ -68,6 +73,15 @@ export default function Modal() {
     }
   };
 
+  const deletePostHandler = () => {
+    axios.delete(BASE_URL + communityApis.BOARD_DELETE_API(boardId), {
+      headers: {
+        Authorization: token,
+      },
+    });
+    shutModal();
+  };
+
   const commentPostHandler = () => {
     const content = document.querySelector(`.${style.commentInput}`).value;
     const data = {
@@ -105,8 +119,18 @@ export default function Modal() {
                   <button className={style.likebtn} onClick={heartClickHandler}>
                     <FontAwesomeIcon icon={isHeart ? solidHeart : regularHeart} style={{ color: '#ce4040' }} />
                   </button>
-                  <button className={style.menubtn}>
+                  <button className={style.menubtn} onClick={clickDropDown}>
                     <FontAwesomeIcon icon={faEllipsisVertical} style={{ color: '#5d5d5d' }} />
+                    {open && (
+                      <div className={style.dropdownOptions}>
+                        <div className={style.modify} onClick={clickDropDown}>
+                          수정
+                        </div>
+                        <div className={style.delete} onClick={deletePostHandler}>
+                          삭제
+                        </div>
+                      </div>
+                    )}
                   </button>
                 </div>
               </div>
