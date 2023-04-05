@@ -31,10 +31,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
 
-        log.info("=========================");
-        log.info("loadUser ");
-        log.info("=========================");
-
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
@@ -47,8 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 
-        Map<String, Object> mapForLog = oAuth2User.getAttributes();
-        mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
+//        Map<String, Object> mapForLog = oAuth2User.getAttributes();
+//        mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
 
         OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(),
                 oAuth2User.getAttributes()
@@ -62,8 +58,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user;
         if (userOptional.isPresent()) {
-
-            // 에러코드
+                
+            // 참조 자체로도 에러발생 코드
 //            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
@@ -104,12 +100,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
 
     // protected된 User 객체에 각 속성을 set하여 exception 발생하였었음
-        String nickname = oAuth2UserInfo.getName();
-        String email = oAuth2UserInfo.getEmail();
-        user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname, oAuth2UserInfo.getImageUrl(), email);
-        user.setNickname(nickname);
-        user.setEmail(email);
-
+        user.getSocialAuth().update(oAuth2UserInfo.getName(), oAuth2UserInfo.getImageUrl());
         return userRepository.save(user);
     }
 
