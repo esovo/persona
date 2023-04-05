@@ -75,8 +75,10 @@ public class VideoServiceImpl implements VideoService {
             throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
-        s3Provider.delete(video.getVideoUrl(), s3Utils.getVideoRemoveStartIdx());
-        s3Provider.delete(video.getThumbnailUrl(), s3Utils.getThumbnailRemoveStartIdx());
+        s3Provider.delete(video.getVideoUrl());
+        s3Provider.delete(video.getThumbnailUrl());
+        s3Provider.delete(video.getGraphUrl());
+
         videoRepository.delete(video);
     }
 
@@ -114,6 +116,7 @@ public class VideoServiceImpl implements VideoService {
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
 
         return VideoDetailResDTO.builder()
+                .id(String.valueOf(video.getId()))
                 .title(video.getTitle())
                 .emotion(script.getEmotion().name())
                 .genre(script.getGenre().name())
