@@ -285,7 +285,7 @@ const FaceDetect = (props) => {
 
   // Websocket
   const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-  const socket = new WebSocket(protocol + "j8b301.p.ssafy.io/ws");
+  const socket = new WebSocket(protocol + "j8b301.p.ssafy.io/api/socket");
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -478,12 +478,15 @@ const FaceDetect = (props) => {
 
     try {
       console.log("axios 시작");
-      axios
-        .post("http://j8b301.p.ssafy.io:8000/api/audio/", formData, {
-          headers: {
-            "Content-Type": "audio/mpeg",
-          },
-        })
+      const protocol = window.location.protocol;
+      const host = 'j8b301.p.ssafy.io';
+      const port = protocol === 'http:' ? ':8000' : '';
+
+      axios.post(protocol + '//' + host + port + '/api/audio/', formData, {
+        headers: {
+          "Content-Type": "audio/mpeg",
+        },
+      })
         .then((response) => {
           console.log(response.data[1]);
           setRecordtext(response.data[0].message[0])
