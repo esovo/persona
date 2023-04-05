@@ -47,9 +47,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 
-        log.info("=========================");
-        log.info("processOAuth2User 실행");
-        log.info("=========================");
         Map<String, Object> mapForLog = oAuth2User.getAttributes();
         mapForLog.forEach((k, v) -> log.info("{} : {}", k,v));
 
@@ -65,21 +62,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user;
         if (userOptional.isPresent()) {
-            log.info("유저존재");
-//            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
 
+            // 에러코드
+//            log.info(!userOptional.get().getSocialAuth().getSocialType().equals(SocialEnum.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId())));
             user = updateUser(userOptional.get(), oAuth2UserInfo);
             }
          else {
-            log.info("유저없음");
             user = registerUser(oAuth2UserRequest, oAuth2UserInfo);
         }
-        log.info("리턴 직전");
         return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
 
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, Map<String, Object> attributes) {
-        log.info("getOAuth2UserInfo 실행");
+
         if (registrationId.equalsIgnoreCase(SocialEnum.google.toString())) {
             return new GoogleOAuth2UserInfo(attributes);
         } else if (registrationId.equalsIgnoreCase(SocialEnum.naver.toString())) {
@@ -92,7 +87,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User registerUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
-        log.info("registerUser 실행");
+
         return userRepository.save(User.builder()
                 .email(oAuth2UserInfo.getEmail())
                 .nickname(oAuth2UserInfo.getName())
@@ -107,24 +102,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
-        log.info("updateUser 실행");
-        try {
-            String nickname = oAuth2UserInfo.getName();
-            String email = oAuth2UserInfo.getEmail();
 
-            user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname,
-                    oAuth2UserInfo.getImageUrl(), email);
-            user.setNickname(nickname);
-            user.setEmail(email);
-            log.info("updateUser 실행끝");
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.printStackTrace();
-            e.printStackTrace();
-            e.printStackTrace();
+    // protected된 User 객체에 각 속성을 set하여 exception 발생하였었음
+        String nickname = oAuth2UserInfo.getName();
+        String email = oAuth2UserInfo.getEmail();
+        user.getSocialAuth().update(oAuth2UserInfo.getId(), nickname, oAuth2UserInfo.getImageUrl(), email);
+        user.setNickname(nickname);
+        user.setEmail(email);
 
-        }
-        return user;
+        return userRepository.save(user);
     }
 
 }
