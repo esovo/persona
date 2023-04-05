@@ -69,7 +69,7 @@ const FaceDetect = (props) => {
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
   const [text,setText] =useState(props.text);
-  const [recordtext,setRecordtext] =useState("아주");
+  const [recordtext,setRecordtext] =useState("");
   const [partnum,setpartnum] =useState(0);
   
   const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
@@ -87,13 +87,12 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-
+    console.log(1)
     axios.post(API_BASE_URL+"/participant",
       {
         "scriptId": 1
       }
     ).then((res)=>{
-      console.log(res)
       setpartnum(res.data.value)
     })
 
@@ -262,9 +261,7 @@ const FaceDetect = (props) => {
   
 
   const onResults = async (results) => {
-  if(overlayOn){
 
-  }
   const videoWidth = webcamRef.current.video.videoWidth;
   const videoHeight = webcamRef.current.video.videoHeight;
   canvasRef.current.width = videoWidth;
@@ -368,7 +365,6 @@ const FaceDetect = (props) => {
   }
         
     canvasCtx.restore();
-
   };
 
 
@@ -516,20 +512,34 @@ const FaceDetect = (props) => {
   axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
      console.log(response.data);
-     const video = new File([response.data], userid+"video.mp4", {
+     let video = new File([response.data], userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
     });
-    uploadFile(video)
-  });
-  html2canvas(document.querySelector(".chart")).then((canvas) => {
+
+    const graph= html2canvas(document.querySelector(".chart")).then((canvas) => {
     // const imgData = canvas.toDataURL("image/jpeg");
-    canvas.toBlob((blob) => {
-      let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
-      uploadFile(file);
-    }, 'image/jpeg');
-    
+      canvas.toBlob((blob) => {
+        let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
+        return file;
+      }, 'image/jpeg');
+    });
+    console.log(graph)
   });
+
+  // const data={
+  //         analysis:gettext,
+  //         graphFile:file,
+  //         participantId:partnum,
+  //         title: "제목",
+  //         videoFile:video
+  // }
+  // console.log(data)
+
+  // axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data)
+  //     .then((response) => {
+  //       console.log(response)
+  // });
  }
 
  const uploadFile = (file) => {
