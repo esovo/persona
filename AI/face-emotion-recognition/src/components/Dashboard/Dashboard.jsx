@@ -29,7 +29,7 @@ const Dashboard = (props) => {
   // Loads the essential models required for face detection, face landmarks detection
   // when the component is just mounted
   useEffect(() => {
-    console.log(token);
+    console.log(token)
     axios
       .get(`https://j8b301.p.ssafy.io/app/script?scriptId=${name}`, {
         headers: {
@@ -39,14 +39,18 @@ const Dashboard = (props) => {
       .then((response) => {
         setText(response.data.value.content);
       });
+
+    // setLoadedModels(true);
+    // loadEssentialModels()
+    // .then(() => setLoadedModels(true));
   }, []);
 
   return (
     // loadedModels?
-    <div className={style.dashboard}>
-      <div className={style.dashboardLeft}>
-        <div className={style.video}>
-          <VideoComponent text={text} scriptid={name} />
+    <div className="dashboard min-h-screen min-w-full bg-bg-1 w-full flex flex-col md:flex-row">
+      <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
+        <div className="flex flex-col w-fit relative">
+          <VideoComponent text={text} scriptid={name}/>
         </div>
       </div>
 
@@ -56,8 +60,8 @@ const Dashboard = (props) => {
             <></>
           ) : (
             <>
-              <div className={style.dashboardRight}>
-                <div className={style.realtimeEmotion}>
+              <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-14 md:my-0">
+                <div className="realtime-emotion flex flex-col items-center justify-center w-[400px] h-[300px] sm:w-[600px] sm:-h[400px] md:w-[700px] md:h-[450px] lg:w-[500px] lg:h-[400px]">
                   <RealTimeEmotion />
                 </div>
               </div>
@@ -91,6 +95,9 @@ const Dashboard = (props) => {
         )}
       </div>
     </div>
+    // : <span className="min-h-screen flex flex-col items-center justify-center bg-bg-1">
+    //     <Spinner text={"Loading ML Models"} />
+    //   </span>
   );
 };
 
