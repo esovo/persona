@@ -1,21 +1,40 @@
-@media only screen and (max-width: 640px) {
-  .dashboard-right {
-    display: none;
-  }
+html,
+body {
+  height: 100% !important;
+  background-color: black !important;
 }
 
-.emotiongraph{
-  margin-bottom: 40px;
-  padding: auto;
-}
-
-.flexBox{
+.dashboard {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-}
+  padding-top: 10%;
+  background-color: black;
+  height: 100%;
 
-.botton{
-  border: none;
+  .emotiongraph {
+    margin-bottom: 40px;
+    padding: auto;
+  }
+
+  .flexBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .botton {
+    border: none;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .dashboardRight {
+      display: none;
+      margin-left: 20px;
+    }
+  }
+
+  .textfield {
+    margin-left: 20px;
+  }
 }

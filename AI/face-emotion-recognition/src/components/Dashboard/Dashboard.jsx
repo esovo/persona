@@ -6,7 +6,6 @@ import { useDashboardContext } from './DashboardContext';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Settings, SettingsModal, useSettingsContext } from '../Settings';
 import RecordedExpressionsModal from '../Recording';
-import Spinner from '../Spinner/Spinner';
 import style from './Dashboard.module.scss';
 import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
@@ -62,14 +61,8 @@ const Dashboard = (props) => {
                 </div>
               </div>
               <AnimatePresence
-                // Disable any initial animations on children that
-                // are present when the component is first rendered
                 initial={false}
-                // Only render one component at a time.
-                // The exiting component will finish its exit
-                // animation before entering component is rendered
                 exitBeforeEnter={true}
-                // Fires when all exiting nodes have completed animating out
                 onExitComplete={() => null}>
                 {settingsVisible && <SettingsModal />}
               </AnimatePresence>
