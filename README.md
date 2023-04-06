@@ -2,30 +2,30 @@
 
 ## **: AI 연기 분석 플랫폼**
 
-![Untitled](images/Untitled.png)
+![Untitled](images/001.png)
 
 # ✔ Project Summary
 
 
 ### 개발 기간 : 2023.02/20 ~ 2023.03/03
 
-![Untitled](images/Untitled%201.png)
+![Untitled](images/002.png)
 
 ## Back-Ground
 
 - **연기에 대한 관심 증가**로 인한 연기희망자 증가
 - 연기를 취미로 가지는 사람역시 증가중
 
-![Untitled](images/Untitled%202.png)
+![Untitled](images/006.png)
 
 ## 사용자 요구 분석
 
 - **표정으로 감정을 측정하는 기능 필요**
 - **발음을 교정하는 온라인 서비스의 요구**
 
-![Untitled](images/Untitled%203.png)
+![Untitled](images/009.png)
 
-![Untitled](images/Untitled%204.png)
+![Untitled](images/007.png)
 
 ## 서비스 설명
 
@@ -33,29 +33,22 @@
 - AI 를 통한 감정 분석 및 발음 정확도 분석
 - 연습 연상에 대한 셀프 모니터링 환경 제공
 
-![Untitled](images/Untitled%205.png)
+![Untitled](images/010.png)
 
-![Untitled](images/Untitled%206.png)
 
 ---
 
 ## 설계 및 산출물
 
-- **ERD**
+- **ERD 및 Architecture**
 
-![Untitled](images/Untitled%207.png)
+![Untitled](images/023.png)
 
-- **Architecture**
 
-![Untitled](images/Untitled%208.png)
+- **API 및 아케텍쳐**
 
-- **와이어프레임**
+![Untitled](images/022.png)
 
-![Untitled](images/Untitled%209.png)
-
-- [시연 시나리오](https://www.notion.so/d522ac04408047eb89d32d22da4cd492)
-- [포팅 매뉴얼](https://www.notion.so/43f354fcfb904cb2870345835a8c7f48)
-- [최종 발표 PPT](https://www.notion.so/PPT-c9a1df5bdf4d43fdb3761834d683d741)
 
 
 
@@ -78,7 +71,7 @@
 
 사용자의 웹캠을 통해 ai모델을 사용하여 사용자의 감정을 인식
 
-![Untitled](images/Untitled%2010.png)
+
 
 - **음성 발음 인식**
 
@@ -86,7 +79,7 @@
 사용자의 음성을 인식하여 대본과 얼마나 일치하는지 비교,
 틀린부분을 체크하여 보여줌
 
-![Untitled](images/Untitled%2011.png)
+![Untitled](images/013.png)
 
 ## 기대 효과
 
@@ -94,7 +87,7 @@
 - 발음 교정
 - 연기자를 향한 입문 난이도를 낮춤
 
-![Untitled](images/Untitled%2012.png)
+![Untitled](images/010.png)
 
 
 ---
@@ -105,12 +98,14 @@
 
 - AI영상 분석 모델을 활용한 감정인식
 
-![SmartSelect_20230217_112940_Gallery.gif](images/SmartSelect_20230217_112940_Gallery.gif)
+![Untitled](images/018.png)
 
-![SmartSelect_20230217_123249_Gallery.gif](images/SmartSelect_20230217_123249_Gallery.gif)
+![Untitled](images/019.png)
 
  
+- Whisper API 를 통한 음성 인식
 
+![Untitled](images/020.png)
 
 ## 개발 환경
 
