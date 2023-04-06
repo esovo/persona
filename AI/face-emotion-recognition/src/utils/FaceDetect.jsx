@@ -87,7 +87,8 @@ const FaceDetect = (props) => {
     webcamOn,
     webcamOff,
     overlayOn,
-    setWebcamOff
+    setWebcamOff,
+    setWebcamOn
   } = useSettingsContext();
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
@@ -401,6 +402,7 @@ const FaceDetect = (props) => {
     stopRecording()
     offRecAudio()
     setWebcamOff(true);
+    
     let stream = webcamRef.current.video.srcObject;
     const tracks = stream.getTracks();
     
@@ -589,7 +591,8 @@ const FaceDetect = (props) => {
         },
       })
       .then((response) => {
-        console.log(response)
+        setWebcamOn(false);
+        setWebcamOff(false);
         navigate(`/storage`);
       });
 
