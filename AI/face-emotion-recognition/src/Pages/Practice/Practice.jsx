@@ -43,6 +43,7 @@ const List = () => {
 
   const optionHandler = (event) => {
     setClickedOption(event.target.value);
+    console.log(event.target.value);
   };
 
   const keywordHandler = (event) => {

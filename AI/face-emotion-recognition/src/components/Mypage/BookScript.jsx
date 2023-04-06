@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil';
 import { detailState } from '../../states/practiceFilterState';
 import moment from 'moment';
 
-export default function Script({ id, actor, author, createdDate, emotion, genre, title, bookmarkCnt, participantCnt }) {
+export default function Script({ id, actor, author, createdDate, emotion, genre, title, viewCnt, participantCnt }) {
   const [detail, setDetail] = useRecoilState(detailState);
   const navigate = useNavigate();
 
@@ -41,11 +41,19 @@ export default function Script({ id, actor, author, createdDate, emotion, genre,
           <div className={style.subinfo}>
             <div className={style.author}>{author}</div>
             <div className={style.cntinfo}>
-              <FontAwesomeIcon icon={faEye} />
-              {bookmarkCnt}
-              <FontAwesomeIcon icon={faUsers} />
-              {participantCnt}
-            </div>
+                <div className={style.section}>
+                    <FontAwesomeIcon icon={faEye} />
+                </div>
+                <div className={style.section} style={{marginRight:"8px"}}>
+                    {viewCnt}
+                </div>
+                <div className={style.section}>
+                    <FontAwesomeIcon icon={faUsers} />
+                </div>
+                <div className={style.section}>
+                    {participantCnt}
+                </div>
+             </div>
           </div>
         </div>
 
