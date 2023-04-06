@@ -589,7 +589,7 @@ const FaceDetect = (props) => {
       videoUrl:url+num+vid+userid+"video.mp4"
     }
     console.log(data)
-    axios.post("http://j8b301.p.ssafy.io:8080/app/video/save", data,{
+    axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data,{
       headers: {
         Authorization: token,
       },
