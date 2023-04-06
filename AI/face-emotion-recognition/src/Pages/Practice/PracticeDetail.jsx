@@ -129,8 +129,8 @@ export default function PracticeDetail() {
 
                                 <div className={style.cnt}>
                                     <FontAwesomeIcon icon={faEye} />
-                                    {data.bookmarkCnt}
-                                    <FontAwesomeIcon icon={faUsers} />
+                                    {data.viewCnt}
+                                    <FontAwesomeIcon icon={faUsers} className={style.icon}/>
                                     {data.participantCnt}
                                 </div>
                             </div>
