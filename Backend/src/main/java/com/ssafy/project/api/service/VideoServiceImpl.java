@@ -121,6 +121,7 @@ public class VideoServiceImpl implements VideoService {
                 .author(script.getAuthor())
                 .videoUrl(video.getVideoUrl())
                 .graphUrl(video.getGraphUrl())
+                .analysis(video.getAnalysis())
                 .createdDate(video.getCreatedDate().toString())
                 .build();
     }
