@@ -2,11 +2,10 @@ package com.ssafy.project.common.db.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class VideoCreateReqDTO {
+public class VideoAddReqDTO {
 
     String videoUrl;
     String thumbnailUrl;

@@ -1,9 +1,9 @@
 package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.VideoService;
+import com.ssafy.project.common.db.dto.request.VideoAddReqDTO;
 import com.ssafy.project.common.util.constant.Msg;
 import com.ssafy.project.common.util.dto.ResponseDTO;
-import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +27,8 @@ public class VideoController {
     @Secured({"ROLE_CLIENT"})
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     @ApiOperation(value = "비디오 저장")
-    public ResponseEntity<ResponseDTO> videoSave(@ModelAttribute VideoCreateReqDTO videoCreateReqDTO) throws FileNotFoundException {
-
-        if(!videoCreateReqDTO.getVideoFile().getContentType().startsWith("video")) {
-            return ResponseEntity.badRequest().body(ResponseDTO.of(HttpStatus.UNSUPPORTED_MEDIA_TYPE, Msg.FAIL_CREATE));
-        }
-
-        videoService.saveVideo(videoCreateReqDTO);
+    public ResponseEntity<ResponseDTO> videoSave(@RequestBody VideoAddReqDTO videoAddReqDTO) {
+        videoService.saveVideo(videoAddReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
