@@ -67,6 +67,10 @@ public class S3Utils {
 
             List<String> Uris = new ArrayList<>();
 
+
+            log.info(videoUri);
+            log.info(thumbnailUri);
+            log.info(graphUri);
             Uris.add(s3Provider.uploadFile(videoFile, videoUri));
             Uris.add(s3Provider.uploadFile(thumbnailFile, thumbnailUri));
             Uris.add(s3Provider.uploadMultipartFile(multipartGraphFile, graphUri));
