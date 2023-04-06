@@ -87,7 +87,8 @@ const FaceDetect = (props) => {
     webcamOn,
     webcamOff,
     overlayOn,
-    setWebcamOff
+    setWebcamOff,
+    setWebcamOn
   } = useSettingsContext();
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
@@ -111,8 +112,9 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    console.log(getwrite)
-    
+    if(webcamOff){
+      setWebcamOff(false);
+    }
 
     if(!webcamOn){
       setendcam(true)
@@ -200,7 +202,7 @@ const FaceDetect = (props) => {
 
       
     }
-  }, [mediaBlobUrl]);
+  }, []);
 
 
 
@@ -400,6 +402,12 @@ const FaceDetect = (props) => {
     stopRecording()
     offRecAudio()
     setWebcamOff(true);
+    
+    let stream = webcamRef.current.video.srcObject;
+    const tracks = stream.getTracks();
+    
+    tracks.forEach(track => track.stop());
+    webcamRef.current.video.srcObject = null;
     // recorderControls.stopRecording()
     return stopRecording()
   }
@@ -583,7 +591,8 @@ const FaceDetect = (props) => {
         },
       })
       .then((response) => {
-        console.log(response)
+        setWebcamOn(false);
+        setWebcamOff(false);
         navigate(`/storage`);
       });
 
