@@ -113,7 +113,7 @@
 
 ### **Back-End**
 
-| IntelliJ |
+| IntelliJ | ---|
 | --- | --- |
 | JDK | 11.0.13 |
 | SpringBoot | 2.7.8 |
