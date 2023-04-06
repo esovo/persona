@@ -22,9 +22,10 @@ const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }
     <div className={style.post}>
       <div className={style.content} onClick={openModal}>
         <div className={style.title}>{title}</div>
-        <div className={style.body}>{content}</div>
+        <div className={style.body} dangerouslySetInnerHTML={{ __html: content }}></div>
         <div className={style.info}>
-          <div className={style.nickname}>{nickName}</div>|<div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
+          <div className={style.nickname}>{nickName}</div>|
+          <div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
         </div>
       </div>
       <div className={style.itmes}>
