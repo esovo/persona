@@ -31,7 +31,7 @@ export default function Savepage(props) {
         setimgurl(response.data.value.graphUrl)
         setvideourl(response.data.value.videoUrl)
         const text1= response.data.value.analysis
-        const textall =text1.split("!!!")
+        const textall =text1.split("!?,")
         console.log(textall)
         setText(textall[0])
         setRecordtext(textall[1])
