@@ -99,13 +99,13 @@ export default function Script({ data }) {
             <div className={style.author}>{data.author}</div>
             <div className={style.cntinfo}>
               <div className={style.section}>
-                <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} />
+                <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} className={style.icon} />
               </div>
               <div className={style.section} style={{ marginRight: '8px' }}>
                 {data.viewCnt}
               </div>
               <div className={style.section}>
-                <FontAwesomeIcon icon={faUsers} style={{ color: '#5e5e5e' }} />
+                <FontAwesomeIcon icon={faUsers} style={{ color: '#5e5e5e' }} className={style.icon} />
               </div>
               <div className={style.section}>{data.participantCnt}</div>
             </div>
