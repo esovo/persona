@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Header from "../../components/Common/Header";
 import axios from 'axios';
 import { tokenState, user } from '../../states/loginState';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 export default function Savepage(props) {
   const [videourl,setvideourl]=useState("");
   const [imgurl,setimgurl]=useState("");
@@ -17,6 +17,7 @@ export default function Savepage(props) {
   const { pathname } = useLocation();
   const name = pathname.substring(10);
   const [myrecord, setMyrecord] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const data={
       videoId:name
@@ -54,6 +55,24 @@ export default function Savepage(props) {
       video.currentTime = res;
     }
   };
+
+  const goList = () => {
+    navigate('/storage');
+  }
+
+  const deleteVideo = () => {
+    axios
+      .delete(`https://j8b301.p.ssafy.io/app/video/?videoId=${name}`,{
+        headers: {
+          Authorization: token,
+        },
+    }).then((res) => {
+      navigate('/storage');
+    })
+
+  }
+
+  
 
   return(
     <>
@@ -105,6 +124,10 @@ export default function Savepage(props) {
             </div>
             
           </div>
+      </div>
+      <div className={style.route}>
+          <div className={style.button} onClick={goList}>목록</div>
+          <div className={style.button2} onClick={deleteVideo}>삭제</div>
       </div>
       </>
   );
