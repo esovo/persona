@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Header from "../../components/Common/Header";
 import axios from 'axios';
 import { tokenState, user } from '../../states/loginState';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 export default function Savepage(props) {
   const [videourl,setvideourl]=useState("");
   const [imgurl,setimgurl]=useState("");
@@ -16,6 +16,8 @@ export default function Savepage(props) {
   const token = useRecoilValue(tokenState);
   const { pathname } = useLocation();
   const name = pathname.substring(10);
+  const [myrecord, setMyrecord] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     const data={
       videoId:name
@@ -35,6 +37,7 @@ export default function Savepage(props) {
         console.log(textall)
         setText(textall[0])
         setRecordtext(textall[1])
+        setMyrecord(textall[2]);
     });
   
 
@@ -53,6 +56,24 @@ export default function Savepage(props) {
     }
   };
 
+  const goList = () => {
+    navigate('/storage');
+  }
+
+  const deleteVideo = () => {
+    axios
+      .delete(`https://j8b301.p.ssafy.io/app/video/?videoId=${name}`,{
+        headers: {
+          Authorization: token,
+        },
+    }).then((res) => {
+      navigate('/storage');
+    })
+
+  }
+
+  
+
   return(
     <>
     <Header/>
@@ -62,6 +83,7 @@ export default function Savepage(props) {
           src={videourl} 
           autoPlay
           controls
+          style={{ width: '800px', height: '50%', objectFit: 'cover', right: '30px' }}
         />
         <img src={imgurl} onClick={(e) => {
           handleClick(e);
@@ -92,6 +114,20 @@ export default function Savepage(props) {
             </div>
 
         </div>
+        <div className={style.container}>
+            <h1 className={style.mytitle}>분석내용</h1>
+            
+            <div className={style.mywrite}>
+              <div className={style.writewrap}>
+                {myrecord}
+              </div>
+            </div>
+            
+          </div>
+      </div>
+      <div className={style.route}>
+          <div className={style.button} onClick={goList}>목록</div>
+          <div className={style.button2} onClick={deleteVideo}>삭제</div>
       </div>
       </>
   );
