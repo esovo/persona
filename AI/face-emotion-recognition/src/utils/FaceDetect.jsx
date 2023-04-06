@@ -643,16 +643,18 @@ const FaceDetect = (props) => {
     <div>
       {webcamOff ? (
         <div>
-          <video
-            style={{ width: '50%', height: '50%', objectFit: 'cover' }}
-            className="recordvideo"
-            src={mediaBlobUrl}
-            ref={videoEl}
-            id="video"
-            autoPlay
-            controls
-          />
-          <RecordedExpressionsModal />
+          <div className="wrap">
+            <video
+              style={{ width: '1110px', height: '50%', objectFit: 'cover', right: '30px' }}
+              className="recordvideo"
+              src={mediaBlobUrl}
+              ref={videoEl}
+              id="video"
+              autoPlay
+              controls
+            />
+            <RecordedExpressionsModal />
+          </div>
 
    <div className="scriptComponent">
             {/* <ScriptText text={text}></ScriptText>
@@ -681,6 +683,20 @@ const FaceDetect = (props) => {
               />
             </div>
           </div>
+
+
+          <div className="container">
+            <h1 className="mytitle">분석내용</h1>
+            
+            <div className="mywrite">
+              <div className="writewrap">
+                {getwrite}
+              </div>
+            </div>
+            
+          </div>
+
+
           <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"
