@@ -313,11 +313,10 @@ const FaceDetect = (props) => {
 
 
   socket.onopen = () => socket.send(JSON.stringify(apiCall))
-  setTimeout(()=>{}, 100);
+
   socket.onmessage = function(event) {
-    
+
     var pred_log = JSON.parse(event.data)
-    console.log(pred_log)
     const formattedExpression = formatExpression(pred_log);
     
     setEmoji((previousEmoji) => {
