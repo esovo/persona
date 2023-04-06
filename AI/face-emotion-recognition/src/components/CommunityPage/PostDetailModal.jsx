@@ -21,7 +21,8 @@ export default function Modal() {
   const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
   const [myuser, setMyuser] = useRecoilState(user);
-  const [board, setBoard] = useState([]);
+  const [video, setVideo] = useState([]);
+  const [isVideo, setIsVideo] = useState(false);
 
   const shutModal = () => {
     setShowModal(false);
@@ -39,8 +40,11 @@ export default function Modal() {
         },
       })
       .then((res) => {
-        setBoard(res.data.value.content);
-        console.log(res.data.value.content);
+        setVideo(res.data.value.videoUrl);
+        if (res.data.value.videoUrl !== null) {
+          setIsVideo(true);
+        }
+        // console.log(res.data.value.videoUrl);
       });
   }, []);
 
@@ -159,6 +163,7 @@ export default function Modal() {
                 </div>
               </div>
               <div className={style.title}>{selectedPost.title}</div>
+              {isVideo && <video className={style.video} src={video} autoPlay controls></video>}
               <div className={style.content} dangerouslySetInnerHTML={{ __html: selectedPost.content }}></div>
               <div className={style.items}>
                 <div className={style.like}>
