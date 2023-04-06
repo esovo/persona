@@ -10,15 +10,19 @@
   margin: auto;
   left: 16px;
   top: 16px;
-  width: 640;
-  height: 480;
+  width: 800px;
+  height: 520px;
+  /* margin-left: 10%; */
 }
 
 .overvideo {
   position: absolute;
   left: 0;
   top: 0;
-  margin: 1rem;
+  margin: 17px;
+  width: 800px;
+  height: 520px;
+  /* margin-left: 10%; */
 }
 
 .scriptComponent {
@@ -31,4 +35,8 @@
 
 .blank {
   margin-top: 10px;
+}
+
+.videoBox{
+  margin-left: 100px;
 }

@@ -47,7 +47,7 @@ const Dashboard = (props) => {
 
   return (
     // loadedModels?
-    <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
+    <div className="dashboard min-h-screen min-w-full bg-bg-1 w-full flex flex-col md:flex-row">
       <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
         <div className="flex flex-col w-fit relative">
           <VideoComponent text={text} scriptid={name}/>
@@ -60,7 +60,7 @@ const Dashboard = (props) => {
             <></>
           ) : (
             <>
-              <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-16 md:my-0">
+              <div className="dashboard-right flex-1 flex flex-col items-center justify-center my-14 md:my-0">
                 <div className="realtime-emotion flex flex-col items-center justify-center w-[400px] h-[300px] sm:w-[600px] sm:-h[400px] md:w-[700px] md:h-[450px] lg:w-[500px] lg:h-[400px]">
                   <RealTimeEmotion />
                 </div>

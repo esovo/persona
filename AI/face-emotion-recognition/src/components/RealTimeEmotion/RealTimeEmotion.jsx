@@ -44,7 +44,7 @@ const RealTimeEmotion = () => {
       keys={['percent']}
       indexBy={'expression'}
       layout={'vertical'}
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+      margin={{ top: 10, right: 120, bottom: 50, left: 30 }}
       borderRadius={7}
       padding={0.4}
       maxValue={100}
