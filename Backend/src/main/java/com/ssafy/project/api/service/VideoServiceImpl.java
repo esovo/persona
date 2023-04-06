@@ -1,6 +1,6 @@
 package com.ssafy.project.api.service;
 
-import com.ssafy.project.common.db.dto.request.VideoCreateReqDTO;
+import com.ssafy.project.common.db.dto.request.VideoAddReqDTO;
 import com.ssafy.project.common.db.dto.response.VideoDetailResDTO;
 import com.ssafy.project.common.db.dto.response.VideoListResDTO;
 import com.ssafy.project.common.db.entity.common.Participant;
@@ -15,7 +15,6 @@ import com.ssafy.project.common.provider.AuthProvider;
 import com.ssafy.project.common.provider.S3Provider;
 import com.ssafy.project.common.security.exception.CommonApiException;
 import com.ssafy.project.common.util.constant.CommonErrorCode;
-import com.ssafy.project.common.util.utils.S3Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -23,8 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Log4j2
 @Service
@@ -37,13 +34,13 @@ public class VideoServiceImpl implements VideoService {
     private final UserRepository userRepository;
     private final ScriptRepository scriptRepository;
     private final AuthProvider authProvider;
-    private final S3Utils s3Utils;
+//    private final S3Utils s3Utils;
 
     @Transactional
     @Override
-    public void saveVideo(VideoCreateReqDTO videoCreateReqDTO) {
+    public void saveVideo(VideoAddReqDTO videoAddReqDTO) {
 
-        Participant participant = participantRepository.findById(videoCreateReqDTO.getParticipantId())
+        Participant participant = participantRepository.findById(videoAddReqDTO.getParticipantId())
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.PARTICIPANT_NOT_FOUND));
 
         User user = userRepository.findById(authProvider.getUserIdFromPrincipal())
@@ -54,11 +51,11 @@ public class VideoServiceImpl implements VideoService {
 //        uris = s3Utils.upload(videoCreateReqDTO.getVideoFile(), videoCreateReqDTO.getGraphFile());
 
         videoRepository.save(Video.builder()
-                .title(videoCreateReqDTO.getTitle())
-                .videoUrl(videoCreateReqDTO.getVideoUrl())
-                .thumbnailUrl(videoCreateReqDTO.getThumbnailUrl())
-                .graphUrl(videoCreateReqDTO.getGraphUrl())
-                .analysis(videoCreateReqDTO.getAnalysis())
+                .title(videoAddReqDTO.getTitle())
+                .videoUrl(videoAddReqDTO.getVideoUrl())
+                .thumbnailUrl(videoAddReqDTO.getThumbnailUrl())
+                .graphUrl(videoAddReqDTO.getGraphUrl())
+                .analysis(videoAddReqDTO.getAnalysis())
                 .user(user)
                 .participant(participant)
                 .build());
@@ -75,9 +72,9 @@ public class VideoServiceImpl implements VideoService {
             throw new CommonApiException(CommonErrorCode.VIDEO_NOT_ALLOWED);
         }
 
-        s3Provider.delete(video.getVideoUrl());
-        s3Provider.delete(video.getThumbnailUrl());
-        s3Provider.delete(video.getGraphUrl());
+//        s3Provider.delete(video.getVideoUrl());
+//        s3Provider.delete(video.getThumbnailUrl());
+//        s3Provider.delete(video.getGraphUrl());
 
         videoRepository.delete(video);
     }
