@@ -112,9 +112,9 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    if(webcamOff){
-      setWebcamOff(false);
-    }
+    // if(webcamOff){
+    //   setWebcamOff(false);
+    // }
 
     if(!webcamOn){
       setendcam(true)
@@ -169,7 +169,6 @@ const FaceDetect = (props) => {
       model: 'short',
       minDetectionConfidence: 0.5
     });
-
     if(webcamOn){
       startRecording()
       onRecAudio()
@@ -202,7 +201,7 @@ const FaceDetect = (props) => {
 
       
     }
-  }, []);
+  }, [mediaBlobUrl]);
 
 
 
@@ -435,6 +434,7 @@ const FaceDetect = (props) => {
       analyser.connect(audioCtx.destination);
     }
     // 마이크 사용 권한 획득
+    console.log(111)
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
