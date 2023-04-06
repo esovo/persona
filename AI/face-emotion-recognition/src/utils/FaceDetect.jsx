@@ -112,9 +112,9 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    if(webcamOff){
-      setWebcamOff(false);
-    }
+    // if(webcamOff){
+    //   setWebcamOff(false);
+    // }
 
     if(!webcamOn){
       setendcam(true)
@@ -169,7 +169,6 @@ const FaceDetect = (props) => {
       model: 'short',
       minDetectionConfidence: 0.5
     });
-
     if(webcamOn){
       startRecording()
       onRecAudio()
@@ -202,7 +201,7 @@ const FaceDetect = (props) => {
 
       
     }
-  }, []);
+  }, [mediaBlobUrl]);
 
 
 
@@ -435,6 +434,7 @@ const FaceDetect = (props) => {
       analyser.connect(audioCtx.destination);
     }
     // 마이크 사용 권한 획득
+    console.log(111)
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
@@ -643,16 +643,18 @@ const FaceDetect = (props) => {
     <div>
       {webcamOff ? (
         <div>
-          <video
-            style={{ width: '50%', height: '50%', objectFit: 'cover' }}
-            className="recordvideo"
-            src={mediaBlobUrl}
-            ref={videoEl}
-            id="video"
-            autoPlay
-            controls
-          />
-          <RecordedExpressionsModal />
+          <div className="wrap">
+            <video
+              style={{ width: '1110px', height: '50%', objectFit: 'cover', right: '30px' }}
+              className="recordvideo"
+              src={mediaBlobUrl}
+              ref={videoEl}
+              id="video"
+              autoPlay
+              controls
+            />
+            <RecordedExpressionsModal />
+          </div>
 
    <div className="scriptComponent">
             {/* <ScriptText text={text}></ScriptText>
@@ -681,6 +683,20 @@ const FaceDetect = (props) => {
               />
             </div>
           </div>
+
+
+          <div className="container">
+            <h1 className="mytitle">분석내용</h1>
+            
+            <div className="mywrite">
+              <div className="writewrap">
+                {getwrite}
+              </div>
+            </div>
+            
+          </div>
+
+
           <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"

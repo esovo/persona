@@ -1,6 +1,12 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .recordvideo {
   position: relative;
-  width: 600px;
+  width: 500px;
   margin: auto;
   margin-top: 100px;
 }
@@ -39,4 +45,27 @@
 
 .videoBox{
   margin-left: 100px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mytitle {
+  color: white;
+}
+
+.mywrite {
+  background-color: white;
+  border-radius: 5px;
+  width: 80em;
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+
+.writewrap {
+  margin:
 }

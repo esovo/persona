@@ -21,7 +21,7 @@ export default function Modal() {
       {showModal && (
         <div className={style.back} onClick={shutModal}>
           <div className={style.container}>
-            <div className={style.banner}>로그인 고르셈</div>
+            <h2 className={style.banner}>간편하게 SNS 로그인</h2>
             <div className={style.loginSelect}>
               <a href={`${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${WEB_REDIRECT_URI}`}>
                 {/* <a href={`http://${API_BASE_URL}/app/oauth2/authorization/google`}> */}
