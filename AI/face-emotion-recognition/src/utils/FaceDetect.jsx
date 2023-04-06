@@ -200,7 +200,7 @@ const FaceDetect = (props) => {
 
       
     }
-  }, [mediaBlobUrl]);
+  }, []);
 
 
 
@@ -400,6 +400,11 @@ const FaceDetect = (props) => {
     stopRecording()
     offRecAudio()
     setWebcamOff(true);
+    let stream = webcamRef.current.video.srcObject;
+    const tracks = stream.getTracks();
+    
+    tracks.forEach(track => track.stop());
+    webcamRef.current.video.srcObject = null;
     // recorderControls.stopRecording()
     return stopRecording()
   }
