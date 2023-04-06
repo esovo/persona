@@ -49,6 +49,8 @@ public class S3Utils {
             String thumbnailUri = getThumbnailUri(baseUri);
             String graphUri = getGraphUri(baseUri);
 
+            log.info(EC2_DIR_PATH + thumbnailUri);
+            log.info(EC2_DIR_PATH + videoUri);
             // 섬네일 임시파일 생성
             File thumbnailFile = new File(EC2_DIR_PATH + thumbnailUri);
             thumbnailFile.createNewFile();
