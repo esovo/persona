@@ -111,8 +111,9 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    console.log(getwrite)
-    
+    if(webcamOff){
+      setWebcamOff(false);
+    }
 
     if(!webcamOn){
       setendcam(true)
