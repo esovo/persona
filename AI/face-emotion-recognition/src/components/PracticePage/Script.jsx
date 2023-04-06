@@ -89,8 +89,8 @@ export default function Script({ data }) {
                             <div className={style.section}>
                                 <FontAwesomeIcon icon={faEye} />
                             </div>
-                            <div className={style.section}>
-                                {data.bookmarkCnt}
+                            <div className={style.section} style={{marginRight:"8px"}}>
+                                {data.viewCnt}
                             </div>
                             <div className={style.section}>
                                 <FontAwesomeIcon icon={faUsers} />

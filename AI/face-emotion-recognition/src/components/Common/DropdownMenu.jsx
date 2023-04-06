@@ -18,9 +18,10 @@ const DropdownMenu = (props) => {
       {dropdownMenu === 'active' ? (
         <ul className={style.show}>
           {props.items.map((item) => (
-            <li key={item} onClick={() => handler(item)}>
+            <ul key={item} onClick={() => handler(item)}>
               {item}
-            </li>
+              {item === '북마크' &&  <hr className={style.hr}/> }
+            </ul>
           ))}
         </ul>
       ) : (

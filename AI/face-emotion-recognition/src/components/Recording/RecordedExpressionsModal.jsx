@@ -58,13 +58,10 @@ const RecordedExpressionsModal = () => {
     const video = document.querySelector('video');
     const hole = 1280 - 170;
     const k = x - 170;
-    // console.log(x);
-    // console.log(k);
+
     const res = (k * video.duration) / hole;
-    // console.log(video.duration);
-    // console.log(res);
-    // const clickedData = data.find((d) => d.x === x);
-    // const videoTime = clickedData.x / data.length * videoLength;
+    console.log(video.duration);
+    console.log(res);
 
     // HTML5 비디오 요소를 찾는다.
     // 비디오를 이동.

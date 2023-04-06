@@ -20,7 +20,9 @@ export default function Modal() {
   const [isHeart, setIsHeart] = useRecoilState(isHeartState);
   const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
-  const [myuser, setMyuser] = useRecoilState(user);  
+  const [myuser, setMyuser] = useRecoilState(user);
+  const [video, setVideo] = useState([]);
+  const [isVideo, setIsVideo] = useState(false);
 
   const shutModal = () => {
     setShowModal(false);
@@ -31,10 +33,32 @@ export default function Modal() {
   };
 
   useEffect(() => {
+    axios
+      .get(BASE_URL + communityApis.BOARD_GET_API(boardId), {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setVideo(res.data.value.videoUrl);
+        if (res.data.value.videoUrl !== null) {
+          setIsVideo(true);
+        }
+        // console.log(res.data.value.videoUrl);
+      });
+  }, []);
+
+  useEffect(() => {
     const page = 0;
-    axios.get(BASE_URL + communityApis.COMMENT_LIST_GET_API(boardId, page)).then((res) => {
-      setComments(res.data.value.content);
-    });
+    axios
+      .get(BASE_URL + communityApis.COMMENT_LIST_GET_API(boardId, page), {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setComments(res.data.value.content);
+      });
   }, [comments]);
 
   useEffect(() => {
@@ -115,7 +139,9 @@ export default function Modal() {
                 </div>
                 <div className={style.userdate}>
                   <div className={style.nickname}>{selectedPost.nickName}</div>
-                  <div className={style.date}>{moment.utc(selectedPost.createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
+                  <div className={style.date}>
+                    {moment.utc(selectedPost.createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}
+                  </div>
                 </div>
                 <div className={style.btn}>
                   <button className={style.likebtn} onClick={heartClickHandler}>
@@ -137,6 +163,7 @@ export default function Modal() {
                 </div>
               </div>
               <div className={style.title}>{selectedPost.title}</div>
+              {isVideo && <video className={style.video} src={video} autoPlay controls></video>}
               <div className={style.content} dangerouslySetInnerHTML={{ __html: selectedPost.content }}></div>
               <div className={style.items}>
                 <div className={style.like}>
@@ -145,7 +172,7 @@ export default function Modal() {
                 </div>
                 <div className={style.visited}>
                   <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} />
-                  <div className={style.num}>10</div>
+                  <div className={style.num}>{selectedPost.viewCnt}</div>
                 </div>
                 <div className={style.comment}>
                   <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />

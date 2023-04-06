@@ -25,12 +25,17 @@ import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import AWS from 'aws-sdk';
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
-
-
+import { Modal } from "@mui/material";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
+import { tokenState, user } from '../states/loginState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { writeState } from '../states/practiceFilterState';
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
   const chartRef = useRef(null);
@@ -38,7 +43,23 @@ const FaceDetect = (props) => {
 
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const getwrite = useRecoilValue(writeState);
+  const navigate = useNavigate();
+  
   const {
     setCurrentExpression,
     setEmoji,
@@ -50,15 +71,18 @@ const FaceDetect = (props) => {
     canvasRef
 
   } = useDashboardContext();
-
+  const { pathname } = useLocation();
+  const name = pathname.substring(11);
+  const token = useRecoilValue(tokenState);
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
-
-
+  const [ongraph, setongraph] = useState(false);
+  const valueRef = useRef('')
+  const videoEl = useRef(null);
   const {
     webcamOn,
     webcamOff,
@@ -87,14 +111,8 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    console.log(1)
-    axios.post(API_BASE_URL+"/participant",
-      {
-        "scriptId": 1
-      }
-    ).then((res)=>{
-      setpartnum(res.data.value)
-    })
+    console.log(getwrite)
+    
 
     if(!webcamOn){
       setendcam(true)
@@ -155,7 +173,10 @@ const FaceDetect = (props) => {
       onRecAudio()
       setRecordedvideo(mediaBlobUrl)
     }else{
-      stopRecording()
+      // stopRecording()
+    }
+    if(ongraph){
+      // startRecording()
     }
 
     faceDetection.onResults(faceDetectionOnResults);
@@ -296,8 +317,8 @@ const FaceDetect = (props) => {
   socket.onmessage = function(event) {
 
     var pred_log = JSON.parse(event.data)
-    // console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
+    
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
         return previousEmoji;
@@ -322,6 +343,7 @@ const FaceDetect = (props) => {
       }
       return recordExpression(recordedExpressions, formatExpression(pred_log));
     });
+    setongraph(true);
     
   }
 
@@ -504,44 +526,78 @@ const FaceDetect = (props) => {
 //  }
 
  function save(){
+  const url="https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/";
   const userid="user"
   const gettext= recordtext;
-  axios.get(mediaBlobUrl, { responseType : "blob"})
+  const vid=props.script;
+  const title= valueRef.current.value
+  console.log(title)
+  axios.post(API_BASE_URL+"/participant",
+  {
+    "scriptId": name
+  },{
+    headers: {
+      Authorization: token,
+    },
+  }
+  ).then((res)=>{
+    setpartnum(res.data.value)
+    const num=res.data.value;
+    axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
-     console.log(response.data);
-     let video = new File([response.data], userid+"video.mp4", {
+    //  console.log(response.data);
+     let video = new File([response.data], num+vid+userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
     });
-
-    const graph= html2canvas(document.querySelector(".chart")).then((canvas) => {
+    uploadFile(video);
+    html2canvas(document.querySelector(".chart")).then((canvas) => {
     // const imgData = canvas.toDataURL("image/jpeg");
+    // var can = document.getElementById('canvas');
+
+    html2canvas(document.getElementById('video')).then(can => {
+      can.getContext('2d')
+      // .drawImage(videoEl.current,0,0, videoEl.current.clientWidth, 
+      // videoEl.current.clientHeight)
+      let dataURI = can.toDataURL('image/jpeg',1.0);
+      const blob= dataURItoBlob(dataURI)
+      let thm = new File([blob], num+vid+userid+"thmimg.jpg", { type: "image/jpeg" })
+      uploadFile(thm);
       canvas.toBlob((blob) => {
-        let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
-        return file;
+        let file = new File([blob], num+vid+userid+"img.jpg", { type: "image/jpeg" })
+        uploadFile(file)
       }, 'image/jpeg');
+
+      const data={
+        analysis:text+"!?,"+gettext+"!?,"+getwrite,
+        graphUrl:url+num+vid+userid+"img.jpg",
+        participantId:res.data.value,
+        thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
+        title: title,
+        videoUrl:url+num+vid+userid+"video.mp4"
+      }
+      console.log(data)
+      axios.post("https://j8b301.p.ssafy.io/app/video/save", data,{
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response)
+        navigate(`/storage`);
+      });
+
+      });
     });
-    console.log(graph)
-  });
 
-  // const data={
-  //         analysis:gettext,
-  //         graphFile:file,
-  //         participantId:partnum,
-  //         title: "제목",
-  //         videoFile:video
-  // }
-  // console.log(data)
-
-  // axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data)
-  //     .then((response) => {
-  //       console.log(response)
-  // });
+   
+    
+  });    
+  })
  }
 
  const uploadFile = (file) => {
   // console.log(file)
-  // console.log(S3_BUCKET)
   const params = {
     ACL: 'public-read',
     Body: file,
@@ -582,6 +638,8 @@ const FaceDetect = (props) => {
             style={{ width: '50%', height: '50%', objectFit: 'cover' }}
             className="recordvideo"
             src={mediaBlobUrl}
+            ref={videoEl}
+            id="video"
             autoPlay
             controls
           />
@@ -618,13 +676,41 @@ const FaceDetect = (props) => {
             <Button
               variant="contained"
               onClick={() => {
-                save();
+                handleOpen()
+                // save();
               }}
               color="error">
               저장하기
             </Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  제목을 입력해 주세요
+                </Typography>
+                <Input inputRef={valueRef} />
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    save();
+                  }}
+                  color="error">
+                  확인
+                </Button>
+              </Box>
+            </Modal>
           </div>
+          {/* <canvas id="canvas" style={{
+                width:650,
+                // visibility:"hidden",
+                height:480
+          }}></canvas> */}
         </div>
+        
       ) : (
         <>
           <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />
@@ -634,7 +720,7 @@ const FaceDetect = (props) => {
             <canvas
               className="overvideo"
               style={{
-                display: 'none',
+                visibility:"hidden",
               }}
               ref={canvasRef}></canvas>
           )}

@@ -7,12 +7,12 @@ import { faCommentDots, faHeart as regularHeart } from '@fortawesome/free-regula
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
-const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }) => {
+const Post = ({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   const [isClicked, setIsClicked] = useState(false);
   const openModal = () => {
-    setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, commentCnt });
+    setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt });
     setShowDetailModal(true);
   };
   const heartClickHandler = () => {
@@ -22,9 +22,10 @@ const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }
     <div className={style.post}>
       <div className={style.content} onClick={openModal}>
         <div className={style.title}>{title}</div>
-        <div className={style.body}>{content}</div>
+        <div className={style.body} dangerouslySetInnerHTML={{ __html: content }}></div>
         <div className={style.info}>
-          <div className={style.nickname}>{nickName}</div>|<div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
+          <div className={style.nickname}>{nickName}</div>|
+          <div className={style.date}>{moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD HH:mm:ss')}</div>
         </div>
       </div>
       <div className={style.itmes}>

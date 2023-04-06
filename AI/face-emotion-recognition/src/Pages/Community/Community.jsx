@@ -31,17 +31,15 @@ export default function List() {
   const BASE_URL = 'https://j8b301.p.ssafy.io';
   useEffect(() => {
     axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {
-      console.log(res.data.value.content);
       setPosts(res.data.value.content);
     });
-  }, []);
+  }, [posts]);
 
   useEffect(() => {
     axios.get(BASE_URL + communityApis.BOARD_TOP_LIST_GET_API).then((res) => {
-      console.log(res.data.value);
       setPoposts(res.data.value);
     });
-  }, []);
+  }, [poposts]);
 
   useEffect(() => {
     axios.get(BASE_URL + communityApis.BOARD_LIST_GET_API(page, sort, keyword)).then((res) => {

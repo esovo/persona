@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import VideoComponent from '../VideoComponent';
 import RealTimeEmotion from '../RealTimeEmotion';
 import { useDashboardContext } from './DashboardContext';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Settings, SettingsModal, useSettingsContext } from '../Settings';
 import RecordedExpressionsModal from '../Recording';
 import Spinner from '../Spinner/Spinner';
@@ -10,9 +11,9 @@ import style from './Dashboard.module.scss';
 import ScriptText from '../Script/ScriptText';
 import { useLocation } from 'react-router';
 import axios from 'axios';
+import { tokenState, user } from '../../states/loginState';
 import '../../index.css';
 
-import { useRecoilState } from 'recoil';
 import { writeState } from '../../states/practiceFilterState';
 
 const Dashboard = (props) => {
@@ -20,32 +21,36 @@ const Dashboard = (props) => {
   const [text, setText] = useState();
   const { loadedModels, setLoadedModels, recordedExpressionsVisible } = useDashboardContext();
   const { settingsVisible, webcamOff } = useSettingsContext();
-
+  const token = useRecoilValue(tokenState);
   const [write, setWrite] = useRecoilState(writeState);
   const name = pathname.substring(11);
+  const [myuser, setMyuser] = useRecoilState(user);
 
   // Loads the essential models required for face detection, face landmarks detection
   // when the component is just mounted
   useEffect(() => {
-    // console.log("이 아래가 진짜 테스팅 값");
-    // console.log(write);
-    console.log("이 위가 진짜 테스팅 값");
-    axios.get('https://j8b301.p.ssafy.io/app/script?scriptId=' + name, {}).then((response) => {
-      setText(response.data.value.content);
-    });
+    console.log(token)
+    axios
+      .get(`https://j8b301.p.ssafy.io/app/script?scriptId=${name}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setText(response.data.value.content);
+      });
 
     // setLoadedModels(true);
     // loadEssentialModels()
     // .then(() => setLoadedModels(true));
-  },[]);
+  }, []);
 
   return (
     // loadedModels?
     <div className="dashboard min-h-screen min-w-full bg-bg-1 flex-1 w-full flex flex-col md:flex-row">
-      
       <div className="dashboard-left videocomponent flex-1 flex flex-col items-center justify-center mt-16 md:mt-0">
         <div className="flex flex-col w-fit relative">
-          <VideoComponent text={text} />
+          <VideoComponent text={text} scriptid={name}/>
         </div>
       </div>
 
@@ -89,7 +94,6 @@ const Dashboard = (props) => {
           </>
         )}
       </div>
-
     </div>
     // : <span className="min-h-screen flex flex-col items-center justify-center bg-bg-1">
     //     <Spinner text={"Loading ML Models"} />
