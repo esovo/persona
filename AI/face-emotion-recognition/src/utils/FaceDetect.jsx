@@ -33,6 +33,9 @@ import { Modal } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
+import { tokenState, user } from '../states/loginState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
   const chartRef = useRef(null);
@@ -66,12 +69,16 @@ const FaceDetect = (props) => {
     canvasRef
 
   } = useDashboardContext();
+  const { pathname } = useLocation();
+  const name = pathname.substring(11);
+  const token = useRecoilValue(tokenState);
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
+  const [ongraph, setongraph] = useState(false);
   const valueRef = useRef('')
   const videoEl = useRef(null);
   const {
@@ -103,13 +110,7 @@ const FaceDetect = (props) => {
   });
   useEffect(() => {
     console.log(1)
-    axios.post(API_BASE_URL+"/participant",
-      {
-        "scriptId": 1
-      }
-    ).then((res)=>{
-      setpartnum(res.data.value)
-    })
+    
 
     if(!webcamOn){
       setendcam(true)
@@ -170,7 +171,10 @@ const FaceDetect = (props) => {
       onRecAudio()
       setRecordedvideo(mediaBlobUrl)
     }else{
-      stopRecording()
+      // stopRecording()
+    }
+    if(ongraph){
+      // startRecording()
     }
 
     faceDetection.onResults(faceDetectionOnResults);
@@ -311,8 +315,9 @@ const FaceDetect = (props) => {
   socket.onmessage = function(event) {
 
     var pred_log = JSON.parse(event.data)
-    // console.log(pred_log);
+    console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
+    
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
         return previousEmoji;
@@ -337,6 +342,7 @@ const FaceDetect = (props) => {
       }
       return recordExpression(recordedExpressions, formatExpression(pred_log));
     });
+    setongraph(true);
     
   }
 
@@ -519,50 +525,80 @@ const FaceDetect = (props) => {
 //  }
 
  function save(){
+  const url="https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/";
   const userid="user"
   const gettext= recordtext;
+  const vid=props.script;
   const title= valueRef.current.value
   console.log(title)
-  axios.get(mediaBlobUrl, { responseType : "blob"})
+  axios.post(API_BASE_URL+"/participant",
+  {
+    "scriptId": name
+  },{
+    headers: {
+      Authorization: token,
+    },
+  }
+  ).then((res)=>{
+    setpartnum(res.data.value)
+    const num=res.data.value;
+    axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
      console.log(response.data);
-     let video = new File([response.data], userid+"video.mp4", {
+     let video = new File([response.data], num+vid+userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
-  });
-    
-    const graph= html2canvas(document.querySelector(".chart")).then((canvas) => {
-    // const imgData = canvas.toDataURL("image/jpeg");
-    var can = document.getElementById('canvas');
-    console.log(videoEl.current.clientWidth)
-    can.getContext('2d').drawImage(videoEl.current, 0, 0, videoEl.current.clientWidth, videoEl.current.clientHeight);
-    console.log()
-    let dataURI = can.toDataURL('image/jpeg');
-    console.log(dataURI)
-    canvas.toBlob((blob) => {
-        let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
-      }, 'image/jpeg');
     });
-    console.log(graph)
+    uploadFile(video);
+    html2canvas(document.querySelector(".chart")).then((canvas) => {
+    // const imgData = canvas.toDataURL("image/jpeg");
+    // var can = document.getElementById('canvas');
+
+    html2canvas(document.getElementById('video')).then(can => {
+      can.getContext('2d')
+      // .drawImage(videoEl.current,0,0, videoEl.current.clientWidth, 
+      // videoEl.current.clientHeight)
+      let dataURI = can.toDataURL('image/jpeg',1.0);
+      const blob= dataURItoBlob(dataURI)
+      let thm = new File([blob], num+vid+userid+"thmimg.jpg", { type: "image/jpeg" })
+      uploadFile(thm);
+    });
+    // can.getContext('2d').drawImage(videoEl.current, 0, 0, videoEl.current.clientWidth, 
+    // videoEl.current.clientHeight);
+    // let thm=can.getContext('2d').drawImage(videoEl.current,0,0,)
+    // let dataURI = can.toDataURL('image/jpeg');
+
+    // console.log(dataURI)
+    https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4
+    canvas.toBlob((blob) => {
+        let file = new File([blob], num+vid+userid+"img.jpg", { type: "image/jpeg" })
+        uploadFile(file)
+      }, 'image/jpeg');
+     
+    });
   });
 
-  // const data={
-  //         analysis:gettext,
-  //         graphFile:file,
-  //         participantId:partnum,
-  //         title: "제목",
-  //         videoFile:video
-  // }
-  // console.log(data)
-
-  // axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data)
-  //     .then((response) => {
-  //       console.log(response)
-  // });
+    const data={
+      analysis:text+"!!!"+gettext,
+      graphUrl:url+num+vid+userid+"img.jpg",
+      participantId:res.data.value,
+      thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
+      title: title,
+      videoUrl:url+num+vid+userid+"video.mp4"
+    }
+    console.log(data)
+    axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data,{
+      headers: {
+        Authorization: token,
+      },
+    })
+    .then((response) => {
+      console.log(response)
+  });
+  })
  }
 
  const uploadFile = (file) => {
-  // console.log(file)
   // console.log(S3_BUCKET)
   const params = {
     ACL: 'public-read',
@@ -605,6 +641,7 @@ const FaceDetect = (props) => {
             className="recordvideo"
             src={mediaBlobUrl}
             ref={videoEl}
+            id="video"
             autoPlay
             controls
           />
@@ -620,9 +657,6 @@ const FaceDetect = (props) => {
               </div>
               <hr />
               <hr />
-              <canvas id="canvas" style={{
-                display:"none"
-                }}></canvas>
 
               <ReactDiffViewer
                 styles={{
@@ -672,6 +706,11 @@ const FaceDetect = (props) => {
               </Box>
             </Modal>
           </div>
+          {/* <canvas id="canvas" style={{
+                width:650,
+                // visibility:"hidden",
+                height:480
+          }}></canvas> */}
         </div>
         
       ) : (
@@ -683,7 +722,7 @@ const FaceDetect = (props) => {
             <canvas
               className="overvideo"
               style={{
-                display: 'none',
+                visibility:"hidden",
               }}
               ref={canvasRef}></canvas>
           )}

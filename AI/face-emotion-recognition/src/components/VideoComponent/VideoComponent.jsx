@@ -16,7 +16,7 @@ const VideoComponent = (props) => {
   return(
     <>
       {/* <VideoStream></VideoStream> */}
-      {webcamOn ?  <FaceDetect text={props.text}/> : <WebcamTurnedOff />}
+      {webcamOn ?  <FaceDetect text={props.text} script={props.scriptid}/> : <WebcamTurnedOff />}
       {webcamOn && overlayOn && !webcamOff &&  <FaceOverlay/>}
       {webcamOn && emojiOn && !webcamOff && <span className="absolute top-8 right-8"><EmojiWidget /></span>}
     </>

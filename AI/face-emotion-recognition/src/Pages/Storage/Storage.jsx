@@ -55,7 +55,7 @@ export default function List() {
   const selectedVideo = (videoId) =>{
     //화면전환
     console.log(videoId);
-    navigate('/savepage', {
+    navigate('/savepage/'+videoId, {
       state: {
         id: videoId
       }

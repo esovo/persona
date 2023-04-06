@@ -1,32 +1,49 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilState,useRecoilValue} from 'recoil';
 
 import style from './Savepage.module.scss';
 import Button from '@mui/material/Button';
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from "../../components/Common/Header";
-
+import axios from 'axios';
+import { tokenState, user } from '../../states/loginState';
+import { useLocation } from 'react-router-dom';
 export default function Savepage(props) {
-  const [videourl,setvideourl]=useState("https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4");
-  const [imgurl,setimgurl]=useState("https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/fileName.jpg");
+  const [videourl,setvideourl]=useState("");
+  const [imgurl,setimgurl]=useState("");
   const [text,setText] =useState("1");
   const [recordtext,setRecordtext] =useState("2");
+  const token = useRecoilValue(tokenState);
+  const { pathname } = useLocation();
+  const name = pathname.substring(10);
+  useEffect(() => {
+    const data={
+      videoId:name
+    }
+    axios
+      .get(`https://j8b301.p.ssafy.io/app/video/`+name,{
+        headers: {
+          Authorization: token,
+        },
+    })
+      .then((response) => {
+        console.log(response)
+        setimgurl(response.data.value.graphUrl)
+        setRecordtext(response.data.value.title)
+        setvideourl(response.data.value.videoUrl)
+    });
+  
+
+  }, [])
+  
 
   const handleClick = (event) => {
     const x = event.clientX;
     const video = document.querySelector('video');
     const hole = 1280 - 170;
     const k = x - 170;
-    console.log(x);
-    console.log(k);
     const res = (k * video.duration) / hole;
-    console.log(video.duration);
-    console.log(res);
-    // const clickedData = data.find((d) => d.x === x);
-    // const videoTime = clickedData.x / data.length * videoLength;
 
-    // HTML5 비디오 요소를 찾는다.
-    // 비디오를 이동.
     if (k >= 0 && k < 1280) {
       video.currentTime = res;
     }
