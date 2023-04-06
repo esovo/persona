@@ -103,7 +103,7 @@ export default function PracticeDetail() {
         })
       }
 
-    console.log(data);
+    // console.log(data);
     const bookmark = heart ? <FontAwesomeIcon icon={faHeart} /> : <FontAwesomeIcon icon={empty} />
 
     return (
