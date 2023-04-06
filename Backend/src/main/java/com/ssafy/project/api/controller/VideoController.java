@@ -25,7 +25,7 @@ public class VideoController {
     private final VideoService videoService;
 
     @Secured({"ROLE_CLIENT"})
-    @PostMapping(value = "/save", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/save")
     @ApiOperation(value = "비디오 저장")
     public ResponseEntity<ResponseDTO> videoSave(@RequestBody VideoAddReqDTO videoAddReqDTO) {
         videoService.saveVideo(videoAddReqDTO);

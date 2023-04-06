@@ -28,12 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class VideoServiceImpl implements VideoService {
 
-    private final S3Provider s3Provider;
     private final VideoRepository videoRepository;
     private final ParticipantRepository participantRepository;
     private final UserRepository userRepository;
     private final ScriptRepository scriptRepository;
     private final AuthProvider authProvider;
+//    private final S3Provider s3Provider;
 //    private final S3Utils s3Utils;
 
     @Transactional
