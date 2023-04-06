@@ -546,7 +546,7 @@ const FaceDetect = (props) => {
     const num=res.data.value;
     axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
-     console.log(response.data);
+    //  console.log(response.data);
      let video = new File([response.data], num+vid+userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
@@ -589,7 +589,7 @@ const FaceDetect = (props) => {
       videoUrl:url+num+vid+userid+"video.mp4"
     }
     console.log(data)
-    axios.post("https://j8b301.p.ssafy.io:8080/app/video/save", data,{
+    axios.post("https://j8b301.p.ssafy.io/app/video/save", data,{
       headers: {
         Authorization: token,
       },
