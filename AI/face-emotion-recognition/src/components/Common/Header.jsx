@@ -24,17 +24,21 @@ export default function Header() {
   };
 
   const logoutHandler = () => {
-    axios.get(`https://j8b301.p.ssafy.io/app/user/logout`, {
-      headers: {
-        Authorization: token,
-      },
-    }).then((res) => {
-      setLoginUser(null);
-      setToken('');
-      setIsLogin(false);
-      navigate('/');
+    // axios.get(`https://j8b301.p.ssafy.io/app/user/logout`, {
+    //   headers: {
+    //     Authorization: token,
+    //   },
+    // }).then((res) => {
+    //   setLoginUser(null);
+    //   setToken('');
+    //   setIsLogin(false);
+    //   navigate('/');
 
-    })
+    // })
+    setLoginUser(null);
+    setToken('');
+    setIsLogin(false);
+    navigate('/');
     
   };
 
