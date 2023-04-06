@@ -41,9 +41,10 @@ export default function Modal() {
       })
       .then((res) => {
         console.log(res);
-      }).then(() => {
-          window.location.replace("community");
       })
+      .then(() => {
+        window.location.replace('community');
+      });
 
     closeModal();
   };
