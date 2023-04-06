@@ -38,12 +38,11 @@ const formats = [
   'image',
   'video',
 ];
-export default function Home() {
+export default function Home(props) {
   const [text, setText] = useState('');
 
   const handleEditorChange = (value) => {
     setText(value);
-    console.log(text);
   };
 
   return (
@@ -52,7 +51,7 @@ export default function Home() {
       modules={modules}
       formats={formats}
       theme="snow"
-      onChange={handleEditorChange}
+      onChange={props.handleEditorChange}
       placeholder="내용을 입력하세요."
     />
   );

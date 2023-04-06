@@ -25,7 +25,7 @@ import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import AWS from 'aws-sdk';
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
@@ -35,7 +35,7 @@ import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import { tokenState, user } from '../states/loginState';
 import { useRecoilState, useRecoilValue } from 'recoil';
-
+import { writeState } from '../states/practiceFilterState';
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
   const chartRef = useRef(null);
@@ -57,7 +57,9 @@ const FaceDetect = (props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const getwrite = useRecoilValue(writeState);
+  const navigate = useNavigate();
+  
   const {
     setCurrentExpression,
     setEmoji,
@@ -109,7 +111,7 @@ const FaceDetect = (props) => {
     region: REGION,
   });
   useEffect(() => {
-    console.log(1)
+    console.log(getwrite)
     
 
     if(!webcamOn){
@@ -577,9 +579,9 @@ const FaceDetect = (props) => {
      
     });
   });
-
+    
     const data={
-      analysis:text+"!!!"+gettext,
+      analysis:text+"!?,"+gettext+"!?,"+getwrite,
       graphUrl:url+num+vid+userid+"img.jpg",
       participantId:res.data.value,
       thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
@@ -594,6 +596,7 @@ const FaceDetect = (props) => {
     })
     .then((response) => {
       console.log(response)
+      navigate(`/storage`);
   });
   })
  }
