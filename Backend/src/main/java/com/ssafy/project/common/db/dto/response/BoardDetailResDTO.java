@@ -26,9 +26,9 @@ public class BoardDetailResDTO {
     @Schema(description = "내용")
     private String content;
     @Schema(description = "좋아요수")
-    private Long likeCnt;
+    private int likeCnt;
     @Schema(description = "댓글수")
-    private Long commentCnt;
+    private int commentCnt;
     @Schema(description = "비디오url")
     private String videoUrl;
 }

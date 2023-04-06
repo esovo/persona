@@ -4,6 +4,7 @@ import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
 import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
+import com.ssafy.project.common.db.dto.response.BoardDetailResDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import org.springframework.data.domain.Page;
 
@@ -15,7 +16,7 @@ public interface BoardService {
     Page<BoardAllResDTO> findAllBoard(int page, String sort, String keyword);
     List<BoardAllResDTO> findTopBoard();
     Page<BoardAllResDTO> findMyBoard(int page);
-    BoardAllResDTO detailBoard(Long boardId);
+    BoardDetailResDTO detailBoard(Long boardId);
     //등록
     void addBoard(BoardAddReqDTO boardAddReqDTO);
     //수정

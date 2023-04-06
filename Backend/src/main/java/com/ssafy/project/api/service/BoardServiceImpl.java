@@ -3,6 +3,7 @@ package com.ssafy.project.api.service;
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
 import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
+import com.ssafy.project.common.db.dto.response.BoardDetailResDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
@@ -63,21 +64,23 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardAllResDTO detailBoard(Long boardId) {
+    public BoardDetailResDTO detailBoard(Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
 
         board.setViewCnt(board.getViewCnt()+1L);
 
-        BoardAllResDTO boardResDTO = BoardAllResDTO.builder()
+        BoardDetailResDTO boardDetailResDTO = BoardDetailResDTO.builder()
                 .id(board.getId())
                 .nickName(board.getUser().getNickname())
                 .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .viewCnt(board.getViewCnt())
                 .likeCnt(board.getBoardLikes().size())
                 .commentCnt(board.getComments().size())
+                .videoUrl(board.getVideo().getVideoUrl())
                 .build();
-        return boardResDTO;
+        return boardDetailResDTO;
     }
     @Override
     public void addBoard(BoardAddReqDTO boardAddReqDTO) {
