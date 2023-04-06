@@ -49,15 +49,15 @@ public class VideoServiceImpl implements VideoService {
         User user = userRepository.findById(authProvider.getUserIdFromPrincipal())
                 .orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
 
-        List<String> uris;
-        
-        uris = s3Utils.upload(videoCreateReqDTO.getVideoFile(), videoCreateReqDTO.getGraphFile());
+//        List<String> uris;
+
+//        uris = s3Utils.upload(videoCreateReqDTO.getVideoFile(), videoCreateReqDTO.getGraphFile());
 
         videoRepository.save(Video.builder()
                 .title(videoCreateReqDTO.getTitle())
-                .videoUrl(uris.get(0))
-                .thumbnailUrl(uris.get(1))
-                .graphUrl(uris.get(2))
+                .videoUrl(videoCreateReqDTO.getVideoUrl())
+                .thumbnailUrl(videoCreateReqDTO.getThumbnailUrl())
+                .graphUrl(videoCreateReqDTO.getGraphUrl())
                 .analysis(videoCreateReqDTO.getAnalysis())
                 .user(user)
                 .participant(participant)

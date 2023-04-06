@@ -8,13 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class VideoCreateReqDTO {
 
-    MultipartFile videoFile;
-
-    MultipartFile graphFile;
-
+    String videoUrl;
+    String thumbnailUrl;
+    String graphUrl;
     String title;
-
     Long participantId;
-
     String analysis;
 }
