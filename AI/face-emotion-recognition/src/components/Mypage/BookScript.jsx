@@ -27,14 +27,16 @@ export default function Script({ id, actor, author, createdDate, emotion, genre,
         <div className={style.date}>작성일 | {moment.utc(createdDate).utcOffset('+0900').format('YYYY-MM-DD')}</div>
           <div className={style.bookmark}>{bookmark}</div>
         </div>
+
         <div className={style.scriptContent}>
           
-          <div className={style.title}>{title}</div>
-          <div className={style.actor}>{actor}</div>
+          <h2 className={style.title}>{title}</h2>
+          <h3 className={style.actor}>{actor}</h3>
           <div className={style.category}>
             <div className={style.round}>#{emotion}</div>
             <div className={style.round}>#{genre}</div>
           </div>
+          
           <div className={style.line}></div>
           <div className={style.subinfo}>
             <div className={style.author}>{author}</div>
@@ -46,6 +48,7 @@ export default function Script({ id, actor, author, createdDate, emotion, genre,
             </div>
           </div>
         </div>
+
       </div>      
     </div>
   );

@@ -10,5 +10,5 @@ public interface S3Provider {
 
     String uploadFile(File file, String uri);
     String uploadMultipartFile(MultipartFile file, String uri);
-    void delete(String uri, int start);
+    void delete(String uri);
 }
