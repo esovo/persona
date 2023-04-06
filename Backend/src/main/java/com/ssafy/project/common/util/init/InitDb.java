@@ -121,7 +121,7 @@ public class InitDb {
             em.persist(video3);
             Video video4 = createVideo("쇼생크 탈출","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/fileName.jpg", "https://img.youtube.com/vi/7yMxYwKpz6E/0.jpg", "강렬하게 연기할 것",1L, 5L);
             em.persist(video4);
-            Video video5 = createVideo("포레스트 검프","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/fileName.jpg", "https://img.youtube.com/vi/fGpvI4bdafA/0.jpg", "강렬하게 연기할 것",1L, 6L);
+            Video video5 = createVideo("포레스트 검프","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/fileName.jpg", "https://img.youtube.com/vi/fGpvI4bdafA/0.jpg", "강렬하게 연기할 것!?,안녕!?,내가 분석한내용",1L, 6L);
             em.persist(video5);
             Video video6 = createVideo("오징어 게임","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4","https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/fileName.jpg", "https://img.youtube.com/vi/uA8ukrhRZ9w/0.jpg", "강렬하게 연기할 것",1L, 7L);
             em.persist(video6);

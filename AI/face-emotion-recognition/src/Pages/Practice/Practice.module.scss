@@ -44,16 +44,19 @@
   
       
       .search {
-        width: 80%;
+        width: 800px;
         display: flex;
         flex-direction: row;
         margin-top: 3vh;
+        justify-content: center;
+        border: 2px solid #b7bfcd;
+        margin-bottom: 8px;
 
         .selectbox {
           width: 130px;
           height: 40px;
-          
-
+          border: none;
+          margin-left: 15px;
         }
 
         .searchText {
@@ -72,6 +75,8 @@
           background: transparent;
           border: none;
           cursor: pointer;
+          margin-left: 15px;
+          margin-right: 15px;
         }
 
       }
