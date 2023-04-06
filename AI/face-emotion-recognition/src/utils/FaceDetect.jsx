@@ -317,7 +317,6 @@ const FaceDetect = (props) => {
   socket.onmessage = function(event) {
 
     var pred_log = JSON.parse(event.data)
-    console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
     
     setEmoji((previousEmoji) => {
@@ -564,45 +563,41 @@ const FaceDetect = (props) => {
       const blob= dataURItoBlob(dataURI)
       let thm = new File([blob], num+vid+userid+"thmimg.jpg", { type: "image/jpeg" })
       uploadFile(thm);
-    });
-    // can.getContext('2d').drawImage(videoEl.current, 0, 0, videoEl.current.clientWidth, 
-    // videoEl.current.clientHeight);
-    // let thm=can.getContext('2d').drawImage(videoEl.current,0,0,)
-    // let dataURI = can.toDataURL('image/jpeg');
-
-    // console.log(dataURI)
-    https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/uservideo.mp4
-    canvas.toBlob((blob) => {
+      canvas.toBlob((blob) => {
         let file = new File([blob], num+vid+userid+"img.jpg", { type: "image/jpeg" })
         uploadFile(file)
       }, 'image/jpeg');
-     
+
+      const data={
+        analysis:text+"!?,"+gettext+"!?,"+getwrite,
+        graphUrl:url+num+vid+userid+"img.jpg",
+        participantId:res.data.value,
+        thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
+        title: title,
+        videoUrl:url+num+vid+userid+"video.mp4"
+      }
+      console.log(data)
+      axios.post("https://j8b301.p.ssafy.io/app/video/save", data,{
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response)
+        navigate(`/storage`);
+      });
+
+      });
     });
-  });
+
+   
     
-    const data={
-      analysis:text+"!?,"+gettext+"!?,"+getwrite,
-      graphUrl:url+num+vid+userid+"img.jpg",
-      participantId:res.data.value,
-      thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
-      title: title,
-      videoUrl:url+num+vid+userid+"video.mp4"
-    }
-    console.log(data)
-    axios.post("https://j8b301.p.ssafy.io/app/video/save", data,{
-      headers: {
-        Authorization: token,
-      },
-    })
-    .then((response) => {
-      console.log(response)
-      navigate(`/storage`);
-  });
+  });    
   })
  }
 
  const uploadFile = (file) => {
-  // console.log(S3_BUCKET)
+  // console.log(file)
   const params = {
     ACL: 'public-read',
     Body: file,
