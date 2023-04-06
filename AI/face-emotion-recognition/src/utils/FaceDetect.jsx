@@ -29,8 +29,10 @@ import { useLocation } from "react-router";
 import AWS from 'aws-sdk';
 import html2canvas from "html2canvas";
 import {jsPDF} from "jspdf";
-
-
+import { Modal } from "@mui/material";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
 const FaceDetect = (props) => {
   const webcamRef = useRef(null);
   const chartRef = useRef(null);
@@ -38,6 +40,20 @@ const FaceDetect = (props) => {
 
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const {
     setCurrentExpression,
@@ -50,15 +66,14 @@ const FaceDetect = (props) => {
     canvasRef
 
   } = useDashboardContext();
-
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
-
-
+  const valueRef = useRef('')
+  const videoEl = useRef(null);
   const {
     webcamOn,
     webcamOff,
@@ -506,19 +521,26 @@ const FaceDetect = (props) => {
  function save(){
   const userid="user"
   const gettext= recordtext;
+  const title= valueRef.current.value
+  console.log(title)
   axios.get(mediaBlobUrl, { responseType : "blob"})
   .then((response) => {
      console.log(response.data);
      let video = new File([response.data], userid+"video.mp4", {
       lastModified: new Date().getTime(),
       type: "video/mp4",
-    });
-
+  });
+    
     const graph= html2canvas(document.querySelector(".chart")).then((canvas) => {
     // const imgData = canvas.toDataURL("image/jpeg");
-      canvas.toBlob((blob) => {
+    var can = document.getElementById('canvas');
+    console.log(videoEl.current.clientWidth)
+    can.getContext('2d').drawImage(videoEl.current, 0, 0, videoEl.current.clientWidth, videoEl.current.clientHeight);
+    console.log()
+    let dataURI = can.toDataURL('image/jpeg');
+    console.log(dataURI)
+    canvas.toBlob((blob) => {
         let file = new File([blob], userid+"img.jpg", { type: "image/jpeg" })
-        return file;
       }, 'image/jpeg');
     });
     console.log(graph)
@@ -582,6 +604,7 @@ const FaceDetect = (props) => {
             style={{ width: '50%', height: '50%', objectFit: 'cover' }}
             className="recordvideo"
             src={mediaBlobUrl}
+            ref={videoEl}
             autoPlay
             controls
           />
@@ -597,6 +620,9 @@ const FaceDetect = (props) => {
               </div>
               <hr />
               <hr />
+              <canvas id="canvas" style={{
+                display:"none"
+                }}></canvas>
 
               <ReactDiffViewer
                 styles={{
@@ -618,13 +644,36 @@ const FaceDetect = (props) => {
             <Button
               variant="contained"
               onClick={() => {
-                save();
+                handleOpen()
+                // save();
               }}
               color="error">
               저장하기
             </Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  제목을 입력해 주세요
+                </Typography>
+                <Input inputRef={valueRef} />
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    save();
+                  }}
+                  color="error">
+                  확인
+                </Button>
+              </Box>
+            </Modal>
           </div>
         </div>
+        
       ) : (
         <>
           <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />

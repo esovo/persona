@@ -14,7 +14,7 @@ spring:
       # default 0
       file-size-threshold: 0MB
       #      location을 설정하지 않으면 System.getProperty("java.io.tmpdir"); 경로에 저장
-      location: /ubuntu/var/www/html/
+      location: /var/www/html/
       #      default 1MB
       max-file-size: 100MB
       #      default 10MB
@@ -81,7 +81,7 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
