@@ -16,6 +16,7 @@ export default function Savepage(props) {
   const token = useRecoilValue(tokenState);
   const { pathname } = useLocation();
   const name = pathname.substring(10);
+  const [myrecord, setMyrecord] = useState("");
   useEffect(() => {
     const data={
       videoId:name
@@ -35,6 +36,7 @@ export default function Savepage(props) {
         console.log(textall)
         setText(textall[0])
         setRecordtext(textall[1])
+        setMyrecord(textall[2]);
     });
   
 
@@ -62,6 +64,7 @@ export default function Savepage(props) {
           src={videourl} 
           autoPlay
           controls
+          style={{ width: '800px', height: '50%', objectFit: 'cover', right: '30px' }}
         />
         <img src={imgurl} onClick={(e) => {
           handleClick(e);
@@ -92,6 +95,16 @@ export default function Savepage(props) {
             </div>
 
         </div>
+        <div className={style.container}>
+            <h1 className={style.mytitle}>분석내용</h1>
+            
+            <div className={style.mywrite}>
+              <div className={style.writewrap}>
+                {myrecord}
+              </div>
+            </div>
+            
+          </div>
       </div>
       </>
   );
