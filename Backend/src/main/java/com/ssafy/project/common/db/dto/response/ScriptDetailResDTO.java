@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class ScriptDetailResDTO {
-
     private Long id;
     private String title;
     private String author;

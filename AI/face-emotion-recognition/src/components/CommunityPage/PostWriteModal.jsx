@@ -20,7 +20,7 @@ export default function Modal() {
     setShowModal(false);
   };
 
-  const openVideoModal = () => {
+  const openVideoModal = (props) => {
     setShowVideoModal(true);
   };
 
@@ -41,7 +41,9 @@ export default function Modal() {
       })
       .then((res) => {
         console.log(res);
-      });
+      }).then(() => {
+          window.location.replace("community");
+      })
 
     closeModal();
   };

@@ -39,7 +39,7 @@ function App() {
                     </React.Suspense>
                   }
                 />
-                <Route path="/savepage" element={<Savepage />} />
+                <Route path="/savepage/:videoid" element={<Savepage />} />
                 <Route path="/error" element={<Error />} />
               </Routes>
             </SettingsContextProvider>

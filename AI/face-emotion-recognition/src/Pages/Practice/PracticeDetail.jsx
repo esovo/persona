@@ -26,7 +26,7 @@ export default function PracticeDetail() {
     const [write, setWrite] = useRecoilState(writeState);
 
     const [heart, setHeart] = useState(false);
-
+    const [text, setText] = useState('');
     const navigate = useNavigate();
 
     const back = () => {
@@ -35,7 +35,8 @@ export default function PracticeDetail() {
 
     const go = () => {
         const content = document.querySelector(`.ql-editor`).innerHTML;
-        setWrite(content);
+        const text2= text
+        setWrite(text2);
         navigate(`/dashboard/${getId}`);
     }
 
@@ -64,6 +65,11 @@ export default function PracticeDetail() {
         }
 
     }, []);
+
+    const handleEditorChange = (value) => {
+        // console.log(value.substring(3,value.length - 4))
+        setText(value.substring(3,value.length - 4));
+    };
 
     const check = () => {
         axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
@@ -140,7 +146,7 @@ export default function PracticeDetail() {
                         
 
                     </div>
-                    <div className={style.edit}><QuillEditor /></div>
+                    <div className={style.edit}><QuillEditor handleEditorChange={handleEditorChange}/></div>
                 </div>
                 <div className={style.route}>
                     <div className={style.button} onClick={back} >목록</div>

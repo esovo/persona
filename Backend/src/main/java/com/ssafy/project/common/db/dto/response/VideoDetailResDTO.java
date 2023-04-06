@@ -18,5 +18,6 @@ public class VideoDetailResDTO {
     private String author;
     private String videoUrl;
     private String graphUrl;
+    private String analysis;
     private String createdDate;
 }

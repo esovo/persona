@@ -17,9 +17,9 @@ const MyInfo = () => {
             <div>소셜로그인</div>
           </div>
           <div className={style.userText}>
-            {/* <div>{userInfo.nickname}</div>
+            <div>{userInfo.nickname}</div>
                         <div>{userInfo.email} dumydumy@naver.com</div>
-                        <div>{userInfo.email} Naver</div> */}
+                        <div>{userInfo.email} Naver</div>
           </div>
         </div>
       </div>

@@ -14,48 +14,40 @@ import { useNavigate } from 'react-router-dom';
 import { tokenState } from '../../states/loginState';
 
 export default function List() {
-  let videos = useRecoilValue(videosState);
-  const [currentPage, setCurrentPage] = useState(1);
+  let currentPage = 1;
   const token = useRecoilValue(tokenState);
   const [totalPage, setTotalPage] = useState(3);
   const navigate = useNavigate();
-  // let videos = [];
+  const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     console.log(videos);
     axios.get(videoApis.VIDEO_GET_API(currentPage-1), {
       headers: { Authorization: token }}).then((res) => {
-      console.log(res);
       console.log(res.data.value.content);
-      videos = res.data.value.content;
-      setTotalPage(res.data.value.totalPages); //받아온 totalPage 넣어주기
-      setCurrentPage(1);
-      console.log(totalPage);
-      console.log(currentPage);
+      setVideos(res.data.value.content);
+      setTotalPage(res.data.value.totalPages);
     })
   }, [])
 
   const pagenationHandler = (event, page) => {
     //axios 요청해서 videos 바꿔주기
-    setCurrentPage(page);
+    // setCurrentPage(page);
+    currentPage = page;
     console.log(event + " " + page + " " + currentPage);
 
     axios.get(videoApis.VIDEO_GET_API(currentPage-1), {
       headers: { Authorization: token }}).then((res) => {
-      console.log(res);
       console.log(res.data.value.content);
-      videos = res.data.value.content;
-      setTotalPage(res.data.value.totalPages); //받아온 totalPage 넣어주기
-      setCurrentPage(page);
-      console.log(totalPage);
-      console.log(currentPage);
+      setVideos(res.data.value.content);
+      setTotalPage(res.data.value.totalPages);
     })
   }
 
   const selectedVideo = (videoId) =>{
     //화면전환
     console.log(videoId);
-    navigate('/savepage', {
+    navigate('/savepage/'+videoId, {
       state: {
         id: videoId
       }
@@ -76,7 +68,7 @@ export default function List() {
           ))}
         </div>
       </div>
-      <Pagination sx={{margin: "0 auto"}} count={totalPage} page={currentPage} onChange={pagenationHandler}/>
+      <Pagination sx={{margin: "0 auto"}} count={totalPage} onChange={pagenationHandler}/>
       {/* <Footer /> */}
     </div>
   );

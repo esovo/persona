@@ -1,14 +1,13 @@
 package com.ssafy.project.common.db.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Builder
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -26,9 +25,9 @@ public class BoardDetailResDTO {
     @Schema(description = "내용")
     private String content;
     @Schema(description = "좋아요수")
-    private Long likeCnt;
+    private int likeCnt;
     @Schema(description = "댓글수")
-    private Long commentCnt;
+    private int commentCnt;
     @Schema(description = "비디오url")
     private String videoUrl;
 }
