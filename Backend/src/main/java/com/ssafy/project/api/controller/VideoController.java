@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
@@ -23,6 +24,7 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    @Secured({"ROLE_CLIENT"})
     @PostMapping(value = "/save", consumes = {"multipart/form-data"})
     @ApiOperation(value = "비디오 저장")
     public ResponseEntity<ResponseDTO> videoSave(@ModelAttribute VideoCreateReqDTO videoCreateReqDTO) throws FileNotFoundException {
@@ -35,6 +37,7 @@ public class VideoController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
+    @Secured({"ROLE_CLIENT"})
     @DeleteMapping
     @ApiOperation(value = "비디오 삭제")
     public ResponseEntity<ResponseDTO> videoDelete(@RequestParam Long videoId){
@@ -42,12 +45,14 @@ public class VideoController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
 
+    @Secured({"ROLE_CLIENT"})
     @GetMapping
     @ApiOperation(value = "내 비디오 조회")
     public ResponseEntity<ResponseDTO> videoList(@RequestParam int page) {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, videoService.findAllVideo(page)));
     }
 
+    @Secured({"ROLE_CLIENT"})
     @GetMapping("/{videoId}")
     @ApiOperation(value = "내 비디오 상세조회")
     public ResponseEntity<ResponseDTO> videoDetail(@PathVariable Long videoId) {
