@@ -1,14 +1,12 @@
 package com.ssafy.project.common.db.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
