@@ -51,6 +51,8 @@ public class S3Utils {
 
             // 섬네일 임시파일 생성
             File thumbnailFile = new File(EC2_DIR_PATH + thumbnailUri);
+            thumbnailFile.createNewFile();
+
             // 비디오 임시파일 생성
             File videoFile = new File(EC2_DIR_PATH + videoUri);
 
@@ -71,11 +73,16 @@ public class S3Utils {
 
             // boolean값 반환, false일 경우 파일이 남아있을 위험이 있으므로 처리해야 함
             videoFile.delete();
+            thumbnailFile.delete();
 
             return Uris;
 
         }
-        catch (Exception e) { throw new CommonApiException(CommonErrorCode.FILE_NOT_VALID); }
+        catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            log.error(e.getLocalizedMessage());
+            throw new CommonApiException(CommonErrorCode.FILE_NOT_VALID); }
     }
 
     public String makeUri(MultipartFile file) {
