@@ -10,14 +10,19 @@ app:
     tokenExpirationMsec: 86400000
 
 mysql:
-  port: mysql-db:3306
-  user: STEPUP
-  pwd: "!stepup@persona#301"
+#  port: mysql-db:3306
+#  user: STEPUP
+#  pwd: "!stepup@persona#301"
+  port: localhost:3306
+  user: root
+  pwd: ssafy
 
 redis:
   host: redis-db
-  port: 6379
-  pwd: ssafy3542
+  port: localhost
+#  port: 6379
+#  pwd: ssafy3542
+  pwd:
 
 oauth2:
   google:
