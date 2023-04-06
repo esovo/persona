@@ -60,8 +60,18 @@ export default function Script({ data }) {
     }
 
     useEffect(() => {
+        axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
+          headers: {
+              Authorization: token
+          },      
+          params: {
+              scriptId: data.id
+          } 
+      }).then((res) => {
+        setHeart(res.data.value);
 
-    }, [bookmark])
+      })
+    }, [])
       
 
     

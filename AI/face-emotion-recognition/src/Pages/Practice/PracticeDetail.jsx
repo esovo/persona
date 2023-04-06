@@ -57,7 +57,18 @@ export default function PracticeDetail() {
             console.log(typeof(receivedData.createdDate))
             let text =receivedData.createdDate.substring(0,10);
             console.log(text);
-            setDate(text)
+            setDate(text);
+            axios.get(`https://j8b301.p.ssafy.io/app/bookmark/check`, {
+                headers: {
+                    Authorization: token
+                },      
+                params: {
+                    scriptId: getId
+                } 
+            }).then((res) => {
+                setHeart(res.data.value);
+            })
+            
         });
 
         return () => {
