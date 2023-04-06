@@ -1,17 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import style from "./Main.module.scss";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import Header from "../../components/Common/Header";
+import style from './Main.module.scss';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import Header from '../../components/Common/Header';
 import axios from 'axios';
 
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { tokenState, user, loginState } from "../../states/loginState";
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { tokenState, user, loginState } from '../../states/loginState';
 
 export default function Footer() {
-
   const [token, setToken] = useRecoilState(tokenState);
   const [userinfo, setUserinfo] = useRecoilState(user);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
@@ -19,54 +18,33 @@ export default function Footer() {
 
   const save = (data) => {
     setUserinfo(data);
-  }
-  
-  
+  };
+
   useEffect(() => {
     console.log('메인페이지로 토큰이 잘 넘어왔다능 : ' + token);
-    axios.get(`${API_BASE_URL}/user`, {
-      headers: {
-        'Authorization': token
-      }
-    })
-    .then((res) => {
-      if (token.length !== 0) {
-        console.log(res);
-        const data = res.data.value;
-        save({
-          nickname: data.nickname,
-          mymail: data.email,
-          img: data.imageUrl,
-        });
-        // setUserinfo({
-        //   nickname: data.nickname,
-        //   email: data.email,
-        //   img: data.imageUrl,
-        // });
-        setIsLogin(true);
-        console.log(userinfo);
-
-        // return(() => {
-        //   setUserinfo({
-        //     nickname: data.nickname,
-        //     email: data.email,
-        //     img: data.imageUrl,
-        //   });
-        //   console.log(userinfo);
-
-        // })
-        
-        
-      }
-    })
-    
+    axios
+      .get(`${API_BASE_URL}/user`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        if (token.length !== 0) {
+          console.log(res);
+          const data = res.data.value;
+          save({
+            nickname: data.nickname,
+            mymail: data.email,
+            img: data.imageUrl,
+          });
+          setIsLogin(true);
+          console.log(userinfo);
+        }
+      });
 
     AOS.init();
-    document
-      .querySelectorAll("div")
-      .forEach((img) => img.addEventListener("load", () => AOS.refresh()));
+    document.querySelectorAll('div').forEach((img) => img.addEventListener('load', () => AOS.refresh()));
   }, []);
-
 
   return (
     <>
@@ -79,7 +57,7 @@ export default function Footer() {
           지금 그 자체로도 매력적인 당신 <br />
           자연스러운 표정과 선명한 발음으로 한층 더 멋지게!
         </div>
-        <img src="Main_home.jpg" alt="home" width="1200" height="500" />
+        <img src="Main_home.webp" alt="home" width="1200" height="500" />
       </div>
       <div className={style.introduce}>
         <h1>연기에 관심이 있는데 시작이 어려웠나요?</h1>
@@ -102,19 +80,12 @@ export default function Footer() {
           </div>
         </div>
         <div className={style.right}>
-          <img src="Main_smart.jpg" alt="smart" width="500" height="350" data-aos="fade-up" />
+          <img src="Main_smart.webp" alt="smart" width="500" height="350" data-aos="fade-up" />
         </div>
       </div>
       <div className={style.easy}>
         <div className={style.left}>
-          <img
-            src="Main_easy.jpg"
-            alt="easy"
-            width="500"
-            height="350"
-            data-aos="fade-up"
-            data-aos-once="false"
-          />
+          <img src="Main_easy.webp" alt="easy" width="500" height="350" data-aos="fade-up" data-aos-once="false" />
         </div>
         <div className={style.right}>
           <div className={style.title}>#SO EASY</div>
@@ -139,20 +110,13 @@ export default function Footer() {
           </div>
         </div>
         <div className={style.right}>
-          <img
-            src="Main_simple.jpg"
-            alt="simple"
-            width="500"
-            height="400"
-            data-aos="fade-up"
-            data-aos-once="false"
-          />
+          <img src="Main_simple.webp" alt="simple" width="500" height="400" data-aos="fade-up" data-aos-once="false" />
         </div>
       </div>
       <div className={style.exciting}>
         <div className={style.left}>
           <img
-            src="Main_exciting.jpg"
+            src="Main_exciting.webp"
             alt="exciting"
             width="500"
             height="350"
