@@ -5,8 +5,8 @@ import { modal } from '../../states/loginState';
 
 const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
 // const LOCAL_API_BASE_URL = 'http://localhost:8080/app';
-const WEB_REDIRECT_URI = 'https://j8b301.p.ssafy.io/oauth2/token';
-// const WEB_REDIRECT_URI = 'http://localhost:3000/oauth2/token';
+// const WEB_REDIRECT_URI = 'https://j8b301.p.ssafy.io/oauth2/token';
+const WEB_REDIRECT_URI = 'http://localhost:3000/oauth2/token';
 
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(modal);
@@ -21,7 +21,7 @@ export default function Modal() {
       {showModal && (
         <div className={style.back} onClick={shutModal}>
           <div className={style.container}>
-            <div className={style.banner}>로그인 고르셈</div>
+            <h2 className={style.banner}>간편하게 SNS 로그인</h2>
             <div className={style.loginSelect}>
               <a href={`${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${WEB_REDIRECT_URI}`}>
                 {/* <a href={`http://${API_BASE_URL}/app/oauth2/authorization/google`}> */}

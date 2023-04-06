@@ -4,6 +4,7 @@ import { user } from '../../states/loginState';
 
 const MyInfo = () => {
   const [userInfo, setUserInto] = useRecoilState(user);
+  const social = userInfo.mymail.includes('gmail') ? 'GOOGLE' : userInfo.mymail.includes('naver') ? 'NAVER' : 'KAKAO';
   return (
     <div className={style.box}>
       <h1>내정보</h1>
@@ -18,8 +19,8 @@ const MyInfo = () => {
           </div>
           <div className={style.userText}>
             <div>{userInfo.nickname}</div>
-                        <div>{userInfo.email} dumydumy@naver.com</div>
-                        <div>{userInfo.email} Naver</div>
+            <div>{userInfo.mymail}</div>
+            <div>{social}</div>
           </div>
         </div>
       </div>

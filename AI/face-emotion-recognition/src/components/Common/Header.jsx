@@ -7,6 +7,7 @@ import style from './Header.module.scss';
 import Modal from './LoginModal';
 import DropdownMenu from './DropdownMenu';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Header() {
   const [loginUser, setLoginUser] = useRecoilState(user);
@@ -16,17 +17,25 @@ export default function Header() {
   const [token, setToken] = useRecoilState(tokenState);
   const [data, setData] = useRecoilState(mypageState);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
 
   const startHandler = () => {
     setShowModal(true);
   };
 
   const logoutHandler = () => {
-    setLoginUser(null);
-    setToken('');
-    setIsLogin(false);
-    navigate('/');
+    axios.get(`https://j8b301.p.ssafy.io/app/user/logout`, {
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => {
+      setLoginUser(null);
+      setToken('');
+      setIsLogin(false);
+      navigate('/');
+
+    })
+    
   };
 
   const itemClickHandler = (item) => {
