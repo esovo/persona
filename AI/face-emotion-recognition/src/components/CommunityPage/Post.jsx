@@ -7,12 +7,12 @@ import { faCommentDots, faHeart as regularHeart } from '@fortawesome/free-regula
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
-const Post = ({ id, nickName, createdDate, title, content, likeCnt, commentCnt }) => {
+const Post = ({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
   const [isClicked, setIsClicked] = useState(false);
   const openModal = () => {
-    setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, commentCnt });
+    setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt });
     setShowDetailModal(true);
   };
   const heartClickHandler = () => {

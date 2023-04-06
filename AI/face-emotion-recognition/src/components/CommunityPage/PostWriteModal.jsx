@@ -3,8 +3,7 @@ import React from 'react';
 import style from './PostWriteModal.module.scss';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { communityApis } from '../../apis/communityApis';
-// import { instance } from '../../apis/api';
-import { postWriteModal, videoModal } from '../../states/communityState';
+import { postWriteModal, videoModal, selectedVideo } from '../../states/communityState';
 import QuillEditor from './QuillEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay } from '@fortawesome/free-regular-svg-icons';
@@ -15,6 +14,7 @@ export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(postWriteModal);
   const [showVideoModal, setShowVideoModal] = useRecoilState(videoModal);
   const token = useRecoilValue(tokenState);
+  const selectVideo = useRecoilValue(selectedVideo);
 
   const closeModal = () => {
     setShowModal(false);
@@ -28,11 +28,10 @@ export default function Modal() {
   const writePost = () => {
     const title = document.querySelector(`.${style.input}`).value; // 제목
     const content = document.querySelector(`.ql-editor`).innerHTML; // 내용
-    const videoId = null;
     const data = {
       title: title,
       content: content,
-      videoId: videoId,
+      videoId: selectVideo,
     };
     axios
       .post(BASE_URL + communityApis.BOARD_POST_API, data, {

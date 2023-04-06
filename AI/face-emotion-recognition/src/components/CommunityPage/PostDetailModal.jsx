@@ -21,6 +21,7 @@ export default function Modal() {
   const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
   const [myuser, setMyuser] = useRecoilState(user);
+  const [board, setBoard] = useState([]);
 
   const shutModal = () => {
     setShowModal(false);
@@ -29,6 +30,19 @@ export default function Modal() {
   const clickDropDown = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    axios
+      .get(BASE_URL + communityApis.BOARD_GET_API(boardId), {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setBoard(res.data.value.content);
+        console.log(res.data.value.content);
+      });
+  }, []);
 
   useEffect(() => {
     const page = 0;
@@ -153,7 +167,7 @@ export default function Modal() {
                 </div>
                 <div className={style.visited}>
                   <FontAwesomeIcon icon={faEye} style={{ color: '#5e5e5e' }} />
-                  <div className={style.num}>10</div>
+                  <div className={style.num}>{selectedPost.viewCnt}</div>
                 </div>
                 <div className={style.comment}>
                   <FontAwesomeIcon icon={faCommentDots} style={{ color: '#5e5e5e' }} />

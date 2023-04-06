@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import style from './VideoModal.module.scss';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { videoModal } from '../../states/communityState';
+import { videoModal, selectedVideo } from '../../states/communityState';
 import { videoApis } from '../../apis/videoApis';
 import { tokenState } from '../../states/loginState';
 import Video from './Video';
@@ -10,7 +10,7 @@ import Video from './Video';
 export default function Modal() {
   const [showModal, setShowModal] = useRecoilState(videoModal);
   const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectVideo, setSelectVideo] = useRecoilState(selectedVideo);
   const token = useRecoilValue(tokenState);
 
   const shutModal = () => {
@@ -24,13 +24,13 @@ export default function Modal() {
         headers: { Authorization: token },
       })
       .then((res) => {
-        console.log(res.data.value.content);
         setVideos(res.data.value.content);
       });
   }, []);
+
   const handleWrite = () => {
-    // 선택된 비디오 데이터를 사용하여 다른 컴포넌트에서 처리할 수 있습니다.
-    console.log(selectedVideo);
+    setSelectVideo(selectVideo.id);
+    shutModal();
   };
 
   return (
@@ -43,7 +43,7 @@ export default function Modal() {
             </div>
             <div className={style.videos}>
               {videos.map((video) => (
-                <Video key={video.id} {...video} onSelect={setSelectedVideo} />
+                <Video key={video.id} {...video} onSelect={setSelectVideo} />
               ))}
             </div>
             <div className={style.bottom}>
