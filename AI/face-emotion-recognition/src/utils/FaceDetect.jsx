@@ -25,15 +25,41 @@ import { AudioRecorder,useAudioRecorder } from 'react-audio-voice-recorder';
 import AudioRecord from "./AudioRecord";
 import ScriptText from "../components/Script/ScriptText";
 import ReactDiffViewer,{ DiffMethod } from 'react-diff-viewer';
-
-
-
+import { useLocation, useNavigate } from "react-router";
+import AWS from 'aws-sdk';
+import html2canvas from "html2canvas";
+import {jsPDF} from "jspdf";
+import { Modal } from "@mui/material";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
+import { tokenState, user } from '../states/loginState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { writeState } from '../states/practiceFilterState';
 const FaceDetect = (props) => {
-  
   const webcamRef = useRef(null);
+  const chartRef = useRef(null);
+  const API_BASE_URL = 'https://j8b301.p.ssafy.io/app';
+
   const { status, startRecording, stopRecording, mediaBlobUrl } =
   useReactMediaRecorder({ video: true });
-
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const getwrite = useRecoilValue(writeState);
+  const navigate = useNavigate();
+  
   const {
     setCurrentExpression,
     setEmoji,
@@ -41,39 +67,55 @@ const FaceDetect = (props) => {
     setMountedVideoComponent,
     setRecordedvideo,
     recordedvideo,
+    recordedExpressions,
     canvasRef
-  } = useDashboardContext();
 
+  } = useDashboardContext();
+  const { pathname } = useLocation();
+  const name = pathname.substring(11);
+  const token = useRecoilValue(tokenState);
   const [stream, setStream] = useState();
   const [media, setMedia] = useState();
   const [onRec, setOnRec] = useState(true);
   const [source, setSource] = useState();
   const [analyser, setAnalyser] = useState();
   const [audioUrl, setAudioUrl] = useState();
-
-
-  const recorderControls = useAudioRecorder()
-
-  const addAudioElement = (blob) => {
-    const url = URL.createObjectURL(blob);
-    const audio = document.createElement("audio");
-    audio.src = url;
-    audio.controls = true;
-    document.body.appendChild(audio);
-  };
-
+  const [ongraph, setongraph] = useState(false);
+  const valueRef = useRef('')
+  const videoEl = useRef(null);
   const {
     webcamOn,
     webcamOff,
     overlayOn,
-    setWebcamOff
+    setWebcamOff,
+    setWebcamOn
   } = useSettingsContext();
   let faceDetectionArray = [];
   const [endcam,setendcam] = useState(false);
   const [bloburl,setbloburl]=useState(mediaBlobUrl);
-  const [text,setText] =useState("아주 긴 텍스트를 작성하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다.");
-  const [recordtext,setRecordtext] =useState("아주 긴 텍스트를 작석하고 있습니다. 이 텍스트는 아주 아주 길어서 엘리먼트 박스를 넘어갑니다다.");
+  const [text,setText] =useState(props.text);
+  const [recordtext,setRecordtext] =useState("");
+  const [partnum,setpartnum] =useState(0);
+  
+  const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
+  const SECRET_ACCESS_KEY = "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";
+  const REGION = "ap-northeast-2";
+  const S3_BUCKET = "step-up-bucket";
+
+  AWS.config.update({
+    accessKeyId: ACCESS_KEY,
+    secretAccessKey: SECRET_ACCESS_KEY
+  });
+
+  const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET},
+    region: REGION,
+  });
   useEffect(() => {
+    // if(webcamOff){
+    //   setWebcamOff(false);
+    // }
+
     if(!webcamOn){
       setendcam(true)
     }else{
@@ -127,13 +169,15 @@ const FaceDetect = (props) => {
       model: 'short',
       minDetectionConfidence: 0.5
     });
-
     if(webcamOn){
       startRecording()
       onRecAudio()
       setRecordedvideo(mediaBlobUrl)
     }else{
-      stopRecording()
+      // stopRecording()
+    }
+    if(ongraph){
+      // startRecording()
     }
 
     faceDetection.onResults(faceDetectionOnResults);
@@ -239,9 +283,7 @@ const FaceDetect = (props) => {
   
 
   const onResults = async (results) => {
-  if(overlayOn){
 
-  }
   const videoWidth = webcamRef.current.video.videoWidth;
   const videoHeight = webcamRef.current.video.videoHeight;
   canvasRef.current.width = videoWidth;
@@ -261,7 +303,7 @@ const FaceDetect = (props) => {
   );
 
   // Websocket
-  var socket = new WebSocket('ws://localhost:8000')
+  var socket = new WebSocket('wss://j8b301.p.ssafy.io/api/socket')
   var imageSrc = webcamRef.current.getScreenshot()
   var apiCall = {
     event: "localhost:subscribe",
@@ -276,8 +318,8 @@ const FaceDetect = (props) => {
   socket.onmessage = function(event) {
 
     var pred_log = JSON.parse(event.data)
-    // console.log(pred_log);
     const formattedExpression = formatExpression(pred_log);
+    
     setEmoji((previousEmoji) => {
       if (formattedExpression === undefined || formattedExpression === null) {
         return previousEmoji;
@@ -302,6 +344,7 @@ const FaceDetect = (props) => {
       }
       return recordExpression(recordedExpressions, formatExpression(pred_log));
     });
+    setongraph(true);
     
   }
 
@@ -345,7 +388,6 @@ const FaceDetect = (props) => {
   }
         
     canvasCtx.restore();
-
   };
 
 
@@ -359,6 +401,12 @@ const FaceDetect = (props) => {
     stopRecording()
     offRecAudio()
     setWebcamOff(true);
+    
+    let stream = webcamRef.current.video.srcObject;
+    const tracks = stream.getTracks();
+    
+    tracks.forEach(track => track.stop());
+    webcamRef.current.video.srcObject = null;
     // recorderControls.stopRecording()
     return stopRecording()
   }
@@ -371,7 +419,7 @@ const FaceDetect = (props) => {
   }
 
   const onRecAudio = () => {
-    // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+    // 음원보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
     const analyser = audioCtx.createScriptProcessor(0, 1, 1);
@@ -386,6 +434,7 @@ const FaceDetect = (props) => {
       analyser.connect(audioCtx.destination);
     }
     // 마이크 사용 권한 획득
+    console.log(111)
     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
@@ -455,7 +504,7 @@ const FaceDetect = (props) => {
     try {
       console.log("axios 시작");
       axios
-        .post("http://127.0.0.1:8000/audio/", formData, {
+        .post("https://j8b301.p.ssafy.io/api/audio/", formData, {
           headers: {
             "Content-Type": "audio/mpeg",
           },
@@ -471,91 +520,241 @@ const FaceDetect = (props) => {
     }
   });
 
-  const newStyles = {
-    variables: {
-      light: {
-        highlightBackground: '#fffbdd',
-        highlightGutterBackground: '#fff5b1',
-      },
-      dark: {
-        highlightBackground: '#fefed5',
-        highlightGutterBackground: '#ffcd3c',
-      },
+
+//  function emotionAnalyze(text){
+//   // const config = { headers: {'Content-Type': 'application/json'} }
+
+//   // axios.post("http://j8b301.p.ssafy.io:8000/api/ai/emotion", JSON.stringify({script:{text}}),config)
+//   // // axios.post("http://127.0.0.1:8000/ai/emotion", JSON.stringify({script:{text}}),config)
+//   //       .then((response) => {
+//   //         console.log(response);
+          
+//   //         // console.log(response.data.filename);
+//   //       });
+//  }
+
+ function save(){
+  const url="https://step-up-bucket.s3.ap-northeast-2.amazonaws.com/";
+  const userid="user"
+  const gettext= recordtext;
+  const vid=props.script;
+  const title= valueRef.current.value
+  console.log(title)
+  axios.post(API_BASE_URL+"/participant",
+  {
+    "scriptId": name
+  },{
+    headers: {
+      Authorization: token,
     },
-    line: {
-      padding: '10px 2px',
-      '&:hover': {
-        background: '#a26ea1',
-      },
-    },
+  }
+  ).then((res)=>{
+    setpartnum(res.data.value)
+    const num=res.data.value;
+    axios.get(mediaBlobUrl, { responseType : "blob"})
+  .then((response) => {
+    //  console.log(response.data);
+     let video = new File([response.data], num+vid+userid+"video.mp4", {
+      lastModified: new Date().getTime(),
+      type: "video/mp4",
+    });
+    uploadFile(video);
+    html2canvas(document.querySelector(".chart")).then((canvas) => {
+    // const imgData = canvas.toDataURL("image/jpeg");
+    // var can = document.getElementById('canvas');
+
+    html2canvas(document.getElementById('video')).then(can => {
+      can.getContext('2d')
+      // .drawImage(videoEl.current,0,0, videoEl.current.clientWidth, 
+      // videoEl.current.clientHeight)
+      let dataURI = can.toDataURL('image/jpeg',1.0);
+      const blob= dataURItoBlob(dataURI)
+      let thm = new File([blob], num+vid+userid+"thmimg.jpg", { type: "image/jpeg" })
+      uploadFile(thm);
+      canvas.toBlob((blob) => {
+        let file = new File([blob], num+vid+userid+"img.jpg", { type: "image/jpeg" })
+        uploadFile(file)
+      }, 'image/jpeg');
+
+      const data={
+        analysis:text+"!?,"+gettext+"!?,"+getwrite,
+        graphUrl:url+num+vid+userid+"img.jpg",
+        participantId:res.data.value,
+        thumbnailUrl:url+num+vid+userid+"thmimg.jpg",
+        title: title,
+        videoUrl:url+num+vid+userid+"video.mp4"
+      }
+      console.log(data)
+      axios.post("https://j8b301.p.ssafy.io/app/video/save", data,{
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        setWebcamOn(false);
+        setWebcamOff(false);
+        navigate(`/storage`);
+      });
+
+      });
+    });
+
+   
+    
+  });    
+  })
+ }
+
+ const uploadFile = (file) => {
+  // console.log(file)
+  const params = {
+    ACL: 'public-read',
+    Body: file,
+    Bucket: S3_BUCKET,
+    Key: file.name
   };
-
-
   
+  myBucket.putObject(params)
+    .on('httpUploadProgress', (evt) => {
+
+    })
+    .send((err) => {
+      if (err) console.log(err)
+    })
+  }
+  function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ia], {type:mimeString});
+  }  
 
   return (
-
     <div>
-      
-      {webcamOff?
-      <div>
-        <video className="recordvideo" 
-        src={mediaBlobUrl} controls
-        />
-        <RecordedExpressionsModal />
+      {webcamOff ? (
+        <div>
+          <div className="wrap">
+            <video
+              style={{ width: '1110px', height: '50%', objectFit: 'cover', right: '30px' }}
+              className="recordvideo"
+              src={mediaBlobUrl}
+              ref={videoEl}
+              id="video"
+              autoPlay
+              controls
+            />
+            <RecordedExpressionsModal />
+          </div>
 
-        <div className="scriptComponent">
-          {/* <ScriptText text={text}></ScriptText>
+   <div className="scriptComponent">
+            {/* <ScriptText text={text}></ScriptText>
           <ScriptText text={recordtext}></ScriptText> */}
-          <ReactDiffViewer
-            styles={newStyles}
-            oldValue={text} 
-            newValue={recordtext} 
-            splitView={true} 
-            compareMethod={DiffMethod.WORDS}
-           />
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>대본</h1>
+                <h1 style={{ fontSize: '30px', color: 'white' }}>음성인식결과</h1>
+              </div>
+              <hr />
+              <hr />
 
+              <ReactDiffViewer
+                styles={{
+                  marker: {
+                    display: 'none',
+                  },
+                  lineNumber: {
+                    display: 'none',
+                  },
+                }}
+                oldValue={text}
+                newValue={recordtext}
+                splitView={true}
+                compareMethod={DiffMethod.WORDS}
+              />
+            </div>
+          </div>
+
+
+          <div className="container">
+            <h1 className="mytitle">분석내용</h1>
+            
+            <div className="mywrite">
+              <div className="writewrap">
+                {getwrite}
+              </div>
+            </div>
+            
+          </div>
+
+
+          <div style={{ marginBottom: '50px', display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleOpen()
+                // save();
+              }}
+              color="error">
+              저장하기
+            </Button>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  제목을 입력해 주세요
+                </Typography>
+                <Input inputRef={valueRef} />
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    save();
+                  }}
+                  color="error">
+                  확인
+                </Button>
+              </Box>
+            </Modal>
+          </div>
+          {/* <canvas id="canvas" style={{
+                width:650,
+                // visibility:"hidden",
+                height:480
+          }}></canvas> */}
         </div>
         
-        <Button 
-          variant="contained" 
-          onClick={()=>{}}
-          color="error"
-        >감정분석</Button>
-      </div>
-      :
-      <>
-        <Webcam
-          className="onvideo"
-          audio={true}
-          mirrored={true}
-          ref={webcamRef}
-        />
-        {overlayOn?
-            <canvas 
+      ) : (
+        <>
+          <Webcam className="onvideo" audio={true} mirrored={true} ref={webcamRef} />
+          {overlayOn ? (
+            <canvas className="overvideo" ref={canvasRef}></canvas>
+          ) : (
+            <canvas
               className="overvideo"
-              ref={canvasRef}>  
-            </canvas>
-
-             :
-            <canvas 
-              className="overvideo"  
               style={{
-                display:"none"
+                visibility:"hidden",
               }}
-              ref={canvasRef}>
-            </canvas>
-        }
-        <Button 
-          variant="contained" 
-          onClick={()=>{click()}}
-          color="error"
-        >녹화종료</Button>
-        <Settings></Settings>
-      </>
-    }
+              ref={canvasRef}></canvas>
+          )}
+          <Settings endrecord={click}></Settings>
+        </>
+      )}
     </div>
   );
 };
+
 
 export default FaceDetect;

@@ -2,155 +2,115 @@ package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.BoardAddReqDTO;
 import com.ssafy.project.common.db.dto.request.BoardModifyReqDTO;
-import com.ssafy.project.common.db.dto.request.BoardSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.BoardResDTO;
+import com.ssafy.project.common.db.dto.response.BoardAllResDTO;
+import com.ssafy.project.common.db.dto.response.BoardDetailResDTO;
 import com.ssafy.project.common.db.entity.common.Board;
 import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.entity.common.Video;
-import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
 import com.ssafy.project.common.db.repository.VideoRepository;
+import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final VideoRepository videoRepository;
     private final UserRepository userRepository;
-    private final BoardLikeRepository boardLikeRepository;
+    private final AuthProvider authProvider;
 
     @Override
-    public Page<BoardResDTO> findAllBoard(int page, String sort) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sort).descending());
-        Page<Board> boardList = boardRepository.findAll(pageable);
-
-        Page<BoardResDTO> boardDTOList = boardList.map(board ->
-            BoardResDTO.builder()
-            .id(board.getId())
-            .likeCnt(board.getLikeCnt())
-            .videoUrl(board.getVideo().getUrl())
-            .title(board.getTitle())
-            .content(board.getContent())
-            .viewCnt(board.getViewCnt())
-            .createdDate(board.getCreatedDate())
-            .nickName(board.getUser().getNickname())
-            .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-            .build()
-        );
-         return boardDTOList;
+    @Transactional(readOnly = true)
+    public Page<BoardAllResDTO> findAllBoard(int page, String sort, String keyword) {
+        Page<BoardAllResDTO> boards = boardRepository.findAllWithFilter(page, sort, keyword);
+         return boards;
     }
 
     @Override
-    public List<BoardResDTO> findTopBoard() {
+    @Transactional(readOnly = true)
+    public List<BoardAllResDTO> findTopBoard() {
+        return boardRepository.findTop3Board();
+    }
 
-        List<Board> boardList = boardRepository.findTop4ByOrderByLikeCntDesc();
-
-        List<BoardResDTO> boardDTOList = boardList.stream().map(board ->
-                BoardResDTO.builder()
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BoardAllResDTO> findMyBoard(int page) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findByUserId(userId, pageable);
+        Page<BoardAllResDTO> boardAllResDTOS = boards.map(board ->
+                BoardAllResDTO.builder()
                 .id(board.getId())
-                .likeCnt(board.getLikeCnt())
-                .videoUrl(board.getVideo().getUrl())
+                .nickName(board.getUser().getNickname())
+                .createdDate(board.getCreatedDate())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .viewCnt(board.getViewCnt())
-                .createdDate(board.getCreatedDate())
-                .nickName(board.getUser().getNickname())
-                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-                .build()).collect(Collectors.toList());
-
-        return boardDTOList;
+                .likeCnt(board.getBoardLikes().size())
+                .commentCnt(board.getComments().size())
+                .build());
+        return boardAllResDTOS;
     }
 
-
     @Override
-    public BoardResDTO detailBoard(Long boardId) {
-        Optional<Board> optionalBoard = boardRepository.findById(boardId);
+    public BoardDetailResDTO detailBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
 
-        if(!optionalBoard.isPresent()) throw new RuntimeException();
-
-        Board board = optionalBoard.get();
         board.setViewCnt(board.getViewCnt()+1L);
-        boardRepository.save(board);
 
-        BoardResDTO boardResDTO = BoardResDTO.builder()
+        BoardDetailResDTO boardDetailResDTO = BoardDetailResDTO.builder()
                 .id(board.getId())
-                .likeCnt(board.getLikeCnt())
-                .videoUrl(board.getVideo().getUrl())
+                .nickName(board.getUser().getNickname())
+                .createdDate(board.getCreatedDate())
+                .viewCnt(board.getViewCnt())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .viewCnt(board.getViewCnt())
-                .createdDate(board.getCreatedDate())
-                .nickName(board.getUser().getNickname())
-                .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
+                .likeCnt(board.getBoardLikes().size())
+                .commentCnt(board.getComments().size())
+                .videoUrl(board.getVideo().getVideoUrl())
                 .build();
-        return boardResDTO;
+        return boardDetailResDTO;
     }
-
-    @Override
-    public Page<BoardResDTO> findByWord(BoardSearchReqDTO boardSearchReqDTO) {
-        Pageable pageable = PageRequest.of(boardSearchReqDTO.getPage(), 10, Sort.by(boardSearchReqDTO.getSort()).descending());
-        Page<Board> boardList = new PageImpl<>(new ArrayList<>());
-        // User user = userRepository.findById(board.user_id); 디비에는 LocalDateTime으로 되어 있고 여기서는 date 타입으로 가져와서 문제
-
-        if(boardSearchReqDTO.getColumn().equals("title"))
-            boardList = boardRepository.findByTitleContaining(boardSearchReqDTO.getWord(), pageable);
-        else boardList = boardRepository.findByContentContaining(boardSearchReqDTO.getWord(), pageable);
-
-        Page<BoardResDTO> boardDTOList = boardList.map(board ->
-            BoardResDTO.builder()
-                    .id(board.getId())
-                    .likeCnt(board.getLikeCnt())
-                    .videoUrl(board.getVideo().getUrl())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .viewCnt(board.getViewCnt())
-                    .createdDate(board.getCreatedDate())
-                    .nickName(board.getUser().getNickname())
-                    .isLike(boardLikeRepository.findByUserIdAndBoardId(board.getUser().getId(), board.getId()).isPresent())
-                    .build());
-        return boardDTOList;
-    }
-
     @Override
     public void addBoard(BoardAddReqDTO boardAddReqDTO) {
-        Video video = videoRepository.getById(boardAddReqDTO.getVideoId());
-        User user = userRepository.getReferenceById(1L);
-        //유저 아이디로 user객체 넣기 가져와서 entity에 넣기
+        Video video = null;
+        if(boardAddReqDTO.getVideoId() != null)
+        video = videoRepository.findById(boardAddReqDTO.getVideoId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.VIDEO_NOT_FOUND));
+        User user = userRepository.findById(authProvider.getUserIdFromPrincipal()).orElseThrow(() -> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+
         Board board = Board.builder()
                 .video(video)
                 .title(boardAddReqDTO.getTitle())
                 .content(boardAddReqDTO.getContent())
                 .user(user)
                 .build();
-        boardRepository.save(board);
+
+        user.getBoards().add(board);
     }
 
     @Override
-    public Board modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
-        Optional<Board> optionalBoard = boardRepository.findById(boardModifyReqDTO.getBoardId());
-
-        if(!optionalBoard.isPresent()) throw new RuntimeException();
-
-        Board board = optionalBoard.get();
+    public void modifyBoard(BoardModifyReqDTO boardModifyReqDTO) {
+        Board board = boardRepository.findById(boardModifyReqDTO.getBoardId()).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         board.setContent(boardModifyReqDTO.getContent());
         board.setTitle(boardModifyReqDTO.getTitle());
-        boardRepository.save(board);
-
-        return board;
     }
 
     @Override
     public void removeBoard(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        if(authProvider.getUserIdFromPrincipal() != board.getUser().getId()) throw new CommonApiException(CommonErrorCode.BOARD_NOT_ALLOWED);
         boardRepository.deleteById(id);
     }
 }

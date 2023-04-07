@@ -1,32 +1,39 @@
 package com.ssafy.project.api.service;
 
 import com.ssafy.project.common.db.dto.request.ScriptSearchReqDTO;
-import com.ssafy.project.common.db.dto.response.ScriptDTO;
+import com.ssafy.project.common.db.dto.response.ScriptDetailResDTO;
+import com.ssafy.project.common.db.dto.response.ScriptListResDTO;
 import com.ssafy.project.common.db.entity.common.Script;
 import com.ssafy.project.common.db.repository.ScriptRepository;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScriptServiceImpl implements ScriptService{
 
     private final ScriptRepository scriptRepository;
 
     @Override
-    public Page<ScriptDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO) {
-        Page<ScriptDTO> scripts = scriptRepository.findAllWithFilter(scriptSearchReqDTO);
+    @Transactional(readOnly = true)
+    public Page<ScriptListResDTO> findAllScript(ScriptSearchReqDTO scriptSearchReqDTO) {
+        Page<ScriptListResDTO> scripts = scriptRepository.findAllWithFilter(scriptSearchReqDTO);
         return scripts;
     }
 
     @Override
-    public ScriptDTO detailScript(Long scriptId) {
+    public ScriptDetailResDTO detailScript(Long scriptId) {
 
-        Script script = scriptRepository.findById(scriptId).get();
+        Script script = scriptRepository.findById(scriptId).orElseThrow(() -> new CommonApiException(CommonErrorCode.SCRIPT_NOT_FOUND));
         script.setViewCnt(script.getViewCnt()+1L);
 
-        ScriptDTO scriptDTO = ScriptDTO.builder()
+        ScriptDetailResDTO scriptDetailResDTO = ScriptDetailResDTO.builder()
                 .id(script.getId())
                 .title(script.getTitle())
                 .author(script.getAuthor())
@@ -40,8 +47,6 @@ public class ScriptServiceImpl implements ScriptService{
                 .participantCnt(script.getParticipants().size())
                 .build();
 
-        scriptRepository.save(script);
-
-        return scriptDTO;
+        return scriptDetailResDTO;
     }
 }

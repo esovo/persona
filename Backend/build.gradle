@@ -26,6 +26,13 @@ repositories {
 
 dependencies {
 
+    // 썸네일 라이브러리
+    implementation 'org.jcodec:jcodec:0.2.3'
+    implementation 'org.jcodec:jcodec-javase:0.2.3'
+
+    // AWS S3 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     // log4j2 추가, 쿼리로그 추가
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'

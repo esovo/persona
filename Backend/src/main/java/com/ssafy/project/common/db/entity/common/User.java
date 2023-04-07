@@ -57,21 +57,16 @@ public class User extends BaseTime {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<CommentLike> commentLikes = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Hit> hits = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Bookmark> bookmarks = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    List<Participant> participants = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Video> videos = new ArrayList<>();
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

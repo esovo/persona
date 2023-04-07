@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 
 public interface BoardLikeService {
 
-    public void addBoardLike(Long user_id, Long board_id);
-    public void removeBoardLike(Long user_id, Long board_id);
+    public void addBoardLike(Long boardId);
+    public void removeBoardLike(Long boardId);
+    public boolean checkBoardLike(Long boardId);
 }

@@ -2,9 +2,10 @@ package com.ssafy.project.api.controller;
 
 import com.ssafy.project.api.service.CommentService;
 import com.ssafy.project.common.db.dto.request.CommentAddReqDTO;
+import com.ssafy.project.common.db.dto.request.CommentModReqDTO;
 import com.ssafy.project.common.db.dto.response.CommentDTO;
-import com.ssafy.project.common.util.Msg;
-import com.ssafy.project.common.util.ResponseDTO;
+import com.ssafy.project.common.util.constant.Msg;
+import com.ssafy.project.common.util.dto.ResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -25,14 +25,23 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping
+    @Secured({"ROLE_CLIENT"})
+    @GetMapping("/all")
     @ApiOperation(value="전체 댓글 조회")
-    public ResponseEntity<ResponseDTO> commentList(@RequestParam Long boardId, @RequestParam int page) {
-        Page<CommentDTO> comments = commentService.findComment(boardId, page);
+    public ResponseEntity<ResponseDTO> commentList(@RequestParam Long commentId, @RequestParam int page) {
+        Page<CommentDTO> comments = commentService.findComment(commentId, page);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, comments));
     }
 
-    //등록
+    @Secured({"ROLE_CLIENT"})
+    @GetMapping("/my")
+    @ApiOperation(value="내 댓글 조회")
+    public ResponseEntity<ResponseDTO> commentMyList(@RequestParam int page) {
+        Page<CommentDTO> comments = commentService.findMyComment(page);
+        return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_READ, comments));
+    }
+
+    @Secured({"ROLE_CLIENT"})
     @PostMapping
     @ApiOperation(value="댓글 등록")
     public ResponseEntity<ResponseDTO> commentAdd(@RequestBody CommentAddReqDTO commentAddReqDTO){
@@ -40,21 +49,19 @@ public class CommentController {
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_CREATE));
     }
 
-    //수정
+    @Secured({"ROLE_CLIENT"})
     @PutMapping
     @ApiOperation(value="댓글 수정")
-    public ResponseEntity<ResponseDTO> commentModify(@RequestParam Long commentId, @RequestParam String content){
-        commentService.modifyComment(commentId, content);
+    public ResponseEntity<ResponseDTO> commentModify(@RequestBody CommentModReqDTO commentModReqDTO){
+        commentService.modifyComment(commentModReqDTO);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_UPDATE));
     }
 
-    //삭제
+    @Secured({"ROLE_CLIENT"})
     @DeleteMapping
     @ApiOperation(value="댓글 삭제")
     public ResponseEntity<ResponseDTO> commentRemove(@RequestParam Long commentId){
         commentService.removeComment(commentId);
         return ResponseEntity.ok().body(ResponseDTO.of(HttpStatus.OK, Msg.SUCCESS_DELETE));
     }
-
-
 }

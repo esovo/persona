@@ -6,25 +6,31 @@ import com.ssafy.project.common.db.entity.common.User;
 import com.ssafy.project.common.db.repository.BoardLikeRepository;
 import com.ssafy.project.common.db.repository.BoardRepository;
 import com.ssafy.project.common.db.repository.UserRepository;
+import com.ssafy.project.common.provider.AuthProvider;
+import com.ssafy.project.common.security.exception.CommonApiException;
+import com.ssafy.project.common.util.constant.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardLikeServiceImpl implements BoardLikeService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final BoardLikeRepository boardLikeRepository;
+    private final AuthProvider authProvider;
 
     @Override
-    public void addBoardLike(Long user_id, Long board_id) {
-        Board board = boardRepository.findById(board_id).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(user_id).orElseThrow(()-> new RuntimeException());
+    public void addBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(()-> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
 
-        if(boardLikeRepository.findByUserIdAndBoardId(user_id, board_id).isPresent()) throw new RuntimeException();
+        if(boardLikeRepository.findByUserIdAndBoardId(boardId, boardId).isPresent()) throw new CommonApiException(CommonErrorCode.BOOKMARK_ALREADY_EXIST);
 
         BoardLike boardLike = BoardLike.builder()
                 .board(board)
@@ -32,18 +38,22 @@ public class BoardLikeServiceImpl implements BoardLikeService {
                 .build();
 
         board.getBoardLikes().add(boardLike);
-        board.setLikeCnt(board.getLikeCnt()+1L);
-        boardRepository.save(board);
     }
 
     @Override
-    public void removeBoardLike(Long user_id, Long board_id) {
-        Board board = boardRepository.findById(board_id).orElseThrow(()-> new RuntimeException());
-        User user = userRepository.findById(user_id).orElseThrow(()-> new RuntimeException());
-        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(user_id, board_id).orElseThrow(()->new RuntimeException());
+    public void removeBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CommonApiException(CommonErrorCode.BOARD_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(()-> new CommonApiException(CommonErrorCode.USER_NOT_FOUND));
+        BoardLike boardLike = boardLikeRepository.findByUserIdAndBoardId(userId, boardId).orElseThrow(()->new CommonApiException(CommonErrorCode.BOOKMARK_NOT_FOUND));
 
-        board.getBoardLikes().remove(boardLike);
-        board.setLikeCnt(board.getLikeCnt()-1L);
-        boardRepository.save(board);
+        boardLikeRepository.deleteByUserIdAndBoardId(userId, boardId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkBoardLike(Long boardId) {
+        Long userId = authProvider.getUserIdFromPrincipal();
+        return boardLikeRepository.existsBoardLikeByUserIdAndBoardId(userId, boardId);
     }
 }

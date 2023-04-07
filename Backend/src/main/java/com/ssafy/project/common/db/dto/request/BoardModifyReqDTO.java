@@ -1,11 +1,11 @@
 package com.ssafy.project.common.db.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class BoardModifyReqDTO {

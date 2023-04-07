@@ -16,10 +16,10 @@ pipeline {
       }
     }
 
-    stage('Next.JS Image Build') {
+    stage('React.JS Image Build') {
       steps {
         script {
-          def frontendDir = "${env.WORKSPACE}/Frontend/persona"
+          def frontendDir = "${env.WORKSPACE}/AI/face-emotion-recognition"
           def dockerfile = "${frontendDir}/Dockerfile"
           docker.build("persona-front-image:${env.BUILD_NUMBER}", "-f ${dockerfile} ${frontendDir}")
         }

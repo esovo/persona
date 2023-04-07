@@ -1,30 +1,71 @@
-.recordvideo{
-  position: relative;
-  width: 600px;
-  margin: auto;
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.onvideo{
+.recordvideo {
+  position: relative;
+  width: 500px;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.onvideo {
   position: relative;
   margin: auto;
   left: 16px;
   top: 16px;
-  width: 640;
-  height: 480;
+  width: 800px;
+  height: 520px;
+  /* margin-left: 10%; */
 }
 
-.overvideo{
-  position: absolute; 
+.overvideo {
+  position: absolute;
   left: 0;
-  top:0; 
-  margin: 1rem;
+  top: 0;
+  margin: 17px;
+  width: 800px;
+  height: 520px;
+  /* margin-left: 10%; */
 }
 
-.scriptComponent{
-  display: flex;
+.scriptComponent {
   flex-direction: row;
   justify-content: space-around;
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 100px;
+}
+
+.blank {
+  margin-top: 10px;
+}
+
+.videoBox{
+  margin-left: 100px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mytitle {
+  color: white;
+}
+
+.mywrite {
+  background-color: white;
+  border-radius: 5px;
+  width: 80em;
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+
+.writewrap {
+  margin: 1%;
 }
