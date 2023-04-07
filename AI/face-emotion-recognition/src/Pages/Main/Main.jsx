@@ -80,12 +80,12 @@ export default function Footer() {
           </div>
         </div>
         <div className={style.right}>
-          <img src="Main_smart.webp" alt="smart" width="500" height="350" data-aos="fade-up" />
+          <img src="Main_smart.webp" alt="smart" width="500" height="350" />
         </div>
       </div>
       <div className={style.easy}>
         <div className={style.left}>
-          <img src="Main_easy.webp" alt="easy" width="500" height="350" data-aos="fade-up" data-aos-once="false" />
+          <img src="Main_easy.webp" alt="easy" width="500" height="350" />
         </div>
         <div className={style.right}>
           <div className={style.title}>#SO EASY</div>
@@ -110,19 +110,12 @@ export default function Footer() {
           </div>
         </div>
         <div className={style.right}>
-          <img src="Main_simple.webp" alt="simple" width="500" height="400" data-aos="fade-up" data-aos-once="false" />
+          <img src="Main_simple.webp" alt="simple" width="500" height="400" />
         </div>
       </div>
       <div className={style.exciting}>
         <div className={style.left}>
-          <img
-            src="Main_exciting.webp"
-            alt="exciting"
-            width="500"
-            height="350"
-            data-aos="fade-up"
-            data-aos-once="false"
-          />
+          <img src="Main_exciting.webp" alt="exciting" width="500" height="350" />
         </div>
         <div className={style.right}>
           <div className={style.title}>#EXCITING</div>
