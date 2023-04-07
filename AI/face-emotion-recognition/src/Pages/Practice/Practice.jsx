@@ -116,13 +116,17 @@ const List = () => {
     <>
       <Header />
       <div className={style.container}>
-        <div className={style.banner}>
-          {/* <img className={style.bookimg} src="./Practice_banner.png" alt="책" /> */}
-          {/* <div className={style.text}> */}
-          <h1>스크립트</h1>
-          <div className={style.subtitle}>내가 원하는 스크립트를 고를 수 있어요</div>
-          {/* </div> */}
+        <div className={style.intro}>
+          <div className={style.title}>스크립트</div>
+          <div className={style.content}>내가 원하는 스크립트를 고를 수 있어요.</div>
         </div>
+        {/* <div className={style.banner}> */}
+        {/* <img className={style.bookimg} src="./Practice_banner.png" alt="책" /> */}
+        {/* <div className={style.text}> */}
+        {/* <h1>스크립트</h1>
+          <div className={style.subtitle}>내가 원하는 스크립트를 고를 수 있어요</div> */}
+        {/* </div> */}
+        {/* </div> */}
         <div className={style.filter}>
           <div className={style.search}>
             <select className={style.selectbox} name="findby" onChange={optionHandler}>
