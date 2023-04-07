@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class InitDb {
 
-    @Value("${jpa.hibernate.ddl-auto}")
-    String ddlAutoVal;
-
     public final InitService initService;
 
     @PostConstruct
