@@ -22,7 +22,9 @@ public class InitDb {
 
     @PostConstruct
     public void init(){
+        if(ddlAutoVal.equals("create")) {
             initService.scriptInit();
+        }
     }
     @Component
     @Transactional
