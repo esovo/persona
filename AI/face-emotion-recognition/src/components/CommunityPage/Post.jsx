@@ -10,14 +10,11 @@ import moment from 'moment';
 const Post = ({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt }) => {
   const [selectedPost, setSelectedPost] = useRecoilState(selectedPostState);
   const [showDetailModal, setShowDetailModal] = useRecoilState(postDetailModal);
-  const [isClicked, setIsClicked] = useState(false);
   const openModal = () => {
     setSelectedPost({ id, nickName, createdDate, title, content, likeCnt, viewCnt, commentCnt });
     setShowDetailModal(true);
   };
-  const heartClickHandler = () => {
-    setIsClicked(!isClicked);
-  };
+
   return (
     <div className={style.post}>
       <div className={style.content} onClick={openModal}>
@@ -29,8 +26,8 @@ const Post = ({ id, nickName, createdDate, title, content, likeCnt, viewCnt, com
         </div>
       </div>
       <div className={style.itmes}>
-        <div className={style.like} onClick={heartClickHandler}>
-          <FontAwesomeIcon icon={isClicked ? solidHeart : regularHeart} style={{ color: '#ce4040' }} />
+        <div className={style.like} onClick={openModal}>
+          <FontAwesomeIcon icon={regularHeart} style={{ color: '#ce4040' }} />
           <div>{likeCnt}</div>
         </div>
         <div className={style.comment}>
