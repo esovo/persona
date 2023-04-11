@@ -94,7 +94,7 @@
 
 - 소셜 **로그인**
 
-![SmartSelect_20230217_132438_Gallery.gif](images/SmartSelect_20230217_132438_Gallery.gif)
+![Untitled](images/027.png)
 
 - AI영상 분석 모델을 활용한 감정인식
 
