@@ -97,10 +97,10 @@ const FaceDetect = (props) => {
   const [recordtext,setRecordtext] =useState("");
   const [partnum,setpartnum] =useState(0);
   
-  const ACCESS_KEY = "AKIA2A2FFZJ6BHNCU6PQ";
-  const SECRET_ACCESS_KEY = "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";
+  const ACCESS_KEY = "ACCESS_KEY";
+  const SECRET_ACCESS_KEY = "SECRET_ACCESS_KEY";
   const REGION = "ap-northeast-2";
-  const S3_BUCKET = "step-up-bucket";
+  const S3_BUCKET = "S3_BUCKET";
 
   AWS.config.update({
     accessKeyId: ACCESS_KEY,
