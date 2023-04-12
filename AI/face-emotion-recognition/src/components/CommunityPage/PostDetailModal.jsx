@@ -17,7 +17,7 @@ export default function Modal() {
   const [comments, setComments] = useState([]);
   const BASE_URL = 'https://j8b301.p.ssafy.io';
   const token = useRecoilValue(tokenState);
-  const [isHeart, setIsHeart] = useRecoilState(isHeartState);
+  const [isHeart, setIsHeart] = useState(false);
   const [open, setOpen] = useState(false);
   const boardId = selectedPost.id;
   const [myuser, setMyuser] = useRecoilState(user);
@@ -71,7 +71,7 @@ export default function Modal() {
       .then((res) => {
         setIsHeart(res.data.value);
       });
-  });
+  }, []);
 
   const heartClickHandler = () => {
     if (isHeart) {
